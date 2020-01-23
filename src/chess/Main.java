@@ -1,8 +1,5 @@
 package chess;
 
-// Stole this Hello World program from online
-// Use this to test if JavaFX works for you
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
