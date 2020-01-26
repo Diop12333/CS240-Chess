@@ -15,7 +15,11 @@ public class Board {
 			Color color;
 			for (int y = 0; y < length; y++) {
 				if (black) color = Color.BLACK; else color = Color.WHITE;
-				Rectangle rect = new Rectangle(25, 25, color);
+				
+				Rectangle rect = new Rectangle();
+				rect.setFill(color);
+				rect.widthProperty().bind(grid.widthProperty().divide(width));
+				rect.heightProperty().bind(grid.heightProperty().divide(length));
 				
 				grid.add(rect, x, y);
 				
