@@ -6,5 +6,5 @@ Lia:
 
 Zach:
 Make board dynamically resize with window, add support for custom colors, allow it to display pieces
-
 Khang:
+Create an array that save game piece move
