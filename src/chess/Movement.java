@@ -6,8 +6,8 @@ public class Movement
 	
 	public class Node
 	{
-		char piece;
-		String location;
+		char piece;			// Name of Chess Piece 
+		String location;	// Where The Chess Piece is Going
 		Node next;
 		
 		Node(char p, String l)
