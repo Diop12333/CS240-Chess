@@ -36,9 +36,7 @@ public class Board {
 			}
 		}
 	}
-	public Board() {
-		this(8, 8);
-	}
+	public Board() { this(8, 8); }
 	
 	public GridPane getGrid() { return grid; }
 	public Square[][] getSquares() { return squares; }
