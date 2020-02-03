@@ -12,26 +12,28 @@ public class Board {
 	// rows go down, columns go right
 	private Square[][] squares;
 	
-	public Board(int width, int length) {
+	public Board(int xSqAmount, int ySqAmount) {
 		grid = new GridPane();
-		squares = new Square[length][width];
+		squares = new Square[ySqAmount][xSqAmount];
 		
-		boolean black = true;
-		for (int y = 0; y < length; y++) {
+		Color color1 = Color.BLACK;
+		Color color2 = Color.WHITE;
+		for (int y = 0; y < ySqAmount; y++) {
 			Color color;
-			for (int x = 0; x < width; x++) {
-				if (black) color = Color.BLACK; else color = Color.WHITE;
+			boolean useColor1 = y % 2 == 0;
+			
+			for (int x = 0; x < xSqAmount; x++) {
+				if (useColor1) color = color1; else color = color2;
 				
 				Square sq = new Square(color);
-				sq.prefWidthProperty().bind(grid.widthProperty().divide(width));
-				sq.prefHeightProperty().bind(grid.heightProperty().divide(length));
+				sq.prefWidthProperty().bind(grid.widthProperty().divide(xSqAmount));
+				sq.prefHeightProperty().bind(grid.heightProperty().divide(ySqAmount));
 				
 				grid.add(sq, x, y);
 				squares[y][x] = sq;
 				
-				black = !black;
+				useColor1 = !useColor1;
 			}
-			black = !black;
 		}
 	}
 	public Board() {
