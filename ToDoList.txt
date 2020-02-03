@@ -7,4 +7,4 @@ Zach:
 Make board dynamically resize with window while preserving aspect ratio, add support for custom colors, allow it to display pieces
 
 Khang:
-Create an array that save game piece move
+Create an array that save game piece move, find away to make the board interactive 
