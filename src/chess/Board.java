@@ -4,8 +4,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 // TODO: capability to contain transparent image of chess piece
-// TODO: arbitrary colors
-// TODO: more elegant color setting code
+// TODO: arbitrary square colors
 public class Board {
 	private GridPane grid;
 	
@@ -18,9 +17,9 @@ public class Board {
 		squares = new Square[length][width];
 		
 		boolean black = true;
-		for (int x = 0; x < width; x++) {
+		for (int y = 0; y < length; y++) {
 			Color color;
-			for (int y = 0; y < length; y++) {
+			for (int x = 0; x < width; x++) {
 				if (black) color = Color.BLACK; else color = Color.WHITE;
 				
 				Square sq = new Square(color);
