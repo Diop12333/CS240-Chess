@@ -3,9 +3,15 @@ package chess;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
+// TODO: capability to contain transparent image of chess piece
+// TODO: arbitrary colors
+// TODO: more elegant color setting code
 public class Board {
 	private GridPane grid;
-	public Square[][] squares;
+	
+	// row/column indices
+	// rows go down, columns go right
+	private Square[][] squares;
 	
 	public Board(int width, int length) {
 		grid = new GridPane();
@@ -34,4 +40,5 @@ public class Board {
 	}
 	
 	public GridPane getGrid() { return grid; }
+	public Square[][] getSquares() { return squares; }
 }
