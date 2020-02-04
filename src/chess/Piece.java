@@ -8,7 +8,7 @@ public abstract class Piece {
 	private static String whiteImgFileName;
 	private static String blackImgFileName;
 	
-	private static Image img;
+	private Image img;
 	
 	public Piece(boolean white) {
 		if (white) img = new Image(imgFolder + whiteImgFileName);
