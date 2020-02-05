@@ -15,4 +15,8 @@ public class Coordinate {
 	
 	public int getX() { return x; }
 	public int getY() { return y; }
+	
+	public Coordinate shift(int dx, int dy) {
+		return new Coordinate(x + dx, y + dy);
+	}
 }
