@@ -2,18 +2,22 @@ package chess;
 
 public class Movement
 {
-	Node head;
+	private Piece piece;
+	private Board board;
+	private Coordinate prevLocation;
+	private Coordinate newLocation;
 	
-	public class Node
+	public Movement(Piece piece, Coordinate prevLocation, Coordinate newLocation)
 	{
-		char piece;			// Name of Chess Piece 
-		String location;	// Where The Chess Piece is Going
-		Node next;
-		
-		Node(char p, String l)
-		{
-			piece = p;
-			location = l;
-		}
+		this.piece = piece;
+		this.board = piece.getBoard();
+		this.prevLocation = prevLocation;
+		this.newLocation = newLocation;
 	}
+	
+	public Piece getPiece() { return piece; }
+	public Coordinate getPrevLocation() { return prevLocation; }
+	public Coordinate getNewLocation() { return newLocation; }
+	
+	public String toString() { return null; } // insert fancy chess notation here
 }
