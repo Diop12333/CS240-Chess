@@ -9,8 +9,18 @@ public class Pawn extends Piece
 		
 	}
 	
-	public int movement()
+	public Coordinate validMoves()
 	{
+		if (white)
+		{
+			return coord + 1;
+		}
 		
+		if (!white)
+		{
+			return coord - 1;
+		}
+		
+		return -1;
 	}
 }
