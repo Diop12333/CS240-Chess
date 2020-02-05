@@ -2,15 +2,15 @@ package chess;
 
 import java.util.*;
 
-public class Pawn
+public class Pawn extends Piece
 {
-	private Movement DESTINATION = null;
-	private Movement PIECE = 'p';
-	
 	public Pawn()
-	{		
-		char piece = 'p';
+	{
+		
 	}
 	
-	
+	public int movement()
+	{
+		
+	}
 }
