@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -8,13 +10,12 @@ import javafx.scene.paint.Color;
 public class Board {
 	private GridPane grid;
 	
-	// row/column indices
-	// rows go down, columns go right
-	private Square[][] squares;
+	// y goes down
+	private Map<Coordinate, Square> squares;
 	
 	public Board(int xSqAmount, int ySqAmount) {
 		grid = new GridPane();
-		squares = new Square[ySqAmount][xSqAmount];
+		squares = new HashMap<Coordinate, Square>();
 		
 		Color color1 = Color.BLACK;
 		Color color2 = Color.WHITE;
@@ -30,7 +31,7 @@ public class Board {
 				sq.prefHeightProperty().bind(grid.heightProperty().divide(ySqAmount));
 				
 				grid.add(sq, x, y);
-				squares[y][x] = sq;
+				squares.put(new Coordinate(x, y), sq);
 				
 				useColor1 = !useColor1;
 			}
@@ -39,5 +40,5 @@ public class Board {
 	public Board() { this(8, 8); }
 	
 	public GridPane getGrid() { return grid; }
-	public Square[][] getSquares() { return squares; }
+	public Map<Coordinate, Square> getSquares() { return squares; }
 }
