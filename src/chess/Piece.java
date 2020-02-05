@@ -9,15 +9,13 @@ public abstract class Piece {
 	private static String blackImgFileName;
 	
 	private boolean white;
-	
 	private Board board;
 	private Coordinate coord;
 	
 	private Image img;
 	
-	public Piece(Board board, Coordinate coord, boolean white) {
+	public Piece(boolean white, Board board, Coordinate coord) {
 		this.white = white;
-		
 		this.board = board;
 		this.coord = coord;
 		
