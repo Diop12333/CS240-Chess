@@ -12,6 +12,9 @@ public class Main extends Application {
 		Board board = new Board();
 		Scene scene = new Scene(board.getGrid(), 500, 500);
 		
+		// test code
+		new Pawn(true, board, new Coordinate(0, 0));
+		
 		primaryStage.setScene(scene);
 		
 		primaryStage.show();
