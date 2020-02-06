@@ -1,7 +1,5 @@
 package chess;
 
-import java.util.HashMap;
-import java.util.Map;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -13,12 +11,14 @@ public class Board {
 	// y goes down
 	private Square[][] squares;
 	
+	public Board() { this(8, 8); }
 	public Board(int xSqAmount, int ySqAmount) {
+		this(xSqAmount,ySqAmount, Color.SADDLEBROWN, Color.ANTIQUEWHITE);
+	}
+	public Board(int xSqAmount, int ySqAmount, Color color1, Color color2) {
 		grid = new GridPane();
 		squares = new Square[ySqAmount][xSqAmount];
 		
-		Color color1 = Color.BLACK;
-		Color color2 = Color.WHITE;
 		for (int y = 0; y < ySqAmount; y++) {
 			Color color;
 			boolean useColor1 = y % 2 == 0;
@@ -37,7 +37,6 @@ public class Board {
 			}
 		}
 	}
-	public Board() { this(8, 8); }
 	
 	public GridPane getGrid() { return grid; }
 	public Square[][] getSquares() { return squares; }

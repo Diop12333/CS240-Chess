@@ -24,7 +24,7 @@ public abstract class Piece {
 		imgFileStream = new FileInputStream(path);
 		img = new Image(imgFileStream);
 		
-		board.getSquare(coord).setImage(img);
+		board.getSquare(coord).setPiece(this);
 	}
 	
 	public void move(Coordinate newCoord) {} // TODO

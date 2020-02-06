@@ -1,7 +1,6 @@
 package chess;
 
 import javafx.geometry.Insets;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -10,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class Square extends StackPane {
+	Piece piece;
 	ImageView imgView = new ImageView();
 	
 	public Square(Color c) {
@@ -20,7 +20,8 @@ public class Square extends StackPane {
 		this.getChildren().add(imgView);
 	}
 	
-	public void setImage(Image img) {
-		imgView.setImage(img);
+	public void setPiece(Piece piece) {
+		this.piece = piece;
+		imgView.setImage(piece.getImg());
 	}
 }

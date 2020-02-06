@@ -1,5 +1,6 @@
 package chess;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ public class Knight extends Piece
 {
 private boolean hasMoved;
 	
-	public Knight(boolean white, Board board, Coordinate coord)
+	public Knight(boolean white, Board board, Coordinate coord) throws FileNotFoundException
 	{
 		super(white, board, coord);
 		hasMoved = false;
