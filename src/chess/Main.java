@@ -33,10 +33,23 @@ public class Main extends Application {
 		new Rook(true, board, new Coordinate (7,0));
 		
 		//Black pieces
+		new Pawn(false, board, new Coordinate(0, 6));
+		new Pawn(false, board, new Coordinate(1, 6));
+		new Pawn(false, board, new Coordinate(2, 6));
+		new Pawn(false, board, new Coordinate(3, 6));
+		new Pawn(false, board, new Coordinate(4, 6));
+		new Pawn(false, board, new Coordinate(5, 6));
+		new Pawn(false, board, new Coordinate(6, 6));
+		new Pawn(false, board, new Coordinate(7, 6));
 		
-	
-		
-		
+		new Rook(false, board, new Coordinate (0,7));
+		new Knight(false, board, new Coordinate (1,7));
+		new Bishop(false, board, new Coordinate (2,7));
+		new Queen(false, board, new Coordinate (3,7));
+		new King(false, board, new Coordinate (4,7));
+		new Bishop(true, board, new Coordinate (5,7));
+		new Knight(false, board, new Coordinate (6,7));
+		new Rook(false, board, new Coordinate (7,7));
 		
 		
 		primaryStage.setScene(scene);
