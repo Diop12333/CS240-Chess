@@ -1,5 +1,7 @@
 package chess;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import javafx.scene.image.Image;
 
@@ -9,15 +11,20 @@ public abstract class Piece {
 	private Coordinate coord;
 	private Image img;
 	
-	public Piece(boolean white, Board board, Coordinate coord) {
+	public Piece(boolean white, Board board, Coordinate coord) throws FileNotFoundException {
 		this.white = white;
 		this.board = board;
 		this.coord = coord;
 		
-		// add piece to board here
+		String path;
+		if (white) path = getWhiteImgFilePath();
+		else path = getBlackImgFilePath();
 		
-		if (white) img = new Image(getWhiteImgFilePath());
-		else img = new Image(getBlackImgFilePath());
+		FileInputStream imgFileStream;
+		imgFileStream = new FileInputStream(path);
+		img = new Image(imgFileStream);
+		
+		board.getSquare(coord).setImage(img);
 	}
 	
 	public void move(Coordinate newCoord) {} // TODO

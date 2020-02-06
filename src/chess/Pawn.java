@@ -1,5 +1,6 @@
 package chess;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ public class Pawn extends Piece
 {
 	private boolean hasMoved;
 	
-	public Pawn(boolean white, Board board, Coordinate coord)
+	public Pawn(boolean white, Board board, Coordinate coord) throws FileNotFoundException
 	{
 		super(white, board, coord);
 		hasMoved = false;

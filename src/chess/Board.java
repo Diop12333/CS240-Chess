@@ -11,11 +11,11 @@ public class Board {
 	private GridPane grid;
 	
 	// y goes down
-	private Map<Coordinate, Square> squares;
+	private Square[][] squares;
 	
 	public Board(int xSqAmount, int ySqAmount) {
 		grid = new GridPane();
-		squares = new HashMap<Coordinate, Square>();
+		squares = new Square[ySqAmount][xSqAmount];
 		
 		Color color1 = Color.BLACK;
 		Color color2 = Color.WHITE;
@@ -31,7 +31,7 @@ public class Board {
 				sq.prefHeightProperty().bind(grid.heightProperty().divide(ySqAmount));
 				
 				grid.add(sq, x, y);
-				squares.put(new Coordinate(x, y), sq);
+				squares[y][x] = sq;
 				
 				useColor1 = !useColor1;
 			}
@@ -40,5 +40,9 @@ public class Board {
 	public Board() { this(8, 8); }
 	
 	public GridPane getGrid() { return grid; }
-	public Map<Coordinate, Square> getSquares() { return squares; }
+	public Square[][] getSquares() { return squares; }
+	
+	public Square getSquare(Coordinate coord) {
+		return squares[coord.getY()][coord.getX()];
+	}
 }
