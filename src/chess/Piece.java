@@ -17,7 +17,7 @@ public abstract class Piece {
 		// add piece to board here
 		
 		if (white) img = new Image(getWhiteImgFilePath());
-		else img = new Image(getWhiteImgFilePath());
+		else img = new Image(getBlackImgFilePath());
 	}
 	
 	public void move(Coordinate newCoord) {} // TODO
