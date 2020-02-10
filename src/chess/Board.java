@@ -2,6 +2,8 @@ package chess;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 // TODO: capability to contain transparent image of chess piece
 // TODO: arbitrary square colors
@@ -44,4 +46,20 @@ public class Board {
 	public Square getSquare(Coordinate coord) {
 		return squares[coord.getY()][coord.getX()];
 	}
+	
+	
+	
+	// Initializing Mouse Movement
+	EventHandler<MouseEvent> interactMove = new EventHandler<MouseEvent>()
+	{
+		@Override
+		
+		// Output of Interaction
+		public void handle(MouseEvent m)
+		{
+			// [INSERT CODE]
+		}
+		// End of Output
+	};
+	// End of Initialization
 }

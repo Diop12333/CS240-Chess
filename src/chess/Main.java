@@ -22,7 +22,8 @@ public class Main extends Application {
 		new Pawn(true, board, new Coordinate(5, 1));
 		new Pawn(true, board, new Coordinate(6, 1));
 		new Pawn(true, board, new Coordinate(7, 1));
-	
+		
+		
 		new Rook(true, board, new Coordinate (0,0));
 		new Knight(true, board, new Coordinate (1,0));
 		new Bishop(true, board, new Coordinate (2,0));
