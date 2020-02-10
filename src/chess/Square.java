@@ -16,12 +16,21 @@ public class Square extends StackPane {
 		this.setBackground(
 			new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY))
 		);
-		
-		this.getChildren().add(imgView);
+		imgView.fitWidthProperty().bind(this.prefWidthProperty());
+		imgView.fitHeightProperty().bind(this.prefHeightProperty());
+		//imgView.setPreserveRatio(true);
+		getChildren().add(imgView);
 	}
 	
 	public void setPiece(Piece piece) {
 		this.piece = piece;
 		imgView.setImage(piece.getImg());
 	}
+	
+	public void clear() {
+		piece = null;
+		imgView.setImage(null);
+	}
+	
+	public Piece getPiece() { return piece; }
 }
