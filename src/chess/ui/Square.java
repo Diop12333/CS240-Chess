@@ -1,4 +1,4 @@
-package chess;
+package chess.ui;
 
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;

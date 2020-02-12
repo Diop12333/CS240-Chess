@@ -1,8 +1,9 @@
-package chess;
+package chess.ui;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
+
 import javafx.scene.image.Image;
 
 public abstract class Piece {
@@ -20,14 +21,16 @@ public abstract class Piece {
 		if (white) path = getWhiteImgFilePath();
 		else path = getBlackImgFilePath();
 		
-		FileInputStream imgFileStream;
-		imgFileStream = new FileInputStream(path);
+		FileInputStream imgFileStream = new FileInputStream(path);
 		img = new Image(imgFileStream);
 		
 		board.getSquare(coord).setPiece(this);
 	}
 	
-	public void move(Coordinate newCoord) {} // TODO
+	public void move(Coordinate newCoord) {
+		board.getSquare(coord).clear();
+		board.getSquare(newCoord).setPiece(this);
+	}
 	
 	// Returns coordinates piece can move to
 	public abstract List<Coordinate> validMoves();

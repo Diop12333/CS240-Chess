@@ -1,4 +1,8 @@
-package chess;
+package chess.piece;
+
+import chess.ui.Board;
+import chess.ui.Coordinate;
+import chess.ui.Piece;
 
 public class Movement
 {

@@ -1,8 +1,12 @@
-package chess;
+package chess.piece;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import chess.ui.Board;
+import chess.ui.Coordinate;
+import chess.ui.Piece;
 
 public class Bishop extends Piece
 {
@@ -14,7 +18,8 @@ public class Bishop extends Piece
 		hasMoved = false;
 	}
 	
-	 public List<Coordinate> validMoves()
+	@Override
+	public List<Coordinate> validMoves()
 	{
 		List<Coordinate> moves = new ArrayList<>();
 		Coordinate coord = super.getCoord();
@@ -29,6 +34,8 @@ public class Bishop extends Piece
 		return moves; 
 	} 
 	
+	@Override
 	public String getWhiteImgFileName() { return "white_bishop.png"; }
+	@Override
 	public String getBlackImgFileName() { return "black_bishop.png"; }
 }

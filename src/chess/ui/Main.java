@@ -1,5 +1,6 @@
-package chess;
+package chess.ui;
 
+import chess.piece.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,7 +11,7 @@ public class Main extends Application {
 		primaryStage.setTitle("Chess Board");
 		
 		Board board = new Board();
-		Scene scene = new Scene(board.getGrid(), 500, 500);
+		Scene scene = new Scene(board, 500, 500);
 		
 		// test code
 		//White pieces

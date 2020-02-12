@@ -1,8 +1,12 @@
-package chess;
+package chess.piece;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import chess.ui.Board;
+import chess.ui.Coordinate;
+import chess.ui.Piece;
 
 public class Pawn extends Piece
 {
@@ -14,6 +18,7 @@ public class Pawn extends Piece
 		hasMoved = false;
 	}
 	
+	@Override
 	public List<Coordinate> validMoves()
 	{
 		List<Coordinate> moves = new ArrayList<>();
@@ -34,6 +39,8 @@ public class Pawn extends Piece
 		return moves;
 	}
 	
+	@Override
 	public String getWhiteImgFileName() { return "white_pawn.png"; }
+	@Override
 	public String getBlackImgFileName() { return "black_pawn.png"; }
 }
