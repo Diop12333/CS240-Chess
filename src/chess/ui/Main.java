@@ -10,8 +10,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Chess Board");
 		
-		Board board = new Board();
-		Scene scene = new Scene(board, 500, 500);
+		BoardContainer boardContainer = new BoardContainer();
+		Board board = boardContainer.getBoard();
+		Scene scene = new Scene(boardContainer, 500, 500);
 		
 		// test code
 		//White pieces

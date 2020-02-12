@@ -1,5 +1,6 @@
 package chess.ui;
 
+import javafx.geometry.Orientation;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
@@ -42,8 +43,6 @@ public class Board extends GridPane {
 	public Square getSquare(Coordinate coord) {
 		return squares[coord.getY()][coord.getX()];
 	}
-	
-	
 	
 	// Initializing Mouse Movement
 	EventHandler<MouseEvent> interactMove = new EventHandler<MouseEvent>()
