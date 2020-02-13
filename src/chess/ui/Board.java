@@ -1,6 +1,5 @@
 package chess.ui;
 
-import javafx.geometry.Orientation;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
@@ -9,14 +8,19 @@ import javafx.scene.input.MouseEvent;
 // TODO: capability to contain transparent image of chess piece
 // TODO: arbitrary square colors
 public class Board extends GridPane {
+	private XY dimensions;
 	// y goes down
 	private Square[][] squares;
 	
-	public Board() { this(8, 8); }
-	public Board(int xSqAmount, int ySqAmount) {
-		this(xSqAmount,ySqAmount, Color.SADDLEBROWN, Color.ANTIQUEWHITE);
+	public Board() { this(new XY(8, 8)); }
+	public Board(XY dimensions) {
+		this(dimensions, Color.SADDLEBROWN, Color.ANTIQUEWHITE);
 	}
-	public Board(int xSqAmount, int ySqAmount, Color color1, Color color2) {
+	public Board(XY dimensions, Color color1, Color color2) {
+		this.dimensions = dimensions;
+		int xSqAmount = dimensions.getX();
+		int ySqAmount = dimensions.getY();
+		
 		squares = new Square[ySqAmount][xSqAmount];
 		
 		for (int y = 0; y < ySqAmount; y++) {
@@ -26,7 +30,7 @@ public class Board extends GridPane {
 			for (int x = 0; x < xSqAmount; x++) {
 				if (useColor1) color = color1; else color = color2;
 				
-				Square sq = new Square(color);
+				Square sq = new Square(new Coordinate(x, y), color);
 				sq.prefWidthProperty().bind(widthProperty().divide(xSqAmount));
 				sq.prefHeightProperty().bind(heightProperty().divide(ySqAmount));
 				
@@ -36,10 +40,12 @@ public class Board extends GridPane {
 				useColor1 = !useColor1;
 			}
 		}
+		
+		new BoardMouseHandler(this);
 	}
 	
+	public XY getDimensions() { return dimensions; }
 	public Square[][] getSquares() { return squares; }
-	
 	public Square getSquare(Coordinate coord) {
 		return squares[coord.getY()][coord.getX()];
 	}
