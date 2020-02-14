@@ -1,5 +1,7 @@
 package chess.ui;
 
+// Refers to chess board square
+// 0-indexed, y goes down
 public class Coordinate extends XY {
 	public Coordinate(XY xy) {
 		this(xy, null);

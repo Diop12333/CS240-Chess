@@ -1,7 +1,5 @@
 package chess.ui;
 
-// Refers to chess board square
-// 0-indexed, y goes down
 public class XY {
 	private int x;
 	private int y;
