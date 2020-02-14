@@ -35,4 +35,6 @@ public class King extends Piece
 	public String getWhiteImgFileName() { return "white_king.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_king.png"; }
+	@Override
+	public String toString() { return "K"; }
 }

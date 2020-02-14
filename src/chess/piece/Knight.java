@@ -43,5 +43,7 @@ private boolean hasMoved;
 	public String getWhiteImgFileName() { return "white_knight.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_knight.png"; }
+	@Override
+	public String toString() { return "N"; }
 }
 

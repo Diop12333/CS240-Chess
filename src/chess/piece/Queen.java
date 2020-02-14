@@ -35,4 +35,6 @@ public class Queen extends Piece
 	public String getWhiteImgFileName() { return "white_queen.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_queen.png"; }
+	@Override
+	public String toString() { return "Q"; }
 }

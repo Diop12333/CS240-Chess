@@ -49,4 +49,6 @@ public class Rook extends Piece
 	public String getWhiteImgFileName() { return "white_rook.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_rook.png"; }
+	@Override
+	public String toString() { return "R"; }
 }

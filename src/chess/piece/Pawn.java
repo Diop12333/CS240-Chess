@@ -43,4 +43,6 @@ public class Pawn extends Piece
 	public String getWhiteImgFileName() { return "white_pawn.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_pawn.png"; }
+	@Override
+	public String toString() { return ""; }
 }

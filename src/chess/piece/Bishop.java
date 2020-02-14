@@ -38,4 +38,6 @@ public class Bishop extends Piece
 	public String getWhiteImgFileName() { return "white_bishop.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_bishop.png"; }
+	@Override
+	public String toString() { return "B"; }
 }

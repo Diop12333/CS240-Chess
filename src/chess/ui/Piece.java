@@ -30,6 +30,7 @@ public abstract class Piece {
 	public void move(Coordinate newCoord) {
 		board.getSquare(coord).clear();
 		board.getSquare(newCoord).setPiece(this);
+		this.coord = newCoord;
 	}
 	
 	// Returns coordinates piece can move to
@@ -46,5 +47,5 @@ public abstract class Piece {
 	public Coordinate getCoord() { return coord; }
 	public Image getImg() { return img; }
 	
-	public String toString() { return null; } // return letter for chess notation
+	public abstract String toString(); // return letter for chess notation
 }
