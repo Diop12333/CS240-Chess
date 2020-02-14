@@ -3,7 +3,6 @@ package chess.ui;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-// WIP
 public class BoardMouseHandler implements EventHandler<MouseEvent> {
 	private Square storedSquare;
 	
@@ -20,10 +19,10 @@ public class BoardMouseHandler implements EventHandler<MouseEvent> {
 		
 		if (storedSquare == null && sq.getPiece() != null) {
 			storedSquare = sq;
-			storedSquare.setIsHighlighted(true);
+			storedSquare.highlight();
 		} else if (storedSquare != null && sq != storedSquare) {
 			storedSquare.getPiece().move(sq.getCoord());
-			storedSquare.setIsHighlighted(false);
+			storedSquare.unhighlight();
 			storedSquare = null;
 		}
 	}

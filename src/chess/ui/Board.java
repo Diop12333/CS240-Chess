@@ -2,8 +2,6 @@ package chess.ui;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 
 // TODO: capability to contain transparent image of chess piece
 // TODO: arbitrary square colors

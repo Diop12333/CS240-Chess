@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 public class Square extends StackPane {
 	private Coordinate coord;
 	private Color defaultColor;
+	private static Color HIGHLIGHT_COLOR = Color.GREEN;
 	private Piece piece;
 	private ImageView imgView = new ImageView();
 	
@@ -41,10 +42,8 @@ public class Square extends StackPane {
 			new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY))
 		);
 	}
-	public void setIsHighlighted(boolean b) {
-		if (b) setColor(Color.GREEN);
-		else setColor(defaultColor);
-	}
+	public void highlight() { setColor(HIGHLIGHT_COLOR); }
+	public void unhighlight() { setColor(defaultColor); }
 	
 	public void setPiece(Piece piece) {
 		this.piece = piece;

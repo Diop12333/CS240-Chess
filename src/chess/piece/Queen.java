@@ -9,13 +9,10 @@ import chess.ui.Coordinate;
 import chess.ui.Piece;
 
 public class Queen extends Piece
-{
-	private boolean hasMoved;
-	
+{	
 	public Queen(boolean white, Board board, Coordinate coord) throws FileNotFoundException
 	{
 		super(white, board, coord);
-		hasMoved = false;
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package chess.ui;
 
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.Node;
 
 public class BoardContainer extends Region {
