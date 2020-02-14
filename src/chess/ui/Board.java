@@ -49,18 +49,4 @@ public class Board extends GridPane {
 	public Square getSquare(Coordinate coord) {
 		return squares[coord.getY()][coord.getX()];
 	}
-	
-	// Initializing Mouse Movement
-	EventHandler<MouseEvent> interactMove = new EventHandler<MouseEvent>()
-	{
-		@Override
-		
-		// Output of Interaction
-		public void handle(MouseEvent m)
-		{
-			// [INSERT CODE]
-		}
-		// End of Output
-	};
-	// End of Initialization
 }
