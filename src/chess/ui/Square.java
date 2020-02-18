@@ -1,9 +1,8 @@
 package chess.ui;
 
-import javafx.event.EventHandler;
+import chess.piece.Piece;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -27,14 +26,6 @@ public class Square extends StackPane {
 		imgView.setSmooth(true);
 		//imgView.setPreserveRatio(true);
 		getChildren().add(imgView);
-		
-		setOnMouseClicked(
-			new EventHandler<MouseEvent>() {
-				public void handle(MouseEvent e) {
-					System.out.println("Clicked at " + coord);
-				}
-			}
-		);
 	}
 	
 	public void setColor(Color color) {
@@ -55,6 +46,7 @@ public class Square extends StackPane {
 		imgView.setImage(null);
 	}
 	
+	public Board getBoard() { return (Board) getParent(); }
 	public Coordinate getCoord() { return coord; }
 	public Piece getPiece() { return piece; }
 }

@@ -1,12 +1,11 @@
 package chess.piece;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import chess.ui.Board;
 import chess.ui.Coordinate;
-import chess.ui.Piece;
 
 public class Queen extends Piece
 {	
@@ -16,22 +15,28 @@ public class Queen extends Piece
 	}
 	
 	@Override
-	public List<Coordinate> validMoves()
+	public Set<Move> potentialNonCaptureMoves()
 	{
-		List<Coordinate> moves = new ArrayList<>();
-		Coordinate coord = super.getCoord();
+		Set<Move> moves = new HashSet<>();
 		
-		/* Queens can move a straight line vertically, horizontally, 
-		or diagonally any number of squares
-		 
-		add cases for capturing a piece */
+		moves.add(Move.LEFT_UP);
+		moves.add(Move.UP);
+		moves.add(Move.RIGHT_UP);
+		moves.add(Move.LEFT);
+		moves.add(Move.RIGHT);
+		moves.add(Move.LEFT_DOWN);
+		moves.add(Move.DOWN);
+		moves.add(Move.RIGHT_DOWN);
+		
 		return moves; 
 	} 
 	
+	@Override
+	public boolean canRepeatMoves() { return true; }
 	@Override
 	public String getWhiteImgFileName() { return "white_queen.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_queen.png"; }
 	@Override
-	public String toString() { return "Q"; }
+	public String notation() { return "Q"; }
 }

@@ -1,49 +1,43 @@
 package chess.piece;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import chess.ui.Board;
 import chess.ui.Coordinate;
-import chess.ui.Piece;
 
 public class Knight extends Piece 
-{
-private boolean hasMoved;
-	
+{	
 	public Knight(boolean white, Board board, Coordinate coord) throws FileNotFoundException
 	{
 		super(white, board, coord);
-		hasMoved = false;
 	}
 	
 	@Override
-	public List<Coordinate> validMoves()
+	public Set<Move> potentialNonCaptureMoves()
 	{
-		List<Coordinate> moves = new ArrayList<>();
-		Coordinate coord = super.getCoord();
+		Set<Move> moves = new HashSet<>();
 		
-		if (super.isWhite())
-		{
-			moves.add(coord.shift(0, -1));
-			if (!hasMoved) moves.add(coord.shift(0, -1));
-		}
-		else
-		{
-			moves.add(coord.shift(0, 1));
-			if (!hasMoved) moves.add(coord.shift(0, 1));
-		}
+		moves.add(Move.KNIGHT_UP_LEFT);
+		moves.add(Move.KNIGHT_UP_RIGHT);
+		moves.add(Move.KNIGHT_LEFT_UP);
+		moves.add(Move.KNIGHT_RIGHT_UP);
+		moves.add(Move.KNIGHT_LEFT_DOWN);
+		moves.add(Move.KNIGHT_RIGHT_DOWN);
+		moves.add(Move.KNIGHT_DOWN_LEFT);
+		moves.add(Move.KNIGHT_DOWN_RIGHT);
 		
-		// add cases for capturing a piece
 		return moves;
 	}
 	
+	@Override
+	public boolean canRepeatMoves() { return false; }
 	@Override
 	public String getWhiteImgFileName() { return "white_knight.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_knight.png"; }
 	@Override
-	public String toString() { return "N"; }
+	public String notation() { return "N"; }
 }
 

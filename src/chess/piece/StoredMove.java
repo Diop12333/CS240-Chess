@@ -2,16 +2,15 @@ package chess.piece;
 
 import chess.ui.Board;
 import chess.ui.Coordinate;
-import chess.ui.Piece;
 
-public class Movement
+public class StoredMove
 {
 	private Piece piece;
 	private Board board;
 	private Coordinate prevLocation;
 	private Coordinate newLocation;
 	
-	public Movement(Piece piece, Coordinate prevLocation, Coordinate newLocation)
+	public StoredMove(Piece piece, Coordinate prevLocation, Coordinate newLocation)
 	{
 		this.piece = piece;
 		this.board = piece.getBoard();
@@ -23,5 +22,5 @@ public class Movement
 	public Coordinate getPrevLocation() { return prevLocation; }
 	public Coordinate getNewLocation() { return newLocation; }
 	
-	public String toString() { return null; } // insert fancy chess notation here
+	public String toString() { return "TODO"; } // insert fancy chess notation here
 }

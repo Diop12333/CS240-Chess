@@ -5,8 +5,8 @@ import javafx.scene.Node;
 
 public class BoardContainer extends Region {
 	private Board board;
-	public BoardContainer() {
-		this.board = new Board();
+	public BoardContainer(Board board) {
+		this.board = board;
 		this.getChildren().add(board);
 	}
 	

@@ -1,12 +1,12 @@
 package chess.piece;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import chess.ui.Board;
 import chess.ui.Coordinate;
-import chess.ui.Piece;
+import chess.ui.XY;
 
 public class Bishop extends Piece
 {
@@ -19,25 +19,22 @@ public class Bishop extends Piece
 	}
 	
 	@Override
-	public List<Coordinate> validMoves()
+	public Set<Move> potentialNonCaptureMoves()
 	{
-		List<Coordinate> moves = new ArrayList<>();
-		Coordinate coord = super.getCoord();
-		
-		/* 
-		 
-		Bishops can move diagonally for however many spaces 
-		they like
-		 
-		
-		add cases for capturing a piece */
+		Set<Move> moves = new HashSet<>();
+		moves.add(Move.LEFT_UP);
+		moves.add(Move.RIGHT_UP);
+		moves.add(Move.LEFT_DOWN);
+		moves.add(Move.RIGHT_DOWN);
 		return moves; 
 	} 
 	
+	@Override
+	public boolean canRepeatMoves() { return true; }
 	@Override
 	public String getWhiteImgFileName() { return "white_bishop.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_bishop.png"; }
 	@Override
-	public String toString() { return "B"; }
+	public String notation() { return "B"; }
 }

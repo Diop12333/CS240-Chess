@@ -24,8 +24,8 @@ public class Coordinate extends XY {
 		) throw new IllegalArgumentException("Invalid coordinate");
 	}
 	
-	public Coordinate shift(XY dxdy) { return shift(dxdy.getX(), dxdy.getY()); }
-	public Coordinate shift(int dx, int dy) {
+	public Coordinate shifted(XY dxdy) { return shifted(dxdy.getX(), dxdy.getY()); }
+	public Coordinate shifted(int dx, int dy) {
 		return new Coordinate(getX() + dx, getY() + dy);
 	}
 }

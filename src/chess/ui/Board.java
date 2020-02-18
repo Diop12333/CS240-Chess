@@ -1,5 +1,6 @@
 package chess.ui;
 
+import chess.piece.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -38,13 +39,25 @@ public class Board extends GridPane {
 				useColor1 = !useColor1;
 			}
 		}
-		
-		new BoardMouseHandler(this);
+	}
+	
+	public boolean isValidCoordinate(Coordinate coord) {
+		boolean xValid = coord.getX() >= 0 && coord.getX() < dimensions.getX();
+		boolean yValid = coord.getY() >= 0 && coord.getY() < dimensions.getY();
+		return xValid && yValid;
 	}
 	
 	public XY getDimensions() { return dimensions; }
+	// Returns null if no piece on coord or coord is not on board
+	public Piece getPiece(Coordinate coord) {
+		Square coordSq = getSquare(coord);
+		if (coordSq != null) return coordSq.getPiece();
+		else return null;
+	}
 	public Square[][] getSquares() { return squares; }
+	// Returns null if coord is not on board
 	public Square getSquare(Coordinate coord) {
-		return squares[coord.getY()][coord.getX()];
+		if (isValidCoordinate(coord)) return squares[coord.getY()][coord.getX()];
+		else return null;
 	}
 }
