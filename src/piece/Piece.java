@@ -1,15 +1,15 @@
-package chess.piece;
+package piece;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.ui.Board;
-import chess.ui.Coordinate;
-import chess.ui.Square;
-import chess.ui.XY;
 import javafx.scene.image.Image;
+import ui.Board;
+import ui.Coordinate;
+import ui.Square;
+import ui.XY;
 
 public abstract class Piece {
 	private boolean isWhite;

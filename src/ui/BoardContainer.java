@@ -1,4 +1,4 @@
-package chess.ui;
+package ui;
 
 import javafx.scene.layout.Region;
 import javafx.scene.Node;

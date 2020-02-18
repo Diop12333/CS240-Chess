@@ -1,4 +1,4 @@
-package chess.ui;
+package ui;
 
 import java.io.FileNotFoundException;
 import javafx.application.Application;

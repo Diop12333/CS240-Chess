@@ -1,6 +1,6 @@
-package chess.piece;
+package piece;
 
-import chess.ui.XY;
+import ui.XY;
 
 public enum Move {
 	LEFT_UP (-1, -1),

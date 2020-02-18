@@ -1,6 +1,5 @@
-package chess.ui;
+package ui;
 
-import chess.piece.Piece;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -8,6 +7,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import piece.Piece;
 
 public class Square extends StackPane {
 	private Coordinate coord;

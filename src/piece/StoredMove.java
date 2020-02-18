@@ -1,7 +1,7 @@
-package chess.piece;
+package piece;
 
-import chess.ui.Board;
-import chess.ui.Coordinate;
+import ui.Board;
+import ui.Coordinate;
 
 public class StoredMove
 {

@@ -1,11 +1,11 @@
-package chess.ui;
+package ui;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import piece.Piece;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import chess.piece.Piece;
 
 public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private ChessGame chessGame;

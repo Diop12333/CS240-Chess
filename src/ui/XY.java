@@ -1,4 +1,4 @@
-package chess.ui;
+package ui;
 
 public class XY {
 	private int x;
