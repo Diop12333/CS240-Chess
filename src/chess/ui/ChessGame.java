@@ -1,14 +1,14 @@
-package ui;
+package chess.ui;
 
 import java.io.FileNotFoundException;
 
-import piece.Bishop;
-import piece.King;
-import piece.Knight;
-import piece.Pawn;
-import piece.Piece;
-import piece.Queen;
-import piece.Rook;
+import chess.piece.Bishop;
+import chess.piece.King;
+import chess.piece.Knight;
+import chess.piece.Pawn;
+import chess.piece.Piece;
+import chess.piece.Queen;
+import chess.piece.Rook;
 
 public class ChessGame {
 	private Board board;

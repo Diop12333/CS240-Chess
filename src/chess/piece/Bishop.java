@@ -1,19 +1,17 @@
-package piece;
+package chess.piece;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import ui.Board;
-import ui.Coordinate;
-import ui.XY;
+import chess.ui.Board;
+import chess.ui.Coordinate;
 
 public class Bishop extends Piece
 {
 	public Bishop(boolean white, Board board, Coordinate coord) throws FileNotFoundException
 	{
 		super(white, board, coord);
-		hasMoved = false;
 	}
 	
 	@Override

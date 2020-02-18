@@ -1,11 +1,11 @@
-package piece;
+package chess.piece;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import ui.Board;
-import ui.Coordinate;
+import chess.ui.Board;
+import chess.ui.Coordinate;
 
 public class Queen extends Piece
 {	

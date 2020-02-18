@@ -1,8 +1,8 @@
-package ui;
+package chess.ui;
 
+import chess.piece.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import piece.Piece;
 
 // TODO: capability to contain transparent image of chess piece
 // TODO: arbitrary square colors
