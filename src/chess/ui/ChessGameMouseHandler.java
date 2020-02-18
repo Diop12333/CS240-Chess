@@ -26,9 +26,12 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	}
 	
 	private void reset() {
-		storedSquare.unhighlight();
+		if (storedSquare != null) {
+			storedSquare.unhighlight();
+			storedSquare = null;
+		}
+		
 		for (Square sq : moveSquares) sq.unhighlight();
-		storedSquare = null;
 		moveSquares.clear();
 	}
 	
@@ -37,19 +40,22 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		Piece clickedSquarePiece = clickedSquare.getPiece();
 		
 		if (
-			storedSquare == null &&
 			clickedSquarePiece != null &&
 			clickedSquarePiece.getIsWhite() == chessGame.getIsWhiteTurn()
 		) {
-			Set<Coordinate> moveCoords = clickedSquarePiece.legalMoveCoords();
-			
-			if (!moveCoords.isEmpty()) {
-				storedSquare = clickedSquare;
-				storedSquare.highlight();
-				for (Coordinate coord : clickedSquarePiece.legalMoveCoords()) {
-					Square moveSquare = board.getSquare(coord);
-					moveSquares.add(moveSquare);
-					moveSquare.highlight();
+			if (clickedSquare == storedSquare) reset();
+			else {
+				Set<Coordinate> moveCoords = clickedSquarePiece.legalMoveCoords();
+				
+				if (!moveCoords.isEmpty()) {
+					reset();
+					storedSquare = clickedSquare;
+					storedSquare.highlight();
+					for (Coordinate coord : clickedSquarePiece.legalMoveCoords()) {
+						Square moveSquare = board.getSquare(coord);
+						moveSquares.add(moveSquare);
+						moveSquare.highlight();
+					}
 				}
 			}
 		} else if (storedSquare != null && moveSquares.contains(clickedSquare)) {
