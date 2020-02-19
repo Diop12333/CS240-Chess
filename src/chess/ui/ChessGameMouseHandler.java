@@ -40,6 +40,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		Square clickedSquare = (Square) e.getSource();
 		Piece clickedSquarePiece = clickedSquare.getPiece();
 		
+		// If clicked square has piece with same color as current turn
 		if (
 			clickedSquarePiece != null &&
 			clickedSquarePiece.getIsWhite() == chessGame.getIsWhiteTurn()
@@ -48,6 +49,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 			else {
 				Set<Coordinate> moveCoords = clickedSquarePiece.legalMoveCoords();
 				
+				// If piece can move
 				if (!moveCoords.isEmpty()) {
 					reset();
 					storedSquare = clickedSquare;
@@ -59,6 +61,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 					}
 				}
 			}
+		// If piece square is stored, and piece can move to clicked square
 		} else if (storedSquare != null && moveSquares.contains(clickedSquare)) {
 			chessGame.move(storedSquare.getPiece(), clickedSquare);
 			reset();

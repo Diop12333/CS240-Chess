@@ -10,6 +10,8 @@ public class BoardContainer extends Region {
 		this.getChildren().add(board);
 	}
 	
+	// Maintains 1:1 aspect ratio, keeps board centered
+	// TODO: allow non-1:1 aspect ratios (important for custom boards)
 	protected void layoutChildren() {
 		for (Node n : getChildren()) {
 			if (getWidth() <= getHeight()) {

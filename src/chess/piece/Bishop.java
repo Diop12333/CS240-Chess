@@ -18,10 +18,12 @@ public class Bishop extends Piece
 	public Set<Move> potentialNonCaptureMoves()
 	{
 		Set<Move> moves = new HashSet<>();
+		
 		moves.add(Move.LEFT_UP);
 		moves.add(Move.RIGHT_UP);
 		moves.add(Move.LEFT_DOWN);
 		moves.add(Move.RIGHT_DOWN);
+		
 		return moves; 
 	} 
 	

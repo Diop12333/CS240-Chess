@@ -64,12 +64,16 @@ public abstract class Piece {
 				if (!board.isValidCoordinate(newCoord)) break;
 				
 				Piece coordPiece = board.getPiece(newCoord);
+				// If square to move to is empty and move is in non capture moves
 				if (coordPiece == null && potentialNonCaptureMoves().contains(move)) {
 					legalMoveCoords.add(newCoord);
+				// If square to move to is not empty
 				} else if (coordPiece != null) {
+					// If piece in square is different color and move is in capture moves
 					if (isWhite != coordPiece.getIsWhite() && potentialCaptureMoves().contains(move)) {
 						legalMoveCoords.add(newCoord);
 					}
+					// Breaks regardless - can never move past piece
 					break;
 				}
 			} while (canRepeatMoves());
