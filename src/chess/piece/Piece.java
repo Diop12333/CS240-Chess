@@ -27,8 +27,8 @@ public abstract class Piece extends ImageView {
 	}
 	
 	public void move(Square newSquare) {
-		getSquare().getChildren().remove(this);
-		newSquare.getChildren().add(this);
+		getSquare().clear();
+		newSquare.setPiece(this);
 	}
 	
 	// Inverts y-axis for black

@@ -43,8 +43,10 @@ public class Square extends StackPane {
 	}
 	
 	public void clear() {
-		piece = null;
-		imgView.setImage(null);
+		if (piece != null) {
+			getChildren().remove(piece);
+			piece = null;
+		}
 	}
 	
 	public Board getBoard() { return (Board) getParent(); }
