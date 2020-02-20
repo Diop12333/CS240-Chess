@@ -10,35 +10,29 @@ import chess.ui.Coordinate;
 import chess.ui.Square;
 import chess.ui.XY;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-public abstract class Piece {
+public abstract class Piece extends ImageView {
 	private boolean isWhite;
-	private Board board;
-	private Coordinate coord;
-	private Image img;
 	
-	public Piece(boolean isWhite, Board board, Coordinate coord) throws FileNotFoundException {
+	public Piece(boolean isWhite) throws FileNotFoundException {
 		this.isWhite = isWhite;
-		this.board = board;
-		this.coord = coord;
 		
 		String path;
 		if (isWhite) path = getWhiteImgFilePath();
 		else path = getBlackImgFilePath();
 		
 		FileInputStream imgFileStream = new FileInputStream(path);
-		img = new Image(imgFileStream);
-		
-		board.getSquare(coord).setPiece(this);
+		setImage(new Image(imgFileStream));
 	}
 	
 	public void move(Square newSquare) {
-		board.getSquare(coord).clear();
-		coord = newSquare.getCoord();
+		getSquare().clear();
 		newSquare.setPiece(this);
 	}
 	
-	private Coordinate coordAfterMove(Move move) { return coordAfterMove(coord, move); }
+	// Inverts y-axis for black
+	private Coordinate coordAfterMove(Move move) { return coordAfterMove(getCoord(), move); }
 	private Coordinate coordAfterMove(Coordinate initCoord, Move move) {
 		XY shift = move.getShift();
 		if (!isWhite) shift = new XY(shift.getX(), -shift.getY());
@@ -58,12 +52,12 @@ public abstract class Piece {
 		moveUnion.addAll(potentialNonCaptureMoves());
 		moveUnion.addAll(potentialCaptureMoves());
 		for (Move move : moveUnion) {
-			Coordinate newCoord = coord;
+			Coordinate newCoord = getCoord();
 			do {
 				newCoord = coordAfterMove(newCoord, move);
-				if (!board.isValidCoordinate(newCoord)) break;
+				if (!getBoard().isValidCoordinate(newCoord)) break;
 				
-				Piece coordPiece = board.getPiece(newCoord);
+				Piece coordPiece = getBoard().getPiece(newCoord);
 				// If square to move to is empty and move is in non capture moves
 				if (coordPiece == null && potentialNonCaptureMoves().contains(move)) {
 					legalMoveCoords.add(newCoord);
@@ -90,9 +84,9 @@ public abstract class Piece {
 	
 	protected abstract boolean canRepeatMoves();
 	public boolean getIsWhite() { return isWhite; }
-	public Board getBoard() { return board; }
-	public Coordinate getCoord() { return coord; }
-	public Image getImg() { return img; }
+	public Board getBoard() { return (Board) getSquare().getParent(); }
+	public Square getSquare() { return (Square) getParent(); }
+	public Coordinate getCoord() { return getSquare().getCoord(); }
 	
 	protected abstract String notation(); // return letter(s) for chess notation
 }
