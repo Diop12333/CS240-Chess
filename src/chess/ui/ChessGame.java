@@ -25,27 +25,27 @@ public class ChessGame {
 		board = new Board();
 		
 		for (int i = 0; i <= 7; i++) {
-			new Pawn(false, board, new Coordinate(i, 1));
-			new Pawn(true, board, new Coordinate(i, 6));
+			board.setPiece(new Pawn(false), i, 1);
+			board.setPiece(new Pawn(true), i, 6);
 		}
 		
-		new Rook(false, board, new Coordinate (0,0));
-		new Knight(false, board, new Coordinate (1,0));
-		new Bishop(false, board, new Coordinate (2,0));
-		new King(false, board, new Coordinate (3,0));
-		new Queen(false, board, new Coordinate (4,0));
-		new Bishop(false, board, new Coordinate (5,0));
-		new Knight(false, board, new Coordinate (6,0));
-		new Rook(false, board, new Coordinate (7,0));
+		board.setPiece(new Rook(false), 0, 0);
+		board.setPiece(new Knight(false), 1, 0);
+		board.setPiece(new Bishop(false), 2, 0);
+		board.setPiece(new King(false), 3, 0);
+		board.setPiece(new Queen(false), 4, 0);
+		board.setPiece(new Bishop(false), 5, 0);
+		board.setPiece(new Knight(false), 6, 0);
+		board.setPiece(new Rook(false), 7, 0);
 		
-		new Rook(true, board, new Coordinate (0,7));
-		new Knight(true, board, new Coordinate (1,7));
-		new Bishop(true, board, new Coordinate (2,7));
-		new King(true, board, new Coordinate (3,7));
-		new Queen(true, board, new Coordinate (4,7));
-		new Bishop(true, board, new Coordinate (5,7));
-		new Knight(true, board, new Coordinate (6,7));
-		new Rook(true, board, new Coordinate (7,7));
+		board.setPiece(new Rook(true), 0, 7);
+		board.setPiece(new Knight(true), 1, 7);
+		board.setPiece(new Bishop(true), 2, 7);
+		board.setPiece(new King(true), 3, 7);
+		board.setPiece(new Queen(true), 4, 7);
+		board.setPiece(new Bishop(true), 5, 7);
+		board.setPiece(new Knight(true), 6, 7);
+		board.setPiece(new Rook(true), 7, 7);
 	}
 	
 	public void move(Piece piece, Square square) {
@@ -53,6 +53,15 @@ public class ChessGame {
 		
 		piece.move(square);
 		isWhiteTurn = !isWhiteTurn;
+	}
+	
+	public Piece getPieceAbsolute(Coordinate coord, boolean fromBlackPerspective) {
+		if (fromBlackPerspective) coord = new Coordinate(coord.getX(), -coord.getY());
+		return board.getPiece(coord);
+	}
+	public Piece getPieceRelative(Piece piece, XY shift, boolean fromBlackPerspective) {
+		if (fromBlackPerspective) shift = new XY(shift.getX(), -shift.getY());
+		return board.getPiece(piece.getCoord().shifted(shift));
 	}
 	
 	public Board getBoard() { return board; }

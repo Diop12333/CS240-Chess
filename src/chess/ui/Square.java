@@ -37,8 +37,9 @@ public class Square extends StackPane {
 	public void unhighlight() { setColor(defaultColor); }
 	
 	public void setPiece(Piece piece) {
+		if (this.piece != null) getChildren().remove(this.piece);
 		this.piece = piece;
-		imgView.setImage(piece.getImg());
+		getChildren().add(piece);
 	}
 	
 	public void clear() {
