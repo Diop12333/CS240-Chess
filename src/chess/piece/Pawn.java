@@ -12,9 +12,9 @@ public class Pawn extends Piece
 {
 	private boolean hasMoved;
 	
-	public Pawn(boolean white) throws FileNotFoundException
+	public Pawn(boolean white, Board board, Coordinate coord) throws FileNotFoundException
 	{
-		super(white);
+		super(white, board, coord);
 		hasMoved = false;
 	}
 	

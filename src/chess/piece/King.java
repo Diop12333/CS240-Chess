@@ -9,9 +9,9 @@ import chess.ui.Coordinate;
 
 public class King extends Piece
 {	
-	public King(boolean white) throws FileNotFoundException
+	public King(boolean white, Board board, Coordinate coord) throws FileNotFoundException
 	{
-		super(white);
+		super(white, board, coord);
 	}
 	
 	@Override

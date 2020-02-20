@@ -41,13 +41,6 @@ public class Board extends GridPane {
 		}
 	}
 	
-	public void setPiece(Piece piece, int x, int y) {
-		setPiece(piece, new Coordinate(x, y));
-	}
-	public void setPiece(Piece piece, Coordinate coord) {
-		getSquare(coord).setPiece(piece);
-	}
-	
 	public boolean isValidCoordinate(Coordinate coord) {
 		boolean xValid = coord.getX() >= 0 && coord.getX() < dimensions.getX();
 		boolean yValid = coord.getY() >= 0 && coord.getY() < dimensions.getY();
@@ -63,9 +56,6 @@ public class Board extends GridPane {
 	}
 	public Square[][] getSquares() { return squares; }
 	// Returns null if coord is not on board
-	public Square getSquare(int x, int y) {
-		return getSquare(new Coordinate(x, y));
-	}
 	public Square getSquare(Coordinate coord) {
 		if (isValidCoordinate(coord)) return squares[coord.getY()][coord.getX()];
 		else return null;
