@@ -39,6 +39,8 @@ public class Square extends StackPane {
 	public void setPiece(Piece piece) {
 		if (this.piece != null) getChildren().remove(this.piece);
 		this.piece = piece;
+		piece.fitWidthProperty().bind(this.prefWidthProperty());
+		piece.fitHeightProperty().bind(this.prefHeightProperty());
 		getChildren().add(piece);
 	}
 	
