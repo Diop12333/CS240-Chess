@@ -1,7 +1,10 @@
 Dimitri:
 
-Anahita + Lia: 
+Anahita:
 Work on pieces and moving them on the board
+
+Lia: 
+Create chess game menu, add it to the board
 
 Zach:
 Work on implementing en passant, castling, promotion, etc.
