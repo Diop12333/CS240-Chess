@@ -2,6 +2,7 @@ package chess.ui;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +14,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private Board board;
 	private Square storedSquare;
 	private Set<Square> moveSquares;
+	private static Color HIGHLIGHT_COLOR = Color.GREEN;
 	
 	public ChessGameMouseHandler(ChessGame chessGame) {
 		this.chessGame = chessGame;
@@ -53,7 +55,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 				if (!moveCoords.isEmpty()) {
 					reset();
 					storedSquare = clickedSquare;
-					storedSquare.highlight();
+					storedSquare.setColor(HIGHLIGHT_COLOR);
 					for (Coordinate coord : clickedSquarePiece.legalMoveCoords()) {
 						Square moveSquare = board.getSquare(coord);
 						moveSquares.add(moveSquare);
