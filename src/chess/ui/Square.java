@@ -8,11 +8,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class Square extends StackPane {
 	private Coordinate coord;
 	private Color defaultColor;
 	private static Color HIGHLIGHT_COLOR = Color.GREEN;
+	Circle moveCircle= new Circle(5, HIGHLIGHT_COLOR);
 	private Piece piece;
 	private ImageView imgView = new ImageView();
 	
@@ -33,8 +35,13 @@ public class Square extends StackPane {
 			new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY))
 		);
 	}
-	public void highlight() { setColor(HIGHLIGHT_COLOR); }
-	public void unhighlight() { setColor(defaultColor); }
+	public void highlight() {
+		getChildren().add(moveCircle);
+	}
+	public void unhighlight() {
+		getChildren().remove(moveCircle);
+		setColor(defaultColor);
+	}
 	
 	public void setPiece(Piece piece) {
 		if (this.piece != null) getChildren().remove(this.piece);
