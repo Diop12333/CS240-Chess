@@ -2,6 +2,7 @@ package chess.piece;
 
 import chess.ui.XY;
 
+// I feel like this code is ugly but I don't know how to make it nicer
 public class EnPassant implements SpecialMoveImplementation {
 	private int direction;
 	// -1 for left, 1 for right

@@ -15,14 +15,12 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private ChessGame chessGame;
 	private Board board;
 	private Square storedSquare;
-	private Set<Square> moveSquares;
-	private Map<Square, SpecialMoveImplementation> specialMoveSquares;
+	private Set<Square> moveSquares = new HashSet<>();
+	private Map<Square, SpecialMoveImplementation> specialMoveSquares = new HashMap<>();
 	
 	public ChessGameMouseHandler(ChessGame chessGame) {
 		this.chessGame = chessGame;
 		board = chessGame.getBoard();
-		moveSquares = new HashSet<>();
-		specialMoveSquares = new HashMap<>();
 		
 		for (Square[] row : board.getSquares()) {
 			for (Square sq : row) {
@@ -37,10 +35,10 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 			storedSquare = null;
 		}
 		
-		for (Square sq : moveSquares) sq.removeCircle();
+		for (Square sq : moveSquares) sq.unshowCircle();
 		moveSquares.clear();
 		
-		for (Square sq : specialMoveSquares.keySet()) sq.removeCircle();
+		for (Square sq : specialMoveSquares.keySet()) sq.unshowCircle();
 		specialMoveSquares.clear();
 	}
 	
@@ -68,7 +66,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 					for (Coordinate coord : moveCoords) {
 						Square moveSquare = board.getSquare(coord);
 						moveSquares.add(moveSquare);
-						moveSquare.addCircle();
+						moveSquare.showCircle();
 					}
 					
 					for (
@@ -78,7 +76,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 						Coordinate coord = entry.getKey();
 						Square specialMoveSquare = board.getSquare(coord);
 						specialMoveSquares.put(specialMoveSquare, entry.getValue());
-						specialMoveSquare.addCircle();
+						specialMoveSquare.showCircle();
 					}
 				}
 			}
