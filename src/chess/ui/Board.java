@@ -1,5 +1,8 @@
 package chess.ui;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import chess.piece.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -64,6 +67,19 @@ public class Board extends GridPane {
 	public Piece getPiece(Coordinate coord) {
 		Square coordSquare = getSquare(coord);
 		if (coordSquare == null) return null; else return coordSquare.getPiece();
+	}
+	
+	public Set<Piece> getPieces() {
+		Set<Piece> pieces = new HashSet<>();
+		
+		for (Square[] row : getSquares()) {
+			for (Square sq : row) {
+				Piece piece = sq.getPiece();
+				if (piece != null) pieces.add(piece);
+			}
+		}
+		
+		return pieces;
 	}
 	
 	public Square[][] getSquares() { return squares; }

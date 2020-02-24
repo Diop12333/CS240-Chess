@@ -28,10 +28,7 @@ public class Square extends StackPane {
 		imgView.setSmooth(true);
 		//imgView.setPreserveRatio(true);
 		
-		moveCircle.setVisible(false);
-		
 		getChildren().add(imgView);
-		getChildren().add(moveCircle);
 	}
 	
 	public void setColor(Color color) {
@@ -40,11 +37,11 @@ public class Square extends StackPane {
 		);
 	}
 	
-	public void showCircle() {
-		moveCircle.setVisible(true);
+	public void addCircle() {
+		getChildren().add(moveCircle);
 	}
-	public void unshowCircle() {
-		moveCircle.setVisible(false);
+	public void removeCircle() {
+		getChildren().remove(moveCircle);
 	}
 	
 	public void highlight() {

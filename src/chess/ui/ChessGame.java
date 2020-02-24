@@ -53,6 +53,14 @@ public class ChessGame {
 	}
 	
 	public void move(Piece piece, Square square) {
+		// Make sure en passant can only occur turn after two-square move
+		for (Piece p : board.getPieces()) {
+			if (p instanceof Pawn) {
+				Pawn pawn = (Pawn) p;
+				pawn.setEnPassantable(false);
+			}
+		}
+		
 		if (square.getPiece() != null) addCapturedPiece(square.getPiece());
 		
 		piece.move(square);

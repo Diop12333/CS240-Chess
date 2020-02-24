@@ -23,7 +23,7 @@ public class EnPassant implements SpecialMoveImplementation {
 			piece instanceof Pawn &&
 			capturePawn != null &&
 			capturePawn.isWhite() != piece.isWhite() &&
-			capturePawn.isEnpassantable()
+			capturePawn.enPassantable()
 		);
 	}
 	

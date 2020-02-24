@@ -54,14 +54,19 @@ public class Pawn extends Piece
 	@Override
 	public void move(Square newSquare)
 	{
-		if (!hasMoved && coordAfterMove(Move.TWO_UP).equals(newSquare.getCoord())) enPassantable = true;
-		else if (enPassantable) enPassantable = false;
+		if (!hasMoved && coordAfterMove(Move.TWO_UP).equals(newSquare.getCoord())) {
+			enPassantable = true;
+		}
 		
 		super.move(newSquare);
 		hasMoved = true;
 	}
 	
-	public boolean isEnpassantable() { return enPassantable; }
+	public boolean enPassantable() { return enPassantable; }
+	
+	public void setEnPassantable(boolean newVal) {
+		enPassantable = newVal;
+	}
 	
 	@Override
 	public boolean canRepeatMoves() { return false; }

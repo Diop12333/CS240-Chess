@@ -35,10 +35,10 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 			storedSquare = null;
 		}
 		
-		for (Square sq : moveSquares) sq.unshowCircle();
+		for (Square sq : moveSquares) sq.removeCircle();
 		moveSquares.clear();
 		
-		for (Square sq : specialMoveSquares.keySet()) sq.unshowCircle();
+		for (Square sq : specialMoveSquares.keySet()) sq.removeCircle();
 		specialMoveSquares.clear();
 	}
 	
@@ -66,7 +66,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 					for (Coordinate coord : moveCoords) {
 						Square moveSquare = board.getSquare(coord);
 						moveSquares.add(moveSquare);
-						moveSquare.showCircle();
+						moveSquare.addCircle();
 					}
 					
 					for (
@@ -76,7 +76,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 						Coordinate coord = entry.getKey();
 						Square specialMoveSquare = board.getSquare(coord);
 						specialMoveSquares.put(specialMoveSquare, entry.getValue());
-						specialMoveSquare.showCircle();
+						specialMoveSquare.addCircle();
 					}
 				}
 			}
