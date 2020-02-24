@@ -14,7 +14,7 @@ public class Square extends StackPane {
 	private Coordinate coord;
 	private Color defaultColor;
 	private static Color HIGHLIGHT_COLOR = Color.GREEN;
-	private Circle moveCircle = new Circle(5, HIGHLIGHT_COLOR);
+	private Circle moveCircle = new Circle();
 	private Piece piece;
 	private ImageView imgView = new ImageView();
 	
@@ -29,6 +29,9 @@ public class Square extends StackPane {
 		//imgView.setPreserveRatio(true);
 		
 		getChildren().add(imgView);
+		
+		moveCircle.setFill(HIGHLIGHT_COLOR);
+		moveCircle.radiusProperty().bind(widthProperty().divide(10));
 	}
 	
 	public void setColor(Color color) {
