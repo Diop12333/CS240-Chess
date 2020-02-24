@@ -2,24 +2,27 @@ package chess.ui;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import chess.piece.Piece;
+import chess.piece.SpecialMoveImplementation;
 
 public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private ChessGame chessGame;
 	private Board board;
 	private Square storedSquare;
 	private Set<Square> moveSquares;
-	private static Color HIGHLIGHT_COLOR = Color.GREEN;
+	private Map<Square, SpecialMoveImplementation> specialMoveSquares;
 	
 	public ChessGameMouseHandler(ChessGame chessGame) {
 		this.chessGame = chessGame;
 		board = chessGame.getBoard();
 		moveSquares = new HashSet<>();
+		specialMoveSquares = new HashMap<>();
 		
 		for (Square[] row : board.getSquares()) {
 			for (Square sq : row) {
@@ -34,8 +37,11 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 			storedSquare = null;
 		}
 		
-		for (Square sq : moveSquares) sq.unhighlight();
+		for (Square sq : moveSquares) sq.removeCircle();
 		moveSquares.clear();
+		
+		for (Square sq : specialMoveSquares.keySet()) sq.removeCircle();
+		specialMoveSquares.clear();
 	}
 	
 	public void handle(MouseEvent e) {
@@ -45,28 +51,48 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		// If clicked square has piece with same color as current turn
 		if (
 			clickedSquarePiece != null &&
-			clickedSquarePiece.getIsWhite() == chessGame.getIsWhiteTurn()
+			clickedSquarePiece.isWhite() == chessGame.getIsWhiteTurn()
 		) {
 			if (clickedSquare == storedSquare) reset();
 			else {
 				Set<Coordinate> moveCoords = clickedSquarePiece.legalMoveCoords();
+				Map<Coordinate, SpecialMoveImplementation> specialMoveCoords =
+					clickedSquarePiece.legalSpecialMoveCoords();
 				
 				// If piece can move
-				if (!moveCoords.isEmpty()) {
+				if (!moveCoords.isEmpty() || !specialMoveCoords.isEmpty()) {
 					reset();
 					storedSquare = clickedSquare;
-					storedSquare.setColor(HIGHLIGHT_COLOR);
-					for (Coordinate coord : clickedSquarePiece.legalMoveCoords()) {
+					storedSquare.highlight();
+					
+					for (Coordinate coord : moveCoords) {
 						Square moveSquare = board.getSquare(coord);
 						moveSquares.add(moveSquare);
-						moveSquare.highlight();
+						moveSquare.addCircle();
+					}
+					
+					for (
+						Map.Entry<Coordinate, SpecialMoveImplementation> entry :
+						specialMoveCoords.entrySet()
+					) {
+						Coordinate coord = entry.getKey();
+						Square specialMoveSquare = board.getSquare(coord);
+						specialMoveSquares.put(specialMoveSquare, entry.getValue());
+						specialMoveSquare.addCircle();
 					}
 				}
 			}
 		// If piece square is stored, and piece can move to clicked square
-		} else if (storedSquare != null && moveSquares.contains(clickedSquare)) {
-			chessGame.move(storedSquare.getPiece(), clickedSquare);
-			reset();
+		} else if (storedSquare != null) {
+			Piece storedPiece = storedSquare.getPiece();
+			if (moveSquares.contains(clickedSquare)) {
+				chessGame.move(storedPiece, clickedSquare);
+				reset();
+			} else if (specialMoveSquares.containsKey(clickedSquare)) {
+				specialMoveSquares.get(clickedSquare).doMoveEffect(storedPiece);
+				chessGame.move(storedPiece, clickedSquare);
+				reset();
+			}
 		}
 	}
 }

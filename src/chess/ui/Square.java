@@ -14,7 +14,7 @@ public class Square extends StackPane {
 	private Coordinate coord;
 	private Color defaultColor;
 	private static Color HIGHLIGHT_COLOR = Color.GREEN;
-	Circle moveCircle= new Circle(5, HIGHLIGHT_COLOR);
+	private Circle moveCircle = new Circle(5, HIGHLIGHT_COLOR);
 	private Piece piece;
 	private ImageView imgView = new ImageView();
 	
@@ -35,11 +35,18 @@ public class Square extends StackPane {
 			new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY))
 		);
 	}
-	public void highlight() {
+	
+	public void addCircle() {
 		getChildren().add(moveCircle);
 	}
-	public void unhighlight() {
+	public void removeCircle() {
 		getChildren().remove(moveCircle);
+	}
+	
+	public void highlight() {
+		setColor(HIGHLIGHT_COLOR);
+	}
+	public void unhighlight() {
 		setColor(defaultColor);
 	}
 	

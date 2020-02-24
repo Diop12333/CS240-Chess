@@ -4,9 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.ui.Board;
-import chess.ui.Coordinate;
-
 public class Queen extends Piece
 {	
 	public Queen(boolean white) throws FileNotFoundException

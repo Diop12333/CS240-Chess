@@ -2,10 +2,13 @@ package chess.piece;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import chess.ui.Board;
+import chess.ui.ChessGame;
 import chess.ui.Coordinate;
 import chess.ui.Square;
 import chess.ui.XY;
@@ -32,9 +35,12 @@ public abstract class Piece extends ImageView {
 	}
 	
 	// Inverts y-axis for black
-	private Coordinate coordAfterMove(Move move) { return coordAfterMove(getCoord(), move); }
-	private Coordinate coordAfterMove(Coordinate initCoord, Move move) {
-		XY shift = move.getShift();
+	protected Coordinate coordAfterMove(Move move) { return coordAfterMove(getCoord(), move); }
+	protected Coordinate coordAfterMove(Coordinate initCoord, Move move) {
+		return coordAfterShift(initCoord, move.getShift());
+	}
+	protected Coordinate coordAfterShift(XY shift) { return coordAfterShift(getCoord(), shift); }
+	protected Coordinate coordAfterShift(Coordinate initCoord, XY shift) {
 		if (!isWhite) shift = new XY(shift.getX(), -shift.getY());
 		return initCoord.shifted(shift);
 	}
@@ -46,7 +52,7 @@ public abstract class Piece extends ImageView {
 	protected abstract Set<Move> potentialNonCaptureMoves();
 	protected Set<Move> potentialCaptureMoves() { return potentialNonCaptureMoves(); }
 	public Set<Coordinate> legalMoveCoords() {
-		Set<Coordinate> legalMoveCoords = new HashSet<>();
+		Set<Coordinate> legalCoords = new HashSet<>();
 		
 		Set<Move> moveUnion = new HashSet<>();
 		moveUnion.addAll(potentialNonCaptureMoves());
@@ -60,12 +66,14 @@ public abstract class Piece extends ImageView {
 				Piece coordPiece = getBoard().getPiece(newCoord);
 				// If square to move to is empty and move is in non capture moves
 				if (coordPiece == null && potentialNonCaptureMoves().contains(move)) {
-					legalMoveCoords.add(newCoord);
+					legalCoords.add(newCoord);
 				// If square to move to is not empty
 				} else if (coordPiece != null) {
 					// If piece in square is different color and move is in capture moves
-					if (isWhite != coordPiece.getIsWhite() && potentialCaptureMoves().contains(move)) {
-						legalMoveCoords.add(newCoord);
+					if (
+						isWhite != coordPiece.isWhite() && potentialCaptureMoves().contains(move)
+					) {
+						legalCoords.add(newCoord);
 					}
 					// Breaks regardless - can never move past piece
 					break;
@@ -73,7 +81,20 @@ public abstract class Piece extends ImageView {
 			} while (canRepeatMoves());
 		}
 		
-		return legalMoveCoords;
+		return legalCoords;
+	}
+	public Set<SpecialMove> potentialSpecialMoves() { return new HashSet<>(); }
+	public Map<Coordinate, SpecialMoveImplementation> legalSpecialMoveCoords() {
+		Map<Coordinate, SpecialMoveImplementation> legalCoords = new HashMap<>();
+		
+		for (SpecialMove move : potentialSpecialMoves()) {
+			SpecialMoveImplementation implementation = move.getImplementation();
+			if (implementation.canDoMove(this)) {
+				legalCoords.put(coordAfterShift(getCoord(), move.getShift()), implementation);
+			}
+		}
+		
+		return legalCoords;
 	}
 	
 	protected final String getImgFolder() { return "img/"; }
@@ -83,10 +104,15 @@ public abstract class Piece extends ImageView {
 	protected final String getBlackImgFilePath() { return getImgFolder() + getBlackImgFileName(); }
 	
 	protected abstract boolean canRepeatMoves();
-	public boolean getIsWhite() { return isWhite; }
+	public boolean isWhite() { return isWhite; }
+	public ChessGame getChessGame() { return getBoard().getChessGame(); }
 	public Board getBoard() { return (Board) getSquare().getParent(); }
 	public Square getSquare() { return (Square) getParent(); }
 	public Coordinate getCoord() { return getSquare().getCoord(); }
+	
+	public Piece getPieceRelative(XY shift) {
+		return getBoard().getPiece(coordAfterShift(getCoord(), shift));
+	}
 	
 	protected abstract String notation(); // return letter(s) for chess notation
 }

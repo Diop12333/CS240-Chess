@@ -7,15 +7,17 @@ import javafx.scene.paint.Color;
 // TODO: capability to contain transparent image of chess piece
 // TODO: arbitrary square colors
 public class Board extends GridPane {
+	private ChessGame chessGame;
 	private XY dimensions;
 	// y goes down
 	private Square[][] squares;
 	
-	public Board() { this(new XY(8, 8)); }
-	public Board(XY dimensions) {
-		this(dimensions, Color.SADDLEBROWN, Color.ANTIQUEWHITE);
+	public Board(ChessGame chessGame) { this(chessGame, new XY(8, 8)); }
+	public Board(ChessGame chessGame, XY dimensions) {
+		this(chessGame, dimensions, Color.SADDLEBROWN, Color.ANTIQUEWHITE);
 	}
-	public Board(XY dimensions, Color color1, Color color2) {
+	public Board(ChessGame chessGame, XY dimensions, Color color1, Color color2) {
+		this.chessGame = chessGame;
 		this.dimensions = dimensions;
 		int xSqAmount = dimensions.getX();
 		int ySqAmount = dimensions.getY();
@@ -54,13 +56,16 @@ public class Board extends GridPane {
 		return xValid && yValid;
 	}
 	
+	public ChessGame getChessGame() { return chessGame; }
+	
 	public XY getDimensions() { return dimensions; }
+	
 	// Returns null if no piece on coord or coord is not on board
 	public Piece getPiece(Coordinate coord) {
-		Square coordSq = getSquare(coord);
-		if (coordSq != null) return coordSq.getPiece();
-		else return null;
+		Square coordSquare = getSquare(coord);
+		if (coordSquare == null) return null; else return coordSquare.getPiece();
 	}
+	
 	public Square[][] getSquares() { return squares; }
 	// Returns null if coord is not on board
 	public Square getSquare(int x, int y) {

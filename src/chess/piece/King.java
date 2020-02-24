@@ -4,14 +4,11 @@ import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.ui.Board;
-import chess.ui.Coordinate;
-
 public class King extends Piece
 {	
-	public King(boolean white) throws FileNotFoundException
+	public King(boolean isWhite) throws FileNotFoundException
 	{
-		super(white);
+		super(isWhite);
 	}
 	
 	@Override

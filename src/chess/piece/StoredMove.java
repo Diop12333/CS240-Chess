@@ -1,19 +1,16 @@
 package chess.piece;
 
-import chess.ui.Board;
 import chess.ui.Coordinate;
 
 public class StoredMove
 {
 	private Piece piece;
-	private Board board;
 	private Coordinate prevLocation;
 	private Coordinate newLocation;
 	
 	public StoredMove(Piece piece, Coordinate prevLocation, Coordinate newLocation)
 	{
 		this.piece = piece;
-		this.board = piece.getBoard();
 		this.prevLocation = prevLocation;
 		this.newLocation = newLocation;
 	}

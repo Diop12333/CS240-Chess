@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
-		primaryStage.setTitle("Chess Board");
+		primaryStage.setTitle("Chess");
 		
 		ChessGame chessGame = new ChessGame();
 		Board board = chessGame.getBoard();

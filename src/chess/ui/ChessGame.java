@@ -1,6 +1,8 @@
 package chess.ui;
 
 import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.Set;
 
 import chess.piece.Bishop;
 import chess.piece.King;
@@ -13,16 +15,18 @@ import chess.piece.Rook;
 public class ChessGame {
 	private Board board;
 	private boolean isWhiteTurn;
+	
+	private Set<Piece> capturedPieces;
 
 	public ChessGame() throws FileNotFoundException {
-		setUpBoard();
-		isWhiteTurn = true;
-		
+		setUp();
 		new ChessGameMouseHandler(this);
 	}
 	
-	private void setUpBoard() throws FileNotFoundException {
-		board = new Board();
+	private void setUp() throws FileNotFoundException {
+		isWhiteTurn = true;
+		capturedPieces = new HashSet<>();
+		board = new Board(this);
 		
 		for (int i = 0; i <= 7; i++) {
 			board.setPiece(new Pawn(false), i, 1);
@@ -49,19 +53,14 @@ public class ChessGame {
 	}
 	
 	public void move(Piece piece, Square square) {
-		if (piece == null) throw new IllegalArgumentException("Piece cannot be null");
+		if (square.getPiece() != null) addCapturedPiece(square.getPiece());
 		
 		piece.move(square);
 		isWhiteTurn = !isWhiteTurn;
 	}
 	
-	public Piece getPieceAbsolute(Coordinate coord, boolean fromBlackPerspective) {
-		if (fromBlackPerspective) coord = new Coordinate(coord.getX(), -coord.getY());
-		return board.getPiece(coord);
-	}
-	public Piece getPieceRelative(Piece piece, XY shift, boolean fromBlackPerspective) {
-		if (fromBlackPerspective) shift = new XY(shift.getX(), -shift.getY());
-		return board.getPiece(piece.getCoord().shifted(shift));
+	public void addCapturedPiece(Piece piece) {
+		capturedPieces.add(piece);
 	}
 	
 	public Board getBoard() { return board; }
