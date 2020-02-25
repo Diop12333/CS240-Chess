@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import chess.ui.Square;
+import chess.ui.XY;
 
 public class Pawn extends Piece
 {
@@ -24,7 +25,7 @@ public class Pawn extends Piece
 		Set<Move> moves = new HashSet<>();
 		
 		moves.add(Move.UP);
-		if (!hasMoved) moves.add(Move.TWO_UP);
+		if (!hasMoved && getPieceRelative(new XY(0, -1)) == null) moves.add(Move.TWO_UP);
 		
 		return moves;
 	}
