@@ -11,20 +11,22 @@ import chess.piece.Pawn;
 import chess.piece.Piece;
 import chess.piece.Queen;
 import chess.piece.Rook;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 public class ChessGame {
 	private Board board;
-	private boolean isWhiteTurn;
+	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty();
 	
 	private Set<Piece> capturedPieces;
 
 	public ChessGame() throws FileNotFoundException {
+		isWhiteTurn.set(true);
 		setUp();
 		new ChessGameMouseHandler(this);
 	}
 	
 	private void setUp() throws FileNotFoundException {
-		isWhiteTurn = true;
 		capturedPieces = new HashSet<>();
 		board = new Board(this);
 		
@@ -64,7 +66,7 @@ public class ChessGame {
 		if (square.getPiece() != null) addCapturedPiece(square.getPiece());
 		
 		piece.move(square);
-		isWhiteTurn = !isWhiteTurn;
+		isWhiteTurn.set(!isWhiteTurn.get());
 	}
 	
 	public void addCapturedPiece(Piece piece) {
@@ -72,5 +74,5 @@ public class ChessGame {
 	}
 	
 	public Board getBoard() { return board; }
-	public boolean getIsWhiteTurn() { return isWhiteTurn; }
+	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 }

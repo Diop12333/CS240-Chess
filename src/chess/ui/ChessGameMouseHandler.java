@@ -49,7 +49,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		// If clicked square has piece with same color as current turn
 		if (
 			clickedSquarePiece != null &&
-			clickedSquarePiece.isWhite() == chessGame.getIsWhiteTurn()
+			clickedSquarePiece.isWhite() == chessGame.isWhiteTurnProperty().get()
 		) {
 			if (clickedSquare == storedSquare) reset();
 			else {
