@@ -17,7 +17,7 @@ public class Main extends Application {
 	// TODO: implement menu actions
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
-		primaryStage.setTitle("Chess");
+		primaryStage.setTitle("Chess Game");
 		
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
