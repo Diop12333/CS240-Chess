@@ -7,20 +7,18 @@ import chess.piece.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
-// TODO: capability to contain transparent image of chess piece
 // TODO: arbitrary square colors
 public class Board extends GridPane {
-	private ChessGame chessGame;
 	private XY dimensions;
 	// y goes down
 	private Square[][] squares;
+	private Set<Piece> capturedPieces = new HashSet<>();
 	
-	public Board(ChessGame chessGame) { this(chessGame, new XY(8, 8)); }
-	public Board(ChessGame chessGame, XY dimensions) {
-		this(chessGame, dimensions, Color.SADDLEBROWN, Color.ANTIQUEWHITE);
+	public Board() { this(new XY(8, 8)); }
+	public Board(XY dimensions) {
+		this(dimensions, Color.SADDLEBROWN, Color.ANTIQUEWHITE);
 	}
-	public Board(ChessGame chessGame, XY dimensions, Color color1, Color color2) {
-		this.chessGame = chessGame;
+	public Board(XY dimensions, Color color1, Color color2) {
 		this.dimensions = dimensions;
 		int xSqAmount = dimensions.getX();
 		int ySqAmount = dimensions.getY();
@@ -59,8 +57,6 @@ public class Board extends GridPane {
 		return xValid && yValid;
 	}
 	
-	public ChessGame getChessGame() { return chessGame; }
-	
 	public XY getDimensions() { return dimensions; }
 	
 	// Returns null if no piece on coord or coord is not on board
@@ -91,4 +87,6 @@ public class Board extends GridPane {
 		if (isValidCoordinate(coord)) return squares[coord.getY()][coord.getX()];
 		else return null;
 	}
+	
+	public Set<Piece> getCapturedPieces() { return capturedPieces; }
 }

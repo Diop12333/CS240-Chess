@@ -30,6 +30,5 @@ public class EnPassant implements SpecialMoveImplementation {
 	public void doMoveEffect(Piece piece) {
 		Piece capturePawn = getCapturePawn(piece);
 		capturePawn.getSquare().clear();
-		piece.getChessGame().addCapturedPiece(capturePawn);
 	}
 }

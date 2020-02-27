@@ -45,6 +45,34 @@ public abstract class Piece extends ImageView {
 		return initCoord.shifted(shift);
 	}
 	
+	private Set<Coordinate> generateCoordsFromMove(Move move, boolean neutral) {
+		Set<Coordinate> moveCoords = new HashSet<>();
+		
+		Coordinate newCoord = getCoord();
+		do {
+			newCoord = coordAfterMove(newCoord, move);
+			if (!getBoard().isValidCoordinate(newCoord)) break;
+			
+			Piece coordPiece = getBoard().getPiece(newCoord);
+			// If square to move to is empty and move is in non capture moves
+			if (coordPiece == null && (neutral || potentialNonCaptureMoves().contains(move))) {
+				moveCoords.add(newCoord);
+			// If square to move to is not empty
+			} else if (coordPiece != null) {
+				// If piece in square is different color and move is in capture moves
+				if (
+					isWhite != coordPiece.isWhite() &&
+					(neutral || potentialCaptureMoves().contains(move))
+				) {
+					moveCoords.add(newCoord);
+				}
+				// Breaks regardless - can never move past piece
+				break;
+			}
+		} while (canRepeatMoves());
+		
+		return moveCoords;
+	}
 	// Return moves for white - black's moves are automatically inverted
 	// potentialNonCaptureMoves returns moves that can be made on an empty square
 	// potentialCaptureMoves returns moves that can be made to capture
@@ -58,27 +86,7 @@ public abstract class Piece extends ImageView {
 		moveUnion.addAll(potentialNonCaptureMoves());
 		moveUnion.addAll(potentialCaptureMoves());
 		for (Move move : moveUnion) {
-			Coordinate newCoord = getCoord();
-			do {
-				newCoord = coordAfterMove(newCoord, move);
-				if (!getBoard().isValidCoordinate(newCoord)) break;
-				
-				Piece coordPiece = getBoard().getPiece(newCoord);
-				// If square to move to is empty and move is in non capture moves
-				if (coordPiece == null && potentialNonCaptureMoves().contains(move)) {
-					legalCoords.add(newCoord);
-				// If square to move to is not empty
-				} else if (coordPiece != null) {
-					// If piece in square is different color and move is in capture moves
-					if (
-						isWhite != coordPiece.isWhite() && potentialCaptureMoves().contains(move)
-					) {
-						legalCoords.add(newCoord);
-					}
-					// Breaks regardless - can never move past piece
-					break;
-				}
-			} while (canRepeatMoves());
+			legalCoords.addAll(generateCoordsFromMove(move, false));
 		}
 		
 		return legalCoords;
@@ -97,6 +105,14 @@ public abstract class Piece extends ImageView {
 		return legalCoords;
 	}
 	
+	public Set<Coordinate> threatenedCoords() {
+		Set<Coordinate> coords = new HashSet<>();
+		for (Move move : potentialCaptureMoves()) {
+			coords.addAll(generateCoordsFromMove(move, true));
+		}
+		return coords;
+	}
+	
 	protected final String getImgFolder() { return "img/"; }
 	protected abstract String getWhiteImgFileName();
 	protected abstract String getBlackImgFileName();
@@ -105,7 +121,6 @@ public abstract class Piece extends ImageView {
 	
 	protected abstract boolean canRepeatMoves();
 	public boolean isWhite() { return isWhite; }
-	public ChessGame getChessGame() { return getBoard().getChessGame(); }
 	public Board getBoard() { return (Board) getSquare().getParent(); }
 	public Square getSquare() { return (Square) getParent(); }
 	public Coordinate getCoord() { return getSquare().getCoord(); }

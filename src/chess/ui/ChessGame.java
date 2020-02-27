@@ -28,7 +28,7 @@ public class ChessGame {
 	
 	private void setUp() throws FileNotFoundException {
 		capturedPieces = new HashSet<>();
-		board = new Board(this);
+		board = new Board();
 		
 		for (int i = 0; i <= 7; i++) {
 			board.setPiece(new Pawn(false), i, 1);
