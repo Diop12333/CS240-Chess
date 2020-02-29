@@ -2,7 +2,7 @@ package chess.ui;
 
 import java.io.FileNotFoundException;
 
-import chess.piece.ChessGame;
+import chess.logic.ChessGame;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;

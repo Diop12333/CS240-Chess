@@ -1,11 +1,12 @@
-package chess.piece;
+package chess.logic;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import chess.ui.XY;
+import chess.specialmove.SpecialMove;
+import chess.specialmove.SpecialMoveImplementation;
 
 public class ChessGameLogic {
 	private ChessGame chessGame;
@@ -74,7 +75,7 @@ public class ChessGameLogic {
 		
 		for (SpecialMove move : piece.potentialSpecialMoves()) {
 			SpecialMoveImplementation implementation = move.getImplementation();
-			if (implementation.canDoMove(piece, chessGame)) {
+			if (implementation.canDoMove(piece, this)) {
 				legalCoords.put(pieceCoordAfterShift(piece, move.getShift()), implementation);
 			}
 		}

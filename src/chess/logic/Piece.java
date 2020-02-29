@@ -1,8 +1,9 @@
-package chess.piece;
+package chess.logic;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.specialmove.SpecialMove;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -14,9 +15,10 @@ public abstract class Piece {
 		this.isWhite = isWhite;
 	}
 	
-	public void move(Coordinate newCoord) {
+	public void setCoord(Coordinate newCoord) {
 		this.coord.set(newCoord);
 	}
+	public void move(Coordinate newCoord) { setCoord(newCoord); }
 	
 	public abstract Set<Move> potentialNonCaptureMoves();
 	public Set<Move> potentialCaptureMoves() { return potentialNonCaptureMoves(); }

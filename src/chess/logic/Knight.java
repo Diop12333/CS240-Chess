@@ -1,4 +1,4 @@
-package chess.piece;
+package chess.logic;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;

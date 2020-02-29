@@ -1,6 +1,4 @@
-package chess.piece;
-
-import chess.ui.XY;
+package chess.logic;
 
 // Refers to chess board square
 // 0-indexed, y goes down

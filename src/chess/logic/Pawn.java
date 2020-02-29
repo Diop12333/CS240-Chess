@@ -1,11 +1,11 @@
-package chess.piece;
+package chess.logic;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.specialmove.SpecialMove;
 import chess.ui.Square;
-import chess.ui.XY;
 
 public class Pawn extends Piece
 {
@@ -40,18 +40,17 @@ public class Pawn extends Piece
 		return moves;
 	}
 	
-	/*
 	@Override
 	public Set<SpecialMove> potentialSpecialMoves()
 	{
 		Set<SpecialMove> moves = new HashSet<>();
 		
+		moves.add(SpecialMove.PAWN_TWO_UP);
 		moves.add(SpecialMove.EN_PASSANT_LEFT);
 		moves.add(SpecialMove.EN_PASSANT_RIGHT);
 		
 		return moves;
 	}
-	*/
 	
 	@Override
 	public void move(Coordinate coord)
@@ -59,6 +58,8 @@ public class Pawn extends Piece
 		super.move(coord);
 		hasMoved = true;
 	}
+	
+	public boolean hasMoved() { return hasMoved; }
 	
 	public boolean enPassantable() { return enPassantable; }
 	

@@ -1,9 +1,8 @@
-package chess.piece;
+package chess.logic;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.ui.XY;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -28,10 +27,10 @@ public class Board {
 		}
 	}
 	
-	public void setPiece(Piece piece, int x, int y) {
-		setPiece(piece, new Coordinate(x, y));
+	public void setCoord(int x, int y, Piece piece) {
+		setCoord(new Coordinate(x, y), piece);
 	}
-	public void setPiece(Piece piece, Coordinate coord) {
+	public void setCoord(Coordinate coord, Piece piece) {
 		Piece currPiece = getPiece(coord);
 		if (currPiece != null) {
 			capturedPieces.add(currPiece);
@@ -46,12 +45,12 @@ public class Board {
 					capturedPieces.add(newCoordPiece);
 				}
 				
-				setPiece(piece, newCoord);
+				setCoord(newCoord, piece);
 				
-				if (oldCoord != null) setPiece(null, oldCoord);
+				if (oldCoord != null) setCoord(oldCoord, null);
 			});
 			
-			piece.move(coord);
+			piece.setCoord(coord);
 		}
 	}
 	
@@ -84,7 +83,8 @@ public class Board {
 		return getPieceProperty(coord.getX(), coord.getY());
 	}
 	public ObjectProperty<Piece> getPieceProperty(int x, int y) {
-		return pieces[y][x];
+		if (isValidCoordinate(x, y)) return pieces[y][x];
+		else return new SimpleObjectProperty<Piece>();
 	}
 	
 	public Set<Piece> getPieces() {

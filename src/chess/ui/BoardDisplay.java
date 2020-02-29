@@ -5,9 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.piece.Board;
-import chess.piece.Coordinate;
-import chess.piece.Piece;
+import chess.logic.Board;
+import chess.logic.Coordinate;
+import chess.logic.Piece;
+import chess.logic.XY;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;

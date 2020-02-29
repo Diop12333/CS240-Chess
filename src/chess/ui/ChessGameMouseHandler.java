@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import chess.piece.Board;
-import chess.piece.ChessGame;
-import chess.piece.ChessGameLogic;
-import chess.piece.Coordinate;
-import chess.piece.Piece;
-import chess.piece.SpecialMoveImplementation;
+import chess.logic.Board;
+import chess.logic.ChessGame;
+import chess.logic.ChessGameLogic;
+import chess.logic.Coordinate;
+import chess.logic.Piece;
+import chess.specialmove.SpecialMoveImplementation;
 
 public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private ChessGame chessGame;
@@ -94,11 +94,14 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 			if (moveSquares.contains(clickedSquare)) {
 				chessGame.move(storedPiece, clickedSquare.getCoord());
 				reset();
-			} /*else if (specialMoveSquares.containsKey(clickedSquare)) {
-				specialMoveSquares.get(clickedSquare).doMoveEffect(storedPiece);
-				chessGame.move(storedPiece, clickedSquare);
+			} else if (specialMoveSquares.containsKey(clickedSquare)) {
+				SpecialMoveImplementation implementation =
+					specialMoveSquares.get(clickedSquare);
+				implementation.doPreMoveEffect(storedPiece, chessGame);
+				chessGame.move(storedPiece, clickedSquare.getCoord());
+				implementation.doPostMoveEffect(storedPiece, chessGame);
 				reset();
-			}*/
+			}
 		}
 	}
 }

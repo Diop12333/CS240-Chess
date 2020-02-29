@@ -3,8 +3,8 @@ package chess.ui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import chess.piece.Coordinate;
-import chess.piece.Piece;
+import chess.logic.Coordinate;
+import chess.logic.Piece;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

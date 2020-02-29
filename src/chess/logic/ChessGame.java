@@ -1,12 +1,9 @@
-package chess.piece;
+package chess.logic;
 
 import java.io.FileNotFoundException;
-import java.util.HashSet;
-import java.util.Set;
 
 import chess.ui.BoardDisplay;
 import chess.ui.ChessGameMouseHandler;
-import chess.ui.Square;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -27,27 +24,27 @@ public class ChessGame {
 		board = new Board();
 		
 		for (int i = 0; i <= 7; i++) {
-			board.setPiece(new Pawn(false), i, 1);
-			board.setPiece(new Pawn(true), i, 6);
+			board.setCoord(i, 1, new Pawn(false));
+			board.setCoord(i, 6, new Pawn(true));
 		}
 		
-		board.setPiece(new Rook(false), 0, 0);
-		board.setPiece(new Knight(false), 1, 0);
-		board.setPiece(new Bishop(false), 2, 0);
-		board.setPiece(new King(false), 3, 0);
-		board.setPiece(new Queen(false), 4, 0);
-		board.setPiece(new Bishop(false), 5, 0);
-		board.setPiece(new Knight(false), 6, 0);
-		board.setPiece(new Rook(false), 7, 0);
+		board.setCoord(0, 0, new Rook(false));
+		board.setCoord(1, 0, new Knight(false));
+		board.setCoord(2, 0, new Bishop(false));
+		board.setCoord(3, 0, new King(false));
+		board.setCoord(4, 0, new Queen(false));
+		board.setCoord(5, 0, new Bishop(false));
+		board.setCoord(6, 0, new Knight(false));
+		board.setCoord(7, 0, new Rook(false));
 		
-		board.setPiece(new Rook(true), 0, 7);
-		board.setPiece(new Knight(true), 1, 7);
-		board.setPiece(new Bishop(true), 2, 7);
-		board.setPiece(new King(true), 3, 7);
-		board.setPiece(new Queen(true), 4, 7);
-		board.setPiece(new Bishop(true), 5, 7);
-		board.setPiece(new Knight(true), 6, 7);
-		board.setPiece(new Rook(true), 7, 7);
+		board.setCoord(0, 7, new Rook(true));
+		board.setCoord(1, 7, new Knight(true));
+		board.setCoord(2, 7, new Bishop(true));
+		board.setCoord(3, 7, new King(true));
+		board.setCoord(4, 7, new Queen(true));
+		board.setCoord(5, 7, new Bishop(true));
+		board.setCoord(6, 7, new Knight(true));
+		board.setCoord(7, 7, new Rook(true));
 		
 		boardDisplay = new BoardDisplay(board);
 	}
