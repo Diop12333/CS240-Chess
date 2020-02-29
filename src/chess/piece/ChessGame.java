@@ -1,33 +1,29 @@
-package chess.ui;
+package chess.piece;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.piece.Bishop;
-import chess.piece.King;
-import chess.piece.Knight;
-import chess.piece.Pawn;
-import chess.piece.Piece;
-import chess.piece.Queen;
-import chess.piece.Rook;
+import chess.ui.BoardDisplay;
+import chess.ui.ChessGameMouseHandler;
+import chess.ui.Square;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class ChessGame {
 	private Board board;
+	private BoardDisplay boardDisplay;
+	private ChessGameLogic logic;
 	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty();
-	
-	private Set<Piece> capturedPieces;
 
 	public ChessGame() throws FileNotFoundException {
 		isWhiteTurn.set(true);
 		setUp();
+		logic = new ChessGameLogic(this);
 		new ChessGameMouseHandler(this);
 	}
 	
 	private void setUp() throws FileNotFoundException {
-		capturedPieces = new HashSet<>();
 		board = new Board();
 		
 		for (int i = 0; i <= 7; i++) {
@@ -52,9 +48,11 @@ public class ChessGame {
 		board.setPiece(new Bishop(true), 5, 7);
 		board.setPiece(new Knight(true), 6, 7);
 		board.setPiece(new Rook(true), 7, 7);
+		
+		boardDisplay = new BoardDisplay(board);
 	}
 	
-	public void move(Piece piece, Square square) {
+	public void move(Piece piece, Coordinate coord) {
 		// Make sure en passant can only occur turn after two-square move
 		for (Piece p : board.getPieces()) {
 			if (p instanceof Pawn) {
@@ -63,16 +61,13 @@ public class ChessGame {
 			}
 		}
 		
-		if (square.getPiece() != null) addCapturedPiece(square.getPiece());
-		
-		piece.move(square);
+		piece.move(coord);
 		isWhiteTurn.set(!isWhiteTurn.get());
 	}
 	
-	public void addCapturedPiece(Piece piece) {
-		capturedPieces.add(piece);
-	}
-	
 	public Board getBoard() { return board; }
+	public BoardDisplay getBoardDisplay() { return boardDisplay; }
+	public ChessGameLogic getLogic() { return logic; }
+	public boolean isWhiteTurn() { return isWhiteTurn.get(); }
 	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 }

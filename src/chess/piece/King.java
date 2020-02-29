@@ -28,14 +28,6 @@ public class King extends Piece
 		return moves;
 	}
 	
-	public boolean isInCheck()
-	{
-		for (Piece piece : getBoard().getPieces()) {
-			if (piece.threatenedCoords().contains(getCoord())) return true;
-		}
-		return false;
-	}
-	
 	@Override
 	public boolean canRepeatMoves() { return false; }
 	@Override

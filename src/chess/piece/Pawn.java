@@ -25,7 +25,6 @@ public class Pawn extends Piece
 		Set<Move> moves = new HashSet<>();
 		
 		moves.add(Move.UP);
-		if (!hasMoved && getPieceRelative(new XY(0, -1)) == null) moves.add(Move.TWO_UP);
 		
 		return moves;
 	}
@@ -41,6 +40,7 @@ public class Pawn extends Piece
 		return moves;
 	}
 	
+	/*
 	@Override
 	public Set<SpecialMove> potentialSpecialMoves()
 	{
@@ -51,15 +51,12 @@ public class Pawn extends Piece
 		
 		return moves;
 	}
+	*/
 	
 	@Override
-	public void move(Square newSquare)
-	{
-		if (!hasMoved && coordAfterMove(Move.TWO_UP).equals(newSquare.getCoord())) {
-			enPassantable = true;
-		}
-		
-		super.move(newSquare);
+	public void move(Coordinate coord)
+	{	
+		super.move(coord);
 		hasMoved = true;
 	}
 	

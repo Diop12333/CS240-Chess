@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Bishop extends Piece
 {
-	public Bishop(boolean isWhite) throws FileNotFoundException
+	public Bishop(boolean isWhite)
 	{
 		super(isWhite);
 	}

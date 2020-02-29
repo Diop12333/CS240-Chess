@@ -1,7 +1,5 @@
 package chess.piece;
 
-import chess.ui.Coordinate;
-
 public class StoredMove
 {
 	private Piece piece;

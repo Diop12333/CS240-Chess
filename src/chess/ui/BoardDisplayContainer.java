@@ -3,9 +3,9 @@ package chess.ui;
 import javafx.scene.layout.Region;
 import javafx.scene.Node;
 
-public class BoardContainer extends Region {
-	private Board board;
-	public BoardContainer(Board board) {
+public class BoardDisplayContainer extends Region {
+	private BoardDisplay board;
+	public BoardDisplayContainer(BoardDisplay board) {
 		this.board = board;
 		this.getChildren().add(board);
 	}
@@ -26,5 +26,5 @@ public class BoardContainer extends Region {
 		}
 	}
 	
-	public Board getBoard() { return board; }
+	public BoardDisplay getBoard() { return board; }
 }

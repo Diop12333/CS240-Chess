@@ -12,8 +12,6 @@ public enum Move {
 	DOWN (0, 1),
 	RIGHT_DOWN (1, 1),
 	
-	TWO_UP (0, -2),
-	
 	// Largest direction written first
 	KNIGHT_UP_LEFT (-1, -2),
 	KNIGHT_UP_RIGHT (1, -2),
