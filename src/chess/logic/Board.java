@@ -26,6 +26,17 @@ public class Board {
 			}
 		}
 	}
+	public Board(Board board) {
+		this(board.getDimensions());
+		
+		for (Piece piece : board.getPieces()) {
+			setCoord(piece.getCoord(), piece.copy());
+		}
+		
+		for (Piece piece : board.getCapturedPieces()) {
+			capturedPieces.add(piece.copy());
+		}
+	}
 	
 	public void setCoord(int x, int y, Piece piece) {
 		setCoord(new Coordinate(x, y), piece);
@@ -101,4 +112,6 @@ public class Board {
 		
 		return pieces;
 	}
+	
+	public Set<Piece> getCapturedPieces() { return capturedPieces; }
 }

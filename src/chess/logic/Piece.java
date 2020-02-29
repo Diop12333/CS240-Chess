@@ -15,6 +15,10 @@ public abstract class Piece {
 		this.isWhite = isWhite;
 	}
 	
+	public Piece(Piece piece) {
+		this.isWhite = piece.isWhite();
+	}
+	
 	public void setCoord(Coordinate newCoord) {
 		this.coord.set(newCoord);
 	}
@@ -34,10 +38,13 @@ public abstract class Piece {
 	private final String getWhiteImgFilePath() { return getImgFolder() + getWhiteImgFileName(); }
 	private final String getBlackImgFilePath() { return getImgFolder() + getBlackImgFileName(); }
 	
+	// Only applies to regular moves
 	public abstract boolean canRepeatMoves();
 	public boolean isWhite() { return isWhite; }
 	public Coordinate getCoord() { return coord.get(); }
 	public ObjectProperty<Coordinate> coordProperty() { return coord; }
 	
 	protected abstract String notation(); // return letter(s) for chess notation
+	
+	public abstract Piece copy();
 }

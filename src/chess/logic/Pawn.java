@@ -1,22 +1,25 @@
 package chess.logic;
 
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
 import chess.specialmove.SpecialMove;
-import chess.ui.Square;
 
 public class Pawn extends Piece
 {
 	private boolean hasMoved;
 	private boolean enPassantable;
 	
-	public Pawn(boolean isWhite) throws FileNotFoundException
+	public Pawn(boolean isWhite)
 	{
 		super(isWhite);
 		hasMoved = false;
 		enPassantable = false;
+	}
+	public Pawn(Pawn pawn) {
+		super(pawn);
+		hasMoved = pawn.hasMoved();
+		enPassantable = pawn.enPassantable();
 	}
 	
 	@Override
@@ -75,4 +78,7 @@ public class Pawn extends Piece
 	public String getBlackImgFileName() { return "black_pawn.png"; }
 	@Override
 	public String notation() { return ""; }
+
+	@Override
+	public Pawn copy() { return new Pawn(this); }
 }

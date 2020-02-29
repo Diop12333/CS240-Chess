@@ -1,14 +1,17 @@
 package chess.logic;
 
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Queen extends Piece
 {	
-	public Queen(boolean white) throws FileNotFoundException
+	public Queen(boolean white)
 	{
 		super(white);
+	}
+	public Queen(Queen queen)
+	{
+		super(queen);
 	}
 	
 	@Override
@@ -36,4 +39,6 @@ public class Queen extends Piece
 	public String getBlackImgFileName() { return "black_queen.png"; }
 	@Override
 	public String notation() { return "Q"; }
+	@Override
+	public Queen copy() { return new Queen(this); }
 }

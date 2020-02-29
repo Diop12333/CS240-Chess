@@ -1,6 +1,5 @@
 package chess.logic;
 
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +8,10 @@ public class Bishop extends Piece
 	public Bishop(boolean isWhite)
 	{
 		super(isWhite);
+	}
+	public Bishop(Bishop bishop)
+	{
+		super(bishop);
 	}
 	
 	@Override
@@ -32,4 +35,7 @@ public class Bishop extends Piece
 	public String getBlackImgFileName() { return "black_bishop.png"; }
 	@Override
 	public String notation() { return "B"; }
+	
+	@Override
+	public Bishop copy() { return new Bishop(this); }
 }
