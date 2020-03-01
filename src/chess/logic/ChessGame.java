@@ -35,8 +35,8 @@ public class ChessGame {
 		board.setCoord(0, 0, new Rook(false));
 		board.setCoord(1, 0, new Knight(false));
 		board.setCoord(2, 0, new Bishop(false));
-		board.setCoord(3, 0, new King(false));
-		board.setCoord(4, 0, new Queen(false));
+		board.setCoord(3, 0, new Queen(false));
+		board.setCoord(4, 0, new King(false));
 		board.setCoord(5, 0, new Bishop(false));
 		board.setCoord(6, 0, new Knight(false));
 		board.setCoord(7, 0, new Rook(false));
@@ -44,8 +44,8 @@ public class ChessGame {
 		board.setCoord(0, 7, new Rook(true));
 		board.setCoord(1, 7, new Knight(true));
 		board.setCoord(2, 7, new Bishop(true));
-		board.setCoord(3, 7, new King(true));
-		board.setCoord(4, 7, new Queen(true));
+		board.setCoord(3, 7, new Queen(true));
+		board.setCoord(4, 7, new King(true));
 		board.setCoord(5, 7, new Bishop(true));
 		board.setCoord(6, 7, new Knight(true));
 		board.setCoord(7, 7, new Rook(true));

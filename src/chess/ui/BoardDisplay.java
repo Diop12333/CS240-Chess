@@ -6,12 +6,12 @@ import chess.logic.XY;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
-// TODO: arbitrary square colors
+// Whenever board pieces change, BoardDisplay changes too
 public class BoardDisplay extends GridPane {
 	// y goes down
 	private Square[][] squares;
 	
-	public BoardDisplay(Board board) { this(board, Color.SADDLEBROWN, Color.ANTIQUEWHITE); }
+	public BoardDisplay(Board board) { this(board, Color.ANTIQUEWHITE, Color.SADDLEBROWN); }
 	public BoardDisplay(Board board, Color color1, Color color2) {
 		XY dimensions = board.getDimensions();
 		int xSqAmount = dimensions.getX();

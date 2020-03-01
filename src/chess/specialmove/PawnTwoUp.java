@@ -9,8 +9,6 @@ import chess.logic.XY;
 public class PawnTwoUp implements SpecialMoveImplementation {
 	@Override
 	public boolean canDoMove(Piece piece, BoardLogic logic) {
-		if (!(piece instanceof Pawn)) return false;
-		
 		Pawn pawn = (Pawn) piece;
 		
 		Piece frontPiece = logic.getPieceRelative(piece, new XY(0, -1));

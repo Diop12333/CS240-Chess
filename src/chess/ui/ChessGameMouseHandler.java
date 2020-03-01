@@ -40,10 +40,11 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 			storedSquare = null;
 		}
 		
-		for (Square sq : moveSquares) sq.removeCircle();
+		Set<Square> sqUnion = new HashSet<>();
+		sqUnion.addAll(moveSquares);
+		sqUnion.addAll(specialMoveSquares.keySet());
+		for (Square sq : sqUnion) sq.removeCircle();
 		moveSquares.clear();
-		
-		for (Square sq : specialMoveSquares.keySet()) sq.removeCircle();
 		specialMoveSquares.clear();
 	}
 	

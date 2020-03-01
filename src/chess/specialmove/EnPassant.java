@@ -25,12 +25,10 @@ public class EnPassant implements SpecialMoveImplementation {
 	public boolean canDoMove(Piece piece, BoardLogic logic) {
 		Pawn capturePawn = getCapturePawn(piece, logic);
 		
-		return (
-			piece instanceof Pawn &&
+		return
 			capturePawn != null &&
 			capturePawn.isWhite() != piece.isWhite() &&
-			capturePawn.enPassantable()
-		);
+			capturePawn.enPassantable();
 	}
 	
 	@Override
