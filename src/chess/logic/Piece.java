@@ -17,6 +17,7 @@ public abstract class Piece {
 	
 	public Piece(Piece piece) {
 		this.isWhite = piece.isWhite();
+		setCoord(piece.getCoord());
 	}
 	
 	public void setCoord(Coordinate newCoord) {

@@ -11,7 +11,13 @@ public class Board {
 	private ObjectProperty<Piece>[][] pieces;
 	private Set<Piece> capturedPieces = new HashSet<>();
 	
+	private King whiteKing;
+	private King blackKing;
+	
+	private BoardLogic logic;
+	
 	public Board() { this(new XY(8, 8)); }
+	
 	@SuppressWarnings("unchecked")
 	public Board(XY dimensions) {
 		this.dimensions = dimensions;
@@ -25,6 +31,8 @@ public class Board {
 				pieces[y][x] = new SimpleObjectProperty<Piece>();
 			}
 		}
+		
+		logic = new BoardLogic(this);
 	}
 	public Board(Board board) {
 		this(board.getDimensions());
@@ -38,10 +46,35 @@ public class Board {
 		}
 	}
 	
+	public boolean isValidCoordinate(Coordinate coord) {
+		return isValidCoordinate(coord.getX(), coord.getY());
+	}
+	public boolean isValidCoordinate(int x, int y) {
+		boolean xValid = x >= 0 && x < dimensions.getX();
+		boolean yValid = y >= 0 && y < dimensions.getY();
+		return xValid && yValid;
+	}
+	
+	public XY getDimensions() { return dimensions; }
+	
+	public King getWhiteKing() { return whiteKing; }
+	public King getBlackKing() { return blackKing; }
+	public King getKing(boolean isWhite) {
+		if (isWhite) return whiteKing;
+		else return blackKing;
+	}
+	
 	public void setCoord(int x, int y, Piece piece) {
 		setCoord(new Coordinate(x, y), piece);
 	}
 	public void setCoord(Coordinate coord, Piece piece) {
+		// WARNING: Doesn't check for duplicate kings
+		if (piece instanceof King) {
+			King king = (King) piece;
+			if (king.isWhite()) whiteKing = king;
+			else blackKing = king;
+		}
+		
 		Piece currPiece = getPiece(coord);
 		if (currPiece != null) {
 			capturedPieces.add(currPiece);
@@ -64,17 +97,6 @@ public class Board {
 			piece.setCoord(coord);
 		}
 	}
-	
-	public boolean isValidCoordinate(Coordinate coord) {
-		return isValidCoordinate(coord.getX(), coord.getY());
-	}
-	public boolean isValidCoordinate(int x, int y) {
-		boolean xValid = x >= 0 && x < dimensions.getX();
-		boolean yValid = y >= 0 && y < dimensions.getY();
-		return xValid && yValid;
-	}
-	
-	public XY getDimensions() { return dimensions; }
 	
 	public Coordinate getCoord(Piece piece) {
 		for (int y = 0; y < dimensions.getY(); y++) {
@@ -112,6 +134,15 @@ public class Board {
 		
 		return pieces;
 	}
+	public Set<Piece> getColorPieces(boolean white) {
+		Set<Piece> colorPieces = new HashSet<>();
+		for (Piece piece : getPieces()) {
+			if (piece.isWhite() == white) colorPieces.add(piece);
+		}
+		return colorPieces;
+	}
 	
 	public Set<Piece> getCapturedPieces() { return capturedPieces; }
+	
+	public BoardLogic getLogic() { return logic; }
 }

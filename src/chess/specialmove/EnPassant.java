@@ -1,7 +1,7 @@
 package chess.specialmove;
 
-import chess.logic.ChessGame;
-import chess.logic.ChessGameLogic;
+import chess.logic.Board;
+import chess.logic.BoardLogic;
 import chess.logic.Coordinate;
 import chess.logic.Pawn;
 import chess.logic.Piece;
@@ -15,13 +15,14 @@ public class EnPassant implements SpecialMoveImplementation {
 		this.direction = direction;
 	}
 	
-	private Pawn getCapturePawn(Piece piece, ChessGameLogic logic) {
+	private Pawn getCapturePawn(Piece piece, BoardLogic logic) {
 		Piece testPiece = logic.getPieceRelative(piece, new XY(direction, 0));
 		if (testPiece instanceof Pawn) return (Pawn) testPiece;
 		else return null;
 	}
 	
-	public boolean canDoMove(Piece piece, ChessGameLogic logic) {
+	@Override
+	public boolean canDoMove(Piece piece, BoardLogic logic) {
 		Pawn capturePawn = getCapturePawn(piece, logic);
 		
 		return (
@@ -32,10 +33,12 @@ public class EnPassant implements SpecialMoveImplementation {
 		);
 	}
 	
-	public void doPreMoveEffect(Piece piece, ChessGame chessGame) {
-		Piece capturePawn = getCapturePawn(piece, chessGame.getLogic());
+	@Override
+	public void doPreMoveEffect(Piece piece, Board board) {
+		Piece capturePawn = getCapturePawn(piece, board.getLogic());
 		Coordinate capturePawnCoord = capturePawn.getCoord();
-		chessGame.getBoard().setCoord(capturePawnCoord, null);
+		board.setCoord(capturePawnCoord, null);
 	}
-	public void doPostMoveEffect(Piece piece, ChessGame chessGame) {}
+	@Override
+	public void doPostMoveEffect(Piece piece, Board board) {}
 }

@@ -1,13 +1,14 @@
 package chess.specialmove;
 
-import chess.logic.ChessGame;
-import chess.logic.ChessGameLogic;
+import chess.logic.Board;
+import chess.logic.BoardLogic;
 import chess.logic.Pawn;
 import chess.logic.Piece;
 import chess.logic.XY;
 
 public class PawnTwoUp implements SpecialMoveImplementation {
-	public boolean canDoMove(Piece piece, ChessGameLogic logic) {
+	@Override
+	public boolean canDoMove(Piece piece, BoardLogic logic) {
 		if (!(piece instanceof Pawn)) return false;
 		
 		Pawn pawn = (Pawn) piece;
@@ -17,8 +18,10 @@ public class PawnTwoUp implements SpecialMoveImplementation {
 		return !pawn.hasMoved() && frontPiece == null && twoAheadPiece == null;
 	}
 	
-	public void doPreMoveEffect(Piece piece, ChessGame chessGame) {}
-	public void doPostMoveEffect(Piece piece, ChessGame chessGame) {
+	@Override
+	public void doPreMoveEffect(Piece piece, Board board) {}
+	@Override
+	public void doPostMoveEffect(Piece piece, Board board) {
 		Pawn pawn = (Pawn) piece;
 		pawn.setEnPassantable(true);
 	}

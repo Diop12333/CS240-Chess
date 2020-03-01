@@ -8,25 +8,22 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import chess.logic.Board;
 import chess.logic.ChessGame;
-import chess.logic.ChessGameLogic;
+import chess.logic.BoardLogic;
 import chess.logic.Coordinate;
 import chess.logic.Piece;
 import chess.specialmove.SpecialMoveImplementation;
 
 public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private ChessGame chessGame;
-	private Board board;
 	private BoardDisplay boardDisplay;
-	private ChessGameLogic logic;
+	private BoardLogic logic;
 	private Square storedSquare;
 	private Set<Square> moveSquares = new HashSet<>();
 	private Map<Square, SpecialMoveImplementation> specialMoveSquares = new HashMap<>();
 	
 	public ChessGameMouseHandler(ChessGame chessGame) {
 		this.chessGame = chessGame;
-		board = chessGame.getBoard();
 		boardDisplay = chessGame.getBoardDisplay();
 		logic = chessGame.getLogic();
 		
@@ -39,7 +36,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	
 	private void reset() {
 		if (storedSquare != null) {
-			storedSquare.unhighlight();
+			storedSquare.resetColor();
 			storedSquare = null;
 		}
 		
@@ -95,11 +92,12 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 				chessGame.move(storedPiece, clickedSquare.getCoord());
 				reset();
 			} else if (specialMoveSquares.containsKey(clickedSquare)) {
-				SpecialMoveImplementation implementation =
-					specialMoveSquares.get(clickedSquare);
-				implementation.doPreMoveEffect(storedPiece, chessGame);
+				SpecialMoveImplementation implementation = specialMoveSquares.get(clickedSquare);
+				
+				implementation.doPreMoveEffect(storedPiece, chessGame.getBoard());
 				chessGame.move(storedPiece, clickedSquare.getCoord());
-				implementation.doPostMoveEffect(storedPiece, chessGame);
+				implementation.doPostMoveEffect(storedPiece, chessGame.getBoard());
+				
 				reset();
 			}
 		}

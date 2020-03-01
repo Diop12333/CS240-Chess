@@ -15,4 +15,8 @@ public class XY {
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}
+	
+	public boolean equals(XY xy) {
+		return getX() == xy.getX() && getY() == xy.getY();
+	}
 }

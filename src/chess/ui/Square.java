@@ -19,6 +19,7 @@ public class Square extends StackPane {
 	private Coordinate coord;
 	private Color defaultColor;
 	private static Color HIGHLIGHT_COLOR = Color.GREEN;
+	private static Color THREATENED_COLOR = Color.RED;
 	
 	private Piece piece;
 	
@@ -72,7 +73,11 @@ public class Square extends StackPane {
 	public void highlight() {
 		setColor(HIGHLIGHT_COLOR);
 	}
-	public void unhighlight() {
+	public void showThreatened() {
+		setColor(THREATENED_COLOR);
+	}
+	
+	public void resetColor() {
 		setColor(defaultColor);
 	}
 	
