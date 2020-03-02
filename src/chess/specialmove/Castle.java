@@ -37,6 +37,7 @@ public class Castle implements SpecialMoveImplementation {
 		
 		XY shift1 = new XY(direction, 0);
 		XY shift2 = new XY(direction * 2, 0);
+		XY shift3 = new XY(-3, 0);
 		
 		Coordinate shifted1 = LegalMoveLogic.pieceCoordAfterShift(king, shift1);
 		
@@ -46,7 +47,8 @@ public class Castle implements SpecialMoveImplementation {
 			!castleRook.hasMoved() &&
 			logic.getPieceRelative(king, shift1) == null &&
 			LegalMoveLogic.containsCoord(logic.legalMoveCoords(king), shifted1) &&
-			logic.getPieceRelative(king, shift2) == null;
+			logic.getPieceRelative(king, shift2) == null &&
+			direction > 0 || logic.getPieceRelative(king, shift3) == null;
 	}
 	
 	
