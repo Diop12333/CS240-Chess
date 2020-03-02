@@ -48,7 +48,7 @@ public class Castle implements SpecialMoveImplementation {
 			logic.getPieceRelative(king, shift1) == null &&
 			LegalMoveLogic.containsCoord(logic.legalMoveCoords(king), shifted1) &&
 			logic.getPieceRelative(king, shift2) == null &&
-			direction > 0 || logic.getPieceRelative(king, shift3) == null;
+			(direction > 0 || logic.getPieceRelative(king, shift3) == null);
 	}
 	
 	
