@@ -1,8 +1,10 @@
-package chess.piece;
+package chess.specialmove;
 
-import chess.ui.XY;
+import chess.logic.XY;
 
 public enum SpecialMove {
+	PAWN_TWO_UP (0, -2, new PawnTwoUp()),
+	
 	EN_PASSANT_LEFT (-1, -1, new EnPassant(-1)),
 	EN_PASSANT_RIGHT (1, -1, new EnPassant(1));
 	

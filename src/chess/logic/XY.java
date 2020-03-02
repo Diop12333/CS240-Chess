@@ -1,4 +1,4 @@
-package chess.ui;
+package chess.logic;
 
 public class XY {
 	private int x;
@@ -14,5 +14,9 @@ public class XY {
 	
 	public String toString() {
 		return "(" + x + ", " + y + ")";
+	}
+	
+	public boolean equals(XY xy) {
+		return getX() == xy.getX() && getY() == xy.getY();
 	}
 }

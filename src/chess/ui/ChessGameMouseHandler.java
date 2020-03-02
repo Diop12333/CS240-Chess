@@ -8,21 +8,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import chess.piece.Piece;
-import chess.piece.SpecialMoveImplementation;
+import chess.logic.ChessGame;
+import chess.logic.LegalMoveLogic;
+import chess.logic.Coordinate;
+import chess.logic.Piece;
+import chess.specialmove.SpecialMoveImplementation;
 
 public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private ChessGame chessGame;
-	private Board board;
+	private BoardDisplay boardDisplay;
+	private LegalMoveLogic logic;
 	private Square storedSquare;
 	private Set<Square> moveSquares = new HashSet<>();
 	private Map<Square, SpecialMoveImplementation> specialMoveSquares = new HashMap<>();
 	
 	public ChessGameMouseHandler(ChessGame chessGame) {
 		this.chessGame = chessGame;
-		board = chessGame.getBoard();
+		boardDisplay = chessGame.getBoardDisplay();
+		logic = chessGame.getLogic();
 		
-		for (Square[] row : board.getSquares()) {
+		for (Square[] row : boardDisplay.getSquares()) {
 			for (Square sq : row) {
 				sq.setOnMouseClicked(this);
 			}
@@ -31,14 +36,15 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	
 	private void reset() {
 		if (storedSquare != null) {
-			storedSquare.unhighlight();
+			storedSquare.resetColor();
 			storedSquare = null;
 		}
 		
-		for (Square sq : moveSquares) sq.removeCircle();
+		Set<Square> sqUnion = new HashSet<>();
+		sqUnion.addAll(moveSquares);
+		sqUnion.addAll(specialMoveSquares.keySet());
+		for (Square sq : sqUnion) sq.removeCircle();
 		moveSquares.clear();
-		
-		for (Square sq : specialMoveSquares.keySet()) sq.removeCircle();
 		specialMoveSquares.clear();
 	}
 	
@@ -49,13 +55,13 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		// If clicked square has piece with same color as current turn
 		if (
 			clickedSquarePiece != null &&
-			clickedSquarePiece.isWhite() == chessGame.isWhiteTurnProperty().get()
+			clickedSquarePiece.isWhite() == chessGame.isWhiteTurn()
 		) {
 			if (clickedSquare == storedSquare) reset();
 			else {
-				Set<Coordinate> moveCoords = clickedSquarePiece.legalMoveCoords();
+				Set<Coordinate> moveCoords = logic.legalMoveCoords(clickedSquarePiece);
 				Map<Coordinate, SpecialMoveImplementation> specialMoveCoords =
-					clickedSquarePiece.legalSpecialMoveCoords();
+					logic.legalSpecialMoveCoords(clickedSquarePiece);
 				
 				// If piece can move
 				if (!moveCoords.isEmpty() || !specialMoveCoords.isEmpty()) {
@@ -64,7 +70,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 					storedSquare.highlight();
 					
 					for (Coordinate coord : moveCoords) {
-						Square moveSquare = board.getSquare(coord);
+						Square moveSquare = boardDisplay.getSquare(coord);
 						moveSquares.add(moveSquare);
 						moveSquare.addCircle();
 					}
@@ -74,7 +80,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 						specialMoveCoords.entrySet()
 					) {
 						Coordinate coord = entry.getKey();
-						Square specialMoveSquare = board.getSquare(coord);
+						Square specialMoveSquare = boardDisplay.getSquare(coord);
 						specialMoveSquares.put(specialMoveSquare, entry.getValue());
 						specialMoveSquare.addCircle();
 					}
@@ -84,11 +90,15 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		} else if (storedSquare != null) {
 			Piece storedPiece = storedSquare.getPiece();
 			if (moveSquares.contains(clickedSquare)) {
-				chessGame.move(storedPiece, clickedSquare);
+				chessGame.move(storedPiece, clickedSquare.getCoord());
 				reset();
 			} else if (specialMoveSquares.containsKey(clickedSquare)) {
-				specialMoveSquares.get(clickedSquare).doMoveEffect(storedPiece);
-				chessGame.move(storedPiece, clickedSquare);
+				SpecialMoveImplementation implementation = specialMoveSquares.get(clickedSquare);
+				
+				implementation.doPreMoveEffect(storedPiece, chessGame.getBoard());
+				chessGame.move(storedPiece, clickedSquare.getCoord());
+				implementation.doPostMoveEffect(storedPiece, chessGame.getBoard());
+				
 				reset();
 			}
 		}

@@ -1,22 +1,25 @@
-package chess.piece;
+package chess.logic;
 
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.ui.Square;
-import chess.ui.XY;
+import chess.specialmove.SpecialMove;
 
 public class Pawn extends Piece
 {
 	private boolean hasMoved;
 	private boolean enPassantable;
 	
-	public Pawn(boolean isWhite) throws FileNotFoundException
+	public Pawn(boolean isWhite)
 	{
 		super(isWhite);
 		hasMoved = false;
 		enPassantable = false;
+	}
+	public Pawn(Pawn pawn) {
+		super(pawn);
+		hasMoved = pawn.hasMoved();
+		enPassantable = pawn.enPassantable();
 	}
 	
 	@Override
@@ -25,7 +28,6 @@ public class Pawn extends Piece
 		Set<Move> moves = new HashSet<>();
 		
 		moves.add(Move.UP);
-		if (!hasMoved && getPieceRelative(new XY(0, -1)) == null) moves.add(Move.TWO_UP);
 		
 		return moves;
 	}
@@ -46,6 +48,7 @@ public class Pawn extends Piece
 	{
 		Set<SpecialMove> moves = new HashSet<>();
 		
+		moves.add(SpecialMove.PAWN_TWO_UP);
 		moves.add(SpecialMove.EN_PASSANT_LEFT);
 		moves.add(SpecialMove.EN_PASSANT_RIGHT);
 		
@@ -53,15 +56,13 @@ public class Pawn extends Piece
 	}
 	
 	@Override
-	public void move(Square newSquare)
-	{
-		if (!hasMoved && coordAfterMove(Move.TWO_UP).equals(newSquare.getCoord())) {
-			enPassantable = true;
-		}
-		
-		super.move(newSquare);
+	public void move(Coordinate coord)
+	{	
+		super.move(coord);
 		hasMoved = true;
 	}
+	
+	public boolean hasMoved() { return hasMoved; }
 	
 	public boolean enPassantable() { return enPassantable; }
 	
@@ -77,4 +78,7 @@ public class Pawn extends Piece
 	public String getBlackImgFileName() { return "black_pawn.png"; }
 	@Override
 	public String notation() { return ""; }
+
+	@Override
+	public Pawn copy() { return new Pawn(this); }
 }

@@ -1,6 +1,4 @@
-package chess.piece;
-
-import chess.ui.XY;
+package chess.logic;
 
 public enum Move {
 	LEFT_UP (-1, -1),
@@ -11,8 +9,6 @@ public enum Move {
 	LEFT_DOWN (-1, 1),
 	DOWN (0, 1),
 	RIGHT_DOWN (1, 1),
-	
-	TWO_UP (0, -2),
 	
 	// Largest direction written first
 	KNIGHT_UP_LEFT (-1, -2),

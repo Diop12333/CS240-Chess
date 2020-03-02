@@ -1,6 +1,4 @@
-package chess.piece;
-
-import chess.ui.Coordinate;
+package chess.logic;
 
 public class StoredMove
 {

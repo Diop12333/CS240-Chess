@@ -1,14 +1,17 @@
-package chess.piece;
+package chess.logic;
 
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Rook extends Piece
 {	
-	public Rook(boolean white) throws FileNotFoundException
+	public Rook(boolean white)
 	{
 		super(white);
+	}
+	public Rook(Rook rook)
+	{
+		super(rook);
 	}
 	
 	@Override
@@ -32,4 +35,6 @@ public class Rook extends Piece
 	public String getBlackImgFileName() { return "black_rook.png"; }
 	@Override
 	public String notation() { return "R"; }
+	@Override
+	public Rook copy() { return new Rook(this); }
 }

@@ -1,3 +1,8 @@
+TODO: Implement castling, promotion, menu functions, basic AI
+
+Refactor ideas:
+Maybe use piece color enum instead of boolean?
+
 Dimitri:
 
 Anahita:
@@ -7,7 +12,7 @@ Lia:
 Create chess game menu, add it to the board
 
 Zach:
-Work on implementing check, castling, promotion, etc.
+Work on implementing castling, promotion
 
 Khang:
 Create an array that save game piece move, find away to make the board interactive 

@@ -1,16 +1,14 @@
 package chess.ui;
 
 import java.io.FileNotFoundException;
+
+import chess.logic.ChessGame;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -22,6 +20,7 @@ public class Main extends Application {
 		
 		BorderPane root = new BorderPane();
 		
+<<<<<<< HEAD
 		MenuBar menuBar = new MenuBar();
         
         // Create menus
@@ -56,27 +55,28 @@ public class Main extends Application {
         
 		Label turnLabel = new Label();
 		
+=======
+>>>>>>> 82682e3e9088416e6b5054ff04bc527055d159e3
 		ChessGame chessGame = new ChessGame();
-		Board board = chessGame.getBoard();
-		BoardContainer boardContainer = new BoardContainer(board);
+		BoardDisplay boardDisplay = chessGame.getBoardDisplay();
+		BoardDisplayContainer boardDisplayContainer = new BoardDisplayContainer(boardDisplay);
+		VBox.setVgrow(boardDisplayContainer, Priority.ALWAYS);
 		
-		VBox.setVgrow(boardContainer, Priority.ALWAYS);
+		ChessGameMenuBar menuBar = new ChessGameMenuBar(chessGame);
 		
-		String whiteTurn = "It's white's turn.";
-		String blackTurn = "It's black's turn.";
-		turnLabel.setText(whiteTurn);
-		chessGame.isWhiteTurnProperty().addListener((prop, oldVal, newVal) -> {
-			if (newVal) {
-				turnLabel.setText(whiteTurn);
-			} else {
-				turnLabel.setText(blackTurn);
-			}
-		});
+		root.getChildren().add(menuBar);
 		
+		ChessGameStateLabel gameStateLabel = new ChessGameStateLabel(chessGame);
+		
+<<<<<<< HEAD
 
 		BorderPane.setAlignment(turnLabel, Pos.BOTTOM_CENTER);
 		
 		root.setCenter(boardContainer);
+=======
+		root.getChildren().add(gameStateLabel);
+		root.getChildren().add(boardDisplayContainer);
+>>>>>>> 82682e3e9088416e6b5054ff04bc527055d159e3
 		
 		Scene scene = new Scene(root, 500, 500);
 		
