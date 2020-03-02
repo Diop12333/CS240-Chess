@@ -3,6 +3,7 @@ package chess.ui;
 import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
@@ -19,39 +20,39 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws FileNotFoundException {
 		primaryStage.setTitle("Chess Game");
 		
-		VBox root = new VBox();
-		root.setAlignment(Pos.CENTER);
+		BorderPane root = new BorderPane();
 		
 		MenuBar menuBar = new MenuBar();
         
         // Create menus
-        Menu playerMenu = new Menu ("Player 1");
-        Menu player2Menu = new Menu("Player 2");
+        Menu fileMenu = new Menu ("File");
+        Menu historyMenu = new Menu("History");
         Menu scoresMenu = new Menu("Scores");
         Menu playMenu = new Menu("Play Again");
         
         // Create MenuItems
-        MenuItem colorItem = new MenuItem("Color");
-        MenuItem movesItem = new MenuItem("Number of Moves");
+        MenuItem newItem = new MenuItem("New Game");
+        MenuItem saveItem = new MenuItem("Save Game");
+        MenuItem loadItem = new MenuItem("Load Game");
         
-        MenuItem colors2Item = new MenuItem("Color");
-        MenuItem moves2Item = new MenuItem("Number of Moves");
+        MenuItem undoItem = new MenuItem("Undo Move");
+        MenuItem redoItem = new MenuItem("Redo Move");
         
         MenuItem highItem = new MenuItem("Highest Score");
         MenuItem lowItem = new MenuItem("Lowest Score");
        
         MenuItem startItem = new MenuItem("Start Game");
         
-        root.getChildren().add(menuBar);
+        root.setTop(menuBar);
         
         // Add menuItems to the Menus
-        playerMenu.getItems().addAll(colorItem, movesItem);
-        player2Menu.getItems().addAll(colors2Item, moves2Item);
+        fileMenu.getItems().addAll(newItem, saveItem, loadItem);
+        historyMenu.getItems().addAll(undoItem, redoItem);
         scoresMenu.getItems().addAll(highItem,lowItem);
         playMenu.getItems().addAll(startItem);
         
         // Add Menus to the MenuBar
-        menuBar.getMenus().addAll(playerMenu, player2Menu, scoresMenu, playMenu);
+        menuBar.getMenus().addAll(fileMenu, historyMenu, scoresMenu, playMenu);
         
 		Label turnLabel = new Label();
 		
@@ -72,8 +73,10 @@ public class Main extends Application {
 			}
 		});
 		
-		root.getChildren().add(turnLabel);
-		root.getChildren().add(boardContainer);
+
+		BorderPane.setAlignment(turnLabel, Pos.BOTTOM_CENTER);
+		
+		root.setCenter(boardContainer);
 		
 		Scene scene = new Scene(root, 500, 500);
 		
