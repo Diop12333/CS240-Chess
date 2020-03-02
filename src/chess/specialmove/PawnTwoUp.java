@@ -1,14 +1,14 @@
 package chess.specialmove;
 
 import chess.logic.Board;
-import chess.logic.BoardLogic;
+import chess.logic.LegalMoveLogic;
 import chess.logic.Pawn;
 import chess.logic.Piece;
 import chess.logic.XY;
 
 public class PawnTwoUp implements SpecialMoveImplementation {
 	@Override
-	public boolean canDoMove(Piece piece, BoardLogic logic) {
+	public boolean canDoMove(Piece piece, LegalMoveLogic logic) {
 		Pawn pawn = (Pawn) piece;
 		
 		Piece frontPiece = logic.getPieceRelative(piece, new XY(0, -1));

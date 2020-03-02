@@ -14,7 +14,7 @@ public class Board {
 	private King whiteKing;
 	private King blackKing;
 	
-	private BoardLogic logic;
+	private LegalMoveLogic logic;
 	
 	public Board() { this(new XY(8, 8)); }
 	
@@ -32,7 +32,7 @@ public class Board {
 			}
 		}
 		
-		logic = new BoardLogic(this);
+		logic = new LegalMoveLogic(this);
 	}
 	public Board(Board board) {
 		this(board.getDimensions());
@@ -144,5 +144,5 @@ public class Board {
 	
 	public Set<Piece> getCapturedPieces() { return capturedPieces; }
 	
-	public BoardLogic getLogic() { return logic; }
+	public LegalMoveLogic getLogic() { return logic; }
 }

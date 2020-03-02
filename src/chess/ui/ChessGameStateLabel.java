@@ -28,7 +28,7 @@ public class ChessGameStateLabel extends Label {
 			case NORMAL: return "It's " + currTurnText + "'s turn.";
 			case CHECK: return currTurnText + " is in check.";
 			case CHECKMATE: return currTurnText + " has been checkmated!";
-			case STALEMATE: return currTurnText + " cannot move, the game is a stalemate!";
+			case STALEMATE: return currTurnText + " is in stalemate, the game is a draw!";
 		}
 		
 		return "What the hell? This shouldn't appear! Check ChessGameStateLabel";

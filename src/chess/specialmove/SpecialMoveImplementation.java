@@ -1,11 +1,11 @@
 package chess.specialmove;
 
 import chess.logic.Board;
-import chess.logic.BoardLogic;
+import chess.logic.LegalMoveLogic;
 import chess.logic.Piece;
 
 public interface SpecialMoveImplementation {
-	boolean canDoMove(Piece piece, BoardLogic logic);
+	boolean canDoMove(Piece piece, LegalMoveLogic logic);
 	
 	// Does everything not handled by typical move handler
 	// Assumes that move can be done - undefined behavior if cannot

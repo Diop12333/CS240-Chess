@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import chess.logic.ChessGame;
-import chess.logic.BoardLogic;
+import chess.logic.LegalMoveLogic;
 import chess.logic.Coordinate;
 import chess.logic.Piece;
 import chess.specialmove.SpecialMoveImplementation;
@@ -17,7 +17,7 @@ import chess.specialmove.SpecialMoveImplementation;
 public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private ChessGame chessGame;
 	private BoardDisplay boardDisplay;
-	private BoardLogic logic;
+	private LegalMoveLogic logic;
 	private Square storedSquare;
 	private Set<Square> moveSquares = new HashSet<>();
 	private Map<Square, SpecialMoveImplementation> specialMoveSquares = new HashMap<>();

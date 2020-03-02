@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class ChessGame {
 	private Board board;
 	private BoardDisplay boardDisplay;
-	private BoardLogic logic;
+	private LegalMoveLogic logic;
 	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
 	private ObjectProperty<ChessGameState> gameState =
 		new SimpleObjectProperty<>(ChessGameState.NORMAL);
@@ -18,7 +18,7 @@ public class ChessGame {
 	public ChessGame() {
 		isWhiteTurn.set(true);
 		setUp();
-		logic = new BoardLogic(board);
+		logic = new LegalMoveLogic(board);
 		new ChessGameMouseHandler(this);
 		
 		detectGameState();
@@ -92,7 +92,7 @@ public class ChessGame {
 	
 	public Board getBoard() { return board; }
 	public BoardDisplay getBoardDisplay() { return boardDisplay; }
-	public BoardLogic getLogic() { return logic; }
+	public LegalMoveLogic getLogic() { return logic; }
 	public boolean isWhiteTurn() { return isWhiteTurn.get(); }
 	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }

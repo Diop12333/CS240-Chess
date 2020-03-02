@@ -9,9 +9,9 @@ import java.util.Set;
 import chess.specialmove.SpecialMove;
 import chess.specialmove.SpecialMoveImplementation;
 
-public class BoardLogic {
+public class LegalMoveLogic {
 	private Board board;
-	public BoardLogic(Board board) {
+	public LegalMoveLogic(Board board) {
 		this.board = board;
 	}
 	

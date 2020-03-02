@@ -1,7 +1,7 @@
 package chess.specialmove;
 
 import chess.logic.Board;
-import chess.logic.BoardLogic;
+import chess.logic.LegalMoveLogic;
 import chess.logic.Coordinate;
 import chess.logic.Pawn;
 import chess.logic.Piece;
@@ -15,14 +15,14 @@ public class EnPassant implements SpecialMoveImplementation {
 		this.direction = direction;
 	}
 	
-	private Pawn getCapturePawn(Piece piece, BoardLogic logic) {
+	private Pawn getCapturePawn(Piece piece, LegalMoveLogic logic) {
 		Piece testPiece = logic.getPieceRelative(piece, new XY(direction, 0));
 		if (testPiece instanceof Pawn) return (Pawn) testPiece;
 		else return null;
 	}
 	
 	@Override
-	public boolean canDoMove(Piece piece, BoardLogic logic) {
+	public boolean canDoMove(Piece piece, LegalMoveLogic logic) {
 		Pawn capturePawn = getCapturePawn(piece, logic);
 		
 		return
