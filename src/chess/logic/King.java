@@ -3,14 +3,24 @@ package chess.logic;
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.specialmove.SpecialMove;
+
 public class King extends Piece
-{	
+{
+	private boolean hasMoved = false;
+	
 	public King(boolean isWhite)
 	{
 		super(isWhite);
 	}
 	public King(King king) {
 		super(king);
+	}
+	
+	@Override
+	public void move(Coordinate coord) {
+		super.move(coord);
+		hasMoved = true;
 	}
 	
 	@Override
@@ -31,6 +41,17 @@ public class King extends Piece
 	}
 	
 	@Override
+	public Set<SpecialMove> potentialSpecialMoves()
+	{
+		Set<SpecialMove> moves = new HashSet<>();
+		
+		moves.add(SpecialMove.CASTLE_QUEENSIDE);
+		moves.add(SpecialMove.CASTLE_KINGSIDE);
+		
+		return moves;
+	}
+	
+	@Override
 	public boolean canRepeatMoves() { return false; }
 	@Override
 	public String getWhiteImgFileName() { return "white_king.png"; }
@@ -41,4 +62,6 @@ public class King extends Piece
 	
 	@Override
 	public King copy() { return new King(this); }
+	
+	public boolean hasMoved() { return hasMoved; }
 }

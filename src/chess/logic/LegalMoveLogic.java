@@ -86,7 +86,7 @@ public class LegalMoveLogic {
 		return threatenedCoords;
 	}
 	
-	private static boolean containsCoord(Collection<Coordinate> c, Coordinate coord) {
+	public static boolean containsCoord(Collection<Coordinate> c, Coordinate coord) {
 		for (Coordinate collCoord : c) {
 			if (collCoord.equals(coord)) return true;
 		}
@@ -129,7 +129,7 @@ public class LegalMoveLogic {
 		for (SpecialMove move : piece.potentialSpecialMoves()) {
 			SpecialMoveImplementation implementation = move.getImplementation();
 			
-			if (implementation.canDoMove(piece, this)) {
+			if (implementation.canDoMove(piece, board.getLogic())) {
 				Board boardCopy = new Board(board);
 				Piece pieceCopy = boardCopy.getPiece(piece.getCoord());
 				

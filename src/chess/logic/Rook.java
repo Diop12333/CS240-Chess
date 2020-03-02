@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Rook extends Piece
-{	
+{
+	private boolean hasMoved = false;
+	
 	public Rook(boolean white)
 	{
 		super(white);
@@ -12,6 +14,12 @@ public class Rook extends Piece
 	public Rook(Rook rook)
 	{
 		super(rook);
+	}
+	
+	@Override
+	public void move(Coordinate coord) {
+		super.move(coord);
+		hasMoved = true;
 	}
 	
 	@Override
@@ -37,4 +45,6 @@ public class Rook extends Piece
 	public String notation() { return "R"; }
 	@Override
 	public Rook copy() { return new Rook(this); }
+	
+	public boolean hasMoved() { return hasMoved; }
 }
