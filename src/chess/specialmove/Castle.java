@@ -42,6 +42,7 @@ public class Castle implements SpecialMoveImplementation {
 		Coordinate shifted1 = LegalMoveLogic.pieceCoordAfterShift(king, shift1);
 		
 		return
+			!logic.kingInCheck(king.isWhite()) &&
 			!king.hasMoved() &&
 			castleRook != null &&
 			!castleRook.hasMoved() &&

@@ -14,6 +14,9 @@ public class ChessGame {
 	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
 	private ObjectProperty<ChessGameState> gameState =
 		new SimpleObjectProperty<>(ChessGameState.NORMAL);
+	
+	private boolean waitingForPromotion = false;
+	private Pawn promotionPawn;
 
 	public ChessGame() {
 		isWhiteTurn.set(true);
@@ -28,27 +31,27 @@ public class ChessGame {
 		board = new Board();
 		
 		for (int i = 0; i <= 7; i++) {
-			board.setCoord(i, 1, new Pawn(false));
-			board.setCoord(i, 6, new Pawn(true));
+			board.addNewPiece(i, 1, new Pawn(false));
+			board.addNewPiece(i, 6, new Pawn(true));
 		}
 		
-		board.setCoord(0, 0, new Rook(false));
-		board.setCoord(1, 0, new Knight(false));
-		board.setCoord(2, 0, new Bishop(false));
-		board.setCoord(3, 0, new Queen(false));
-		board.setCoord(4, 0, new King(false));
-		board.setCoord(5, 0, new Bishop(false));
-		board.setCoord(6, 0, new Knight(false));
-		board.setCoord(7, 0, new Rook(false));
+		board.addNewPiece(0, 0, new Rook(false));
+		board.addNewPiece(1, 0, new Knight(false));
+		board.addNewPiece(2, 0, new Bishop(false));
+		board.addNewPiece(3, 0, new Queen(false));
+		board.addNewPiece(4, 0, new King(false));
+		board.addNewPiece(5, 0, new Bishop(false));
+		board.addNewPiece(6, 0, new Knight(false));
+		board.addNewPiece(7, 0, new Rook(false));
 		
-		board.setCoord(0, 7, new Rook(true));
-		board.setCoord(1, 7, new Knight(true));
-		board.setCoord(2, 7, new Bishop(true));
-		board.setCoord(3, 7, new Queen(true));
-		board.setCoord(4, 7, new King(true));
-		board.setCoord(5, 7, new Bishop(true));
-		board.setCoord(6, 7, new Knight(true));
-		board.setCoord(7, 7, new Rook(true));
+		board.addNewPiece(0, 7, new Rook(true));
+		board.addNewPiece(1, 7, new Knight(true));
+		board.addNewPiece(2, 7, new Bishop(true));
+		board.addNewPiece(3, 7, new Queen(true));
+		board.addNewPiece(4, 7, new King(true));
+		board.addNewPiece(5, 7, new Bishop(true));
+		board.addNewPiece(6, 7, new Knight(true));
+		board.addNewPiece(7, 7, new Rook(true));
 		
 		boardDisplay = new BoardDisplay(board);
 	}
@@ -90,10 +93,23 @@ public class ChessGame {
 		}
 	}
 	
+	public void waitForPromotion(Pawn pawn) {
+		waitingForPromotion = true;
+		promotionPawn = pawn;
+	}
+	public void promotePawn(PromotionPiece promPiece) {
+		// TODO
+		
+		promotionPawn = null;
+		waitingForPromotion = false;
+	}
+	
 	public Board getBoard() { return board; }
 	public BoardDisplay getBoardDisplay() { return boardDisplay; }
 	public LegalMoveLogic getLogic() { return logic; }
 	public boolean isWhiteTurn() { return isWhiteTurn.get(); }
 	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }
+	
+	public boolean waitingForPromotion() { return waitingForPromotion; }
 }

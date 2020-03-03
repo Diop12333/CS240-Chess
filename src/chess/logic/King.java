@@ -5,22 +5,14 @@ import java.util.Set;
 
 import chess.specialmove.SpecialMove;
 
-public class King extends Piece
+public class King extends HasMovedPiece
 {
-	private boolean hasMoved = false;
-	
 	public King(boolean isWhite)
 	{
 		super(isWhite);
 	}
 	public King(King king) {
 		super(king);
-	}
-	
-	@Override
-	public void move(Coordinate coord) {
-		super.move(coord);
-		hasMoved = true;
 	}
 	
 	@Override
@@ -62,6 +54,4 @@ public class King extends Piece
 	
 	@Override
 	public King copy() { return new King(this); }
-	
-	public boolean hasMoved() { return hasMoved; }
 }

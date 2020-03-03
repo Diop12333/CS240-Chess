@@ -5,20 +5,17 @@ import java.util.Set;
 
 import chess.specialmove.SpecialMove;
 
-public class Pawn extends Piece
+public class Pawn extends HasMovedPiece
 {
-	private boolean hasMoved;
 	private boolean enPassantable;
 	
 	public Pawn(boolean isWhite)
 	{
 		super(isWhite);
-		hasMoved = false;
 		enPassantable = false;
 	}
 	public Pawn(Pawn pawn) {
 		super(pawn);
-		hasMoved = pawn.hasMoved();
 		enPassantable = pawn.enPassantable();
 	}
 	
@@ -54,15 +51,6 @@ public class Pawn extends Piece
 		
 		return moves;
 	}
-	
-	@Override
-	public void move(Coordinate coord)
-	{	
-		super.move(coord);
-		hasMoved = true;
-	}
-	
-	public boolean hasMoved() { return hasMoved; }
 	
 	public boolean enPassantable() { return enPassantable; }
 	

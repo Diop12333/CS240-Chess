@@ -38,7 +38,7 @@ public class Board {
 		this(board.getDimensions());
 		
 		for (Piece piece : board.getPieces()) {
-			setCoord(piece.getCoord(), piece.copy());
+			addNewPiece(piece.getCoord(), piece.copy());
 		}
 		
 		for (Piece piece : board.getCapturedPieces()) {
@@ -68,34 +68,40 @@ public class Board {
 		setCoord(new Coordinate(x, y), piece);
 	}
 	public void setCoord(Coordinate coord, Piece piece) {
-		// WARNING: Doesn't check for duplicate kings
+		Piece currPiece = getPiece(coord);
+		if (currPiece != null) {
+			capturedPieces.add(currPiece);
+		}
+		
+		if (piece != null) {
+			piece.setCoord(coord);
+		}
+		
+		pieces[coord.getY()][coord.getX()].set(piece);
+	}
+	
+	public void addNewPiece(int x, int y, Piece piece) {
+		addNewPiece(new Coordinate(x, y), piece);
+	}
+	public void addNewPiece(Coordinate coord, Piece piece) {
 		if (piece instanceof King) {
 			King king = (King) piece;
 			if (king.isWhite()) whiteKing = king;
 			else blackKing = king;
 		}
 		
-		Piece currPiece = getPiece(coord);
-		if (currPiece != null) {
-			capturedPieces.add(currPiece);
-		}
+		setCoord(coord, piece);
 		
-		pieces[coord.getY()][coord.getX()].set(piece);
-		
-		if (piece != null) {
-			piece.coordProperty().addListener((prop, oldCoord, newCoord) -> {
-				Piece newCoordPiece = getPiece(newCoord);
-				if (newCoordPiece != null) {
-					capturedPieces.add(newCoordPiece);
-				}
-				
-				setCoord(newCoord, piece);
-				
-				if (oldCoord != null) setCoord(oldCoord, null);
-			});
+		piece.coordProperty().addListener((prop, oldCoord, newCoord) -> {
+			Piece newCoordPiece = getPiece(newCoord);
+			if (newCoordPiece != null) {
+				capturedPieces.add(newCoordPiece);
+			}
 			
-			piece.setCoord(coord);
-		}
+			setCoord(newCoord, piece);
+			
+			if (oldCoord != null) setCoord(oldCoord, null);
+		});
 	}
 	
 	public Coordinate getCoord(Piece piece) {
