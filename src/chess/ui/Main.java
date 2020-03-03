@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import chess.logic.ChessGame;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
@@ -17,8 +18,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws FileNotFoundException {
 		primaryStage.setTitle("Chess Game");
 		
-		VBox root = new VBox();
-		root.setAlignment(Pos.CENTER);
+		BorderPane root = new BorderPane();
+		VBox test=new VBox();
 		
 		ChessGame chessGame = new ChessGame();
 		BoardDisplay boardDisplay = chessGame.getBoardDisplay();
@@ -27,12 +28,13 @@ public class Main extends Application {
 		
 		ChessGameMenuBar menuBar = new ChessGameMenuBar(chessGame);
 		
-		root.getChildren().add(menuBar);
-		
 		ChessGameStateLabel gameStateLabel = new ChessGameStateLabel(chessGame);
-		
-		root.getChildren().add(gameStateLabel);
-		root.getChildren().add(boardDisplayContainer);
+		test.getChildren().add(menuBar);
+		test.getChildren().add(gameStateLabel);
+		test.setAlignment(Pos.CENTER);
+		root.setTop(test);
+		BorderPane.setAlignment(gameStateLabel, Pos.BOTTOM_CENTER);
+		root.setCenter(boardDisplayContainer);
 		
 		Scene scene = new Scene(root, 500, 500);
 		
