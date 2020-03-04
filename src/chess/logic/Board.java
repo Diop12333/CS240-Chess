@@ -65,11 +65,18 @@ public class Board {
 	}
 	
 	public void setCoord(int x, int y, Piece piece) {
-		setCoord(new Coordinate(x, y), piece);
+		setCoord(x, y, piece, true);
+	}
+	public void setCoord(int x, int y, Piece piece, boolean processCapture) {
+		setCoord(new Coordinate(x, y), piece, processCapture);
 	}
 	public void setCoord(Coordinate coord, Piece piece) {
+		setCoord(coord, piece, true);
+	}
+	// processCapture: if piece on coord is replaced or deleted, add it to capturedPieces
+	public void setCoord(Coordinate coord, Piece piece, boolean processCapture) {
 		Piece currPiece = getPiece(coord);
-		if (currPiece != null) {
+		if (processCapture && currPiece != null) {
 			capturedPieces.add(currPiece);
 		}
 		
@@ -90,7 +97,7 @@ public class Board {
 			else blackKing = king;
 		}
 		
-		setCoord(coord, piece);
+		setCoord(coord, piece, false);
 		
 		piece.coordProperty().addListener((prop, oldCoord, newCoord) -> {
 			Piece newCoordPiece = getPiece(newCoord);
@@ -98,9 +105,9 @@ public class Board {
 				capturedPieces.add(newCoordPiece);
 			}
 			
-			setCoord(newCoord, piece);
+			setCoord(newCoord, piece, true);
 			
-			if (oldCoord != null) setCoord(oldCoord, null);
+			if (oldCoord != null) setCoord(oldCoord, null, false);
 		});
 	}
 	

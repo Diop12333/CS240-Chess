@@ -23,6 +23,7 @@ public abstract class Piece {
 	public void setCoord(Coordinate newCoord) {
 		this.coord.set(newCoord);
 	}
+	// Meant to potentially have special behavior
 	public void move(Coordinate newCoord) { setCoord(newCoord); }
 	
 	public abstract Set<Move> potentialNonCaptureMoves();
@@ -45,7 +46,7 @@ public abstract class Piece {
 	public Coordinate getCoord() { return coord.get(); }
 	public ObjectProperty<Coordinate> coordProperty() { return coord; }
 	
-	protected abstract String notation(); // return letter(s) for chess notation
+	public abstract String notation(); // return letter(s) for chess notation
 	
 	public abstract Piece copy();
 }

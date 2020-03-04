@@ -7,12 +7,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 // Whenever board pieces change, BoardDisplay changes too
-public class BoardDisplay extends GridPane {
+public class BoardDisplay extends DynamicEqualGridPane {
 	// y goes down
 	private Square[][] squares;
 	
 	public BoardDisplay(Board board) { this(board, Color.ANTIQUEWHITE, Color.SADDLEBROWN); }
 	public BoardDisplay(Board board, Color color1, Color color2) {
+		super(board.getDimensions());
 		XY dimensions = board.getDimensions();
 		int xSqAmount = dimensions.getX();
 		int ySqAmount = dimensions.getY();
@@ -27,8 +28,6 @@ public class BoardDisplay extends GridPane {
 				if (useColor1) color = color1; else color = color2;
 				
 				Square sq = new Square(x, y, color);
-				sq.prefWidthProperty().bind(widthProperty().divide(xSqAmount));
-				sq.prefHeightProperty().bind(heightProperty().divide(ySqAmount));
 				
 				sq.setPiece(board.getPiece(x, y));
 				board.getPieceProperty(x, y).addListener(
