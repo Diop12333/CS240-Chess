@@ -1,16 +1,27 @@
 package chess.ui;
 
+
+import java.io.FileNotFoundException;
+
 import chess.logic.ChessGame;
+import chess.ui.Main;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
 
 public class ChessGameMenuBar extends MenuBar {
 	private ChessGame chessGame;
-	public ChessGameMenuBar(ChessGame chessGame) {
+	private Stage primaryStage ;
+	public ChessGameMenuBar(ChessGame chessGame,Stage primaryStage ) {
 		this.chessGame = chessGame;
+		this.primaryStage= primaryStage;
 		EventHandler<ActionEvent> action = ActionSelection();
 		// Create menus
 		Menu fileMenu = new Menu ("File");
@@ -53,13 +64,21 @@ public class ChessGameMenuBar extends MenuBar {
             	MenuItem mItem = (MenuItem) event.getSource();
                 String side = mItem.getText();
                 if (side.equals("Start a New Game")) {
-                	System.out.println("New Game");
+                	Platform.runLater( () -> {
+						try {
+							new Main().start( new Stage() );
+							primaryStage.close();
+						} catch (FileNotFoundException e) {
+						
+						}
+					} );
+                    primaryStage.show();
                 }else if (side.equals("Save Current Game")) {
                     System.out.println("save");
                 }else if (side.equals("Load Previous Game")) {
                 	System.out.println("load");
                 }else if (side.equals("Exit Chess Game")) {
-                	System.out.println("exit");
+                	Platform.exit();
                 }
             }
         };

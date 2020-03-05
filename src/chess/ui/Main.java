@@ -4,11 +4,14 @@ import java.io.FileNotFoundException;
 
 import chess.logic.ChessGame;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -26,7 +29,7 @@ public class Main extends Application {
 		BoardDisplayContainer boardDisplayContainer = new BoardDisplayContainer(boardDisplay);
 		VBox.setVgrow(boardDisplayContainer, Priority.ALWAYS);
 		
-		ChessGameMenuBar menuBar = new ChessGameMenuBar(chessGame);
+		ChessGameMenuBar menuBar = new ChessGameMenuBar(chessGame,primaryStage);
 		
 		ChessGameStateLabel gameStateLabel = new ChessGameStateLabel(chessGame);
 		test.getChildren().add(menuBar);
