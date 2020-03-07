@@ -59,9 +59,6 @@ public class ChessGameMenuBar extends MenuBar {
             	MenuItem mItem = (MenuItem) event.getSource();
                 String side = mItem.getText();
                 if (side.equals("Start a New Game")) {
-                	// Zach:
-                	// Don't really like this, feel like it should manually start a new game
-                	// rather than restarting the application entirely
                 	Platform.runLater( () -> {
 						new Main().start( new Stage() );
 						primaryStage.close();

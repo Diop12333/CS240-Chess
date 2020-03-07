@@ -55,6 +55,7 @@ public class Square extends ResizableImageViewContainer {
 	public void highlight() {
 		setColor(HIGHLIGHT_COLOR);
 	}
+	// TODO: prevent threatened color from disappearing when highlighted and unhighlighted
 	public void showThreatened() {
 		setColor(THREATENED_COLOR);
 	}
