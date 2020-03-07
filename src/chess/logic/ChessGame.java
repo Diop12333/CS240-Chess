@@ -12,28 +12,28 @@ import javafx.beans.property.SimpleObjectProperty;
 public class ChessGame {
 	private Board board;
 	private BoardDisplay boardDisplay;
-	private LegalMoveLogic logic;
-	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
-	private ObjectProperty<ChessGameState> gameState =
-		new SimpleObjectProperty<>(ChessGameState.NORMAL);
+	private BooleanProperty isWhiteTurn;
+	private ObjectProperty<ChessGameState> gameState;
 	
-	private boolean waitingForPromotion = false;
+	private boolean waitingForPromotion;
 	private Pawn promotionPawn;
 	private PromotionDisplay promotionDisplay;
 
 	public ChessGame() {
-		isWhiteTurn.set(true);
+		isWhiteTurn = new SimpleBooleanProperty(true);
+		gameState = new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
+		waitingForPromotion = false;
 		
-		setUp();
-		logic = new LegalMoveLogic(board);
+		board = new Board();
+		boardDisplay = new BoardDisplay(board);
+		
+		setUpBoard();
 		new ChessGameMouseHandler(this);
 		
 		detectGameState();
 	}
 	
-	private void setUp() {
-		board = new Board();
-		
+	private void setUpBoard() {
 		for (int i = 0; i <= 7; i++) {
 			board.addNewPiece(i, 1, new Pawn(false));
 			board.addNewPiece(i, 6, new Pawn(true));
@@ -56,8 +56,17 @@ public class ChessGame {
 		board.addNewPiece(5, 7, new Bishop(true));
 		board.addNewPiece(6, 7, new Knight(true));
 		board.addNewPiece(7, 7, new Rook(true));
-		
-		boardDisplay = new BoardDisplay(board);
+	}
+	
+	public void reset() {
+		if (waitingForPromotion) {
+			boardDisplay.getSquare(promotionPawn.getCoord()).getChildren().remove(promotionDisplay);
+			waitingForPromotion = false;
+		}
+		board.reset();
+		setUpBoard();
+		isWhiteTurn.set(true);
+		gameState.set(ChessGameState.NORMAL);
 	}
 	
 	public void move(Piece piece, Coordinate coord) {
@@ -85,6 +94,8 @@ public class ChessGame {
 		King currKing = board.getKing(isWhiteTurn());
 		King nonCurrKing = board.getKing(!isWhiteTurn());
 		boardDisplay.getSquare(nonCurrKing.getCoord()).resetColor();
+		
+		LegalMoveLogic logic = board.getLogic();
 		
 		if (logic.kingInCheck(isWhiteTurn())) {
 			boardDisplay.getSquare(currKing.getCoord()).showThreatened();
@@ -134,13 +145,11 @@ public class ChessGame {
 		
 		isWhiteTurn.set(!isWhiteTurn.get());
 		
-		promotionPawn = null;
 		waitingForPromotion = false;
 	}
 	
 	public Board getBoard() { return board; }
 	public BoardDisplay getBoardDisplay() { return boardDisplay; }
-	public LegalMoveLogic getLogic() { return logic; }
 	public boolean isWhiteTurn() { return isWhiteTurn.get(); }
 	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }

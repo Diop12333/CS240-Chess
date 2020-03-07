@@ -1,22 +1,17 @@
 package chess.ui;
 
 import chess.logic.ChessGame;
-import chess.ui.Main;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.stage.Stage;
-
 
 public class ChessGameMenuBar extends MenuBar {
 	private ChessGame chessGame;
-	private Stage primaryStage ;
-	public ChessGameMenuBar(ChessGame chessGame,Stage primaryStage ) {
+	public ChessGameMenuBar(ChessGame chessGame) {
 		this.chessGame = chessGame;
-		this.primaryStage= primaryStage;
 		EventHandler<ActionEvent> action = ActionSelection();
 		// Create menus
 		Menu fileMenu = new Menu ("File");
@@ -59,11 +54,7 @@ public class ChessGameMenuBar extends MenuBar {
             	MenuItem mItem = (MenuItem) event.getSource();
                 String side = mItem.getText();
                 if (side.equals("Start a New Game")) {
-                	Platform.runLater( () -> {
-						new Main().start( new Stage() );
-						primaryStage.close();
-					} );
-                    primaryStage.show();
+                	chessGame.reset();
                 }else if (side.equals("Save Current Game")) {
                     System.out.println("save");
                 }else if (side.equals("Load Previous Game")) {

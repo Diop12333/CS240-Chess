@@ -6,15 +6,17 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	// TODO: make start method less crowded
 	// TODO: implement menu actions
 	@Override
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Chess Game");
+		primaryStage.setMinWidth(500);
+		primaryStage.setMinHeight(500);
 		
 		BorderPane root = new BorderPane();
 		VBox test=new VBox();
@@ -24,9 +26,10 @@ public class Main extends Application {
 		BoardDisplayContainer boardDisplayContainer = new BoardDisplayContainer(boardDisplay);
 		VBox.setVgrow(boardDisplayContainer, Priority.ALWAYS);
 		
-		ChessGameMenuBar menuBar = new ChessGameMenuBar(chessGame,primaryStage);
+		ChessGameMenuBar menuBar = new ChessGameMenuBar(chessGame);
 		
 		ChessGameStateLabel gameStateLabel = new ChessGameStateLabel(chessGame);
+		gameStateLabel.setFont(new Font("System", 25));
 		test.getChildren().add(menuBar);
 		test.getChildren().add(gameStateLabel);
 		test.setAlignment(Pos.CENTER);

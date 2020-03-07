@@ -111,6 +111,17 @@ public class Board {
 		});
 	}
 	
+	public void reset() {
+		capturedPieces.clear();
+		whiteKing = null;
+		blackKing = null;
+		for (int y = 0; y < dimensions.getY(); y++) {
+			for (int x = 0; x < dimensions.getX(); x++) {
+				pieces[y][x].set(null);
+			}
+		}
+	}
+	
 	public Coordinate getCoord(Piece piece) {
 		for (int y = 0; y < dimensions.getY(); y++) {
 			for (int x = 0; x < dimensions.getX(); x++) {
@@ -148,6 +159,7 @@ public class Board {
 		
 		return pieces;
 	}
+	
 	public Set<Piece> getColorPieces(boolean white) {
 		Set<Piece> colorPieces = new HashSet<>();
 		for (Piece piece : getPieces()) {
