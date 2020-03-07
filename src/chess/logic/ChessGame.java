@@ -10,23 +10,17 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 public class ChessGame {
-	private Board board;
-	private BoardDisplay boardDisplay;
-	private BooleanProperty isWhiteTurn;
-	private ObjectProperty<ChessGameState> gameState;
+	private Board board = new Board();
+	private BoardDisplay boardDisplay = new BoardDisplay(board);
+	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
+	private ObjectProperty<ChessGameState> gameState =
+		new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
 	
-	private boolean waitingForPromotion;
+	private boolean waitingForPromotion = false;
 	private Pawn promotionPawn;
 	private PromotionDisplay promotionDisplay;
 
 	public ChessGame() {
-		isWhiteTurn = new SimpleBooleanProperty(true);
-		gameState = new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
-		waitingForPromotion = false;
-		
-		board = new Board();
-		boardDisplay = new BoardDisplay(board);
-		
 		setUpBoard();
 		new ChessGameMouseHandler(this);
 		
