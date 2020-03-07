@@ -1,24 +1,19 @@
 package chess.ui;
 
-import java.io.FileNotFoundException;
-
 import chess.logic.ChessGame;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 	// TODO: make start method less crowded
 	// TODO: implement menu actions
 	@Override
-	public void start(Stage primaryStage) throws FileNotFoundException {
+	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Chess Game");
 		
 		BorderPane root = new BorderPane();

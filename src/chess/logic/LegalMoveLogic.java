@@ -44,7 +44,7 @@ public class LegalMoveLogic {
 		Coordinate newCoord = piece.getCoord();
 		do {
 			newCoord = coordAfterMove(newCoord, move, !piece.isWhite());
-			if (!board.isValidCoordinate(newCoord)) break;
+			if (!board.withinDimensions(newCoord)) break;
 			
 			Piece coordPiece = board.getPiece(newCoord);
 			// If square to move to is empty and move is in non capture moves

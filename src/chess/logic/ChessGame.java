@@ -2,6 +2,8 @@ package chess.logic;
 
 import chess.ui.BoardDisplay;
 import chess.ui.ChessGameMouseHandler;
+import chess.ui.PromotionDisplay;
+import chess.ui.Square;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,9 +19,11 @@ public class ChessGame {
 	
 	private boolean waitingForPromotion = false;
 	private Pawn promotionPawn;
+	private PromotionDisplay promotionDisplay;
 
 	public ChessGame() {
 		isWhiteTurn.set(true);
+		
 		setUp();
 		logic = new LegalMoveLogic(board);
 		new ChessGameMouseHandler(this);
@@ -66,7 +70,13 @@ public class ChessGame {
 		}
 		
 		piece.move(coord);
-		isWhiteTurn.set(!isWhiteTurn.get());
+		
+		int pieceY = piece.getCoord().getY();
+		if (piece instanceof Pawn && (pieceY == 0 || pieceY == board.getDimensions().getY() - 1)) {
+			waitForPromotion((Pawn) piece);
+		} else {
+			isWhiteTurn.set(!isWhiteTurn.get());
+		}
 		
 		detectGameState();
 	}
@@ -93,12 +103,36 @@ public class ChessGame {
 		}
 	}
 	
-	public void waitForPromotion(Pawn pawn) {
-		waitingForPromotion = true;
+	private void waitForPromotion(Pawn pawn) {
+		if (waitingForPromotion) {
+			System.out.println("ERROR: waitForPromotion called while waiting for promotion");
+			return;
+		}
+		
 		promotionPawn = pawn;
+		Square pawnSq = boardDisplay.getSquare(pawn.getCoord());
+		pawnSq.setPiece(null);
+		
+		promotionDisplay = new PromotionDisplay(this, pawn.isWhite());
+		promotionDisplay.prefWidthProperty().bind(pawnSq.prefWidthProperty());
+		promotionDisplay.prefHeightProperty().bind(pawnSq.prefHeightProperty());
+		pawnSq.getChildren().add(promotionDisplay);
+		
+		waitingForPromotion = true;
 	}
-	public void promotePawn(PromotionPiece promPiece) {
-		// TODO
+	public void promote(PromotionPiece promPiece) {
+		if (!waitingForPromotion) {
+			System.out.println("ERROR: promotePawn called while not waiting for promotion");
+			return;
+		}
+		
+		Coordinate pawnCoord = promotionPawn.getCoord();
+		Square promotionSq = boardDisplay.getSquare(pawnCoord);
+		promotionSq.getChildren().remove(promotionDisplay);
+		
+		board.addNewPiece(pawnCoord, promPiece.toRegularPiece(promotionPawn.isWhite()));
+		
+		isWhiteTurn.set(!isWhiteTurn.get());
 		
 		promotionPawn = null;
 		waitingForPromotion = false;

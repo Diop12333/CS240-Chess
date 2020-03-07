@@ -46,10 +46,10 @@ public class Board {
 		}
 	}
 	
-	public boolean isValidCoordinate(Coordinate coord) {
-		return isValidCoordinate(coord.getX(), coord.getY());
+	public boolean withinDimensions(Coordinate coord) {
+		return withinDimensions(coord.getX(), coord.getY());
 	}
-	public boolean isValidCoordinate(int x, int y) {
+	public boolean withinDimensions(int x, int y) {
 		boolean xValid = x >= 0 && x < dimensions.getX();
 		boolean yValid = y >= 0 && y < dimensions.getY();
 		return xValid && yValid;
@@ -119,6 +119,7 @@ public class Board {
 		}
 		return null;
 	}
+	
 	public Piece getPiece(int x, int y) {
 		return getPiece(new Coordinate(x, y));
 	}
@@ -129,7 +130,7 @@ public class Board {
 		return getPieceProperty(coord.getX(), coord.getY());
 	}
 	public ObjectProperty<Piece> getPieceProperty(int x, int y) {
-		if (isValidCoordinate(x, y)) return pieces[y][x];
+		if (withinDimensions(x, y)) return pieces[y][x];
 		else return new SimpleObjectProperty<Piece>();
 	}
 	

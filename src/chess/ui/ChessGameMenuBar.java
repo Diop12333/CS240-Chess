@@ -1,18 +1,13 @@
 package chess.ui;
 
-
-import java.io.FileNotFoundException;
-
 import chess.logic.ChessGame;
 import chess.ui.Main;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
@@ -57,20 +52,19 @@ public class ChessGameMenuBar extends MenuBar {
 		
 		// Add Menus to the MenuBar
 		getMenus().addAll(fileMenu, historyMenu, scoresMenu, modeMenu);
-	 }
+	}
     private EventHandler<ActionEvent> ActionSelection() {
         return new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
             	MenuItem mItem = (MenuItem) event.getSource();
                 String side = mItem.getText();
                 if (side.equals("Start a New Game")) {
+                	// Zach:
+                	// Don't really like this, feel like it should manually start a new game
+                	// rather than restarting the application entirely
                 	Platform.runLater( () -> {
-						try {
-							new Main().start( new Stage() );
-							primaryStage.close();
-						} catch (FileNotFoundException e) {
-						
-						}
+						new Main().start( new Stage() );
+						primaryStage.close();
 					} );
                     primaryStage.show();
                 }else if (side.equals("Save Current Game")) {

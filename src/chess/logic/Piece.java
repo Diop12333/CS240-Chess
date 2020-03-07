@@ -1,11 +1,14 @@
 package chess.logic;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
 import chess.specialmove.SpecialMove;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
 
 public abstract class Piece {
 	private boolean isWhite;
@@ -39,6 +42,16 @@ public abstract class Piece {
 	}
 	private final String getWhiteImgFilePath() { return getImgFolder() + getWhiteImgFileName(); }
 	private final String getBlackImgFilePath() { return getImgFolder() + getBlackImgFileName(); }
+	public final Image makeImg() {
+		try {
+			return new Image(new FileInputStream(getImgFilePath()));
+		} catch (FileNotFoundException e) {
+			// Is this clunky? Maybe
+			// But I don't think there's any reason to use a checked exception
+			// A FileNotFoundException here would be an error in the program, not user data
+			throw new RuntimeException(e.getMessage());
+		}
+	}
 	
 	// Only applies to regular moves
 	public abstract boolean canRepeatMoves();
