@@ -75,7 +75,13 @@ public class ChessGame {
 		piece.move(coord);
 		
 		int pieceY = piece.getCoord().getY();
-		if (piece instanceof Pawn && (pieceY == 0 || pieceY == board.getDimensions().getY() - 1)) {
+		if (
+			piece instanceof Pawn &&
+			(
+				piece.isWhite() && pieceY == 0 ||
+				!piece.isWhite() && pieceY == board.getDimensions().getY() - 1
+			)
+		) {
 			waitForPromotion((Pawn) piece);
 		} else {
 			isWhiteTurn.set(!isWhiteTurn.get());
