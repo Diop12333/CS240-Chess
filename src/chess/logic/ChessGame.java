@@ -76,8 +76,7 @@ public class ChessGame {
 		
 		int pieceY = piece.getCoord().getY();
 		if (
-			piece instanceof Pawn &&
-			(
+			piece instanceof Pawn && (
 				piece.isWhite() && pieceY == 0 ||
 				!piece.isWhite() && pieceY == board.getDimensions().getY() - 1
 			)
