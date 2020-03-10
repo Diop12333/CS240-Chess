@@ -39,7 +39,8 @@ public class ChessGameMenuBar extends MenuBar {
 		MenuItem exitGameItem = new MenuItem("Exit Chess Game");
 		exitGameItem.setOnAction(action);
 		
-		MenuItem redoItem = new MenuItem("Number of Moves");
+		MenuItem redoItem = new MenuItem("Redo a move");
+		MenuItem undoItem = new MenuItem("Undo a move");
 		
 		MenuItem highItem = new MenuItem("Highest Score");
 		MenuItem lowItem = new MenuItem("Lowest Score");
@@ -51,7 +52,7 @@ public class ChessGameMenuBar extends MenuBar {
 		
 		// Add menuItems to the Menus
 		fileMenu.getItems().addAll(newGameItem, saveGameItem,loadGameItem,exitGameItem);
-		historyMenu.getItems().addAll(redoItem);
+		historyMenu.getItems().addAll(redoItem,undoItem);
 		scoresMenu.getItems().addAll(highItem,lowItem);
 		modeMenu.getItems().addAll(classicItem,blitzItem,lightingItem);
 		
