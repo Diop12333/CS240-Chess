@@ -1,7 +1,6 @@
 package chess.ui;
 
 import javafx.scene.layout.Region;
-import javafx.scene.Node;
 
 public class BoardDisplayContainer extends Region {
 	private BoardDisplay board;
@@ -13,17 +12,17 @@ public class BoardDisplayContainer extends Region {
 	// Maintains 1:1 aspect ratio, keeps board centered
 	// TODO: allow non-1:1 aspect ratios (important for custom boards)
 	protected void layoutChildren() {
-		for (Node n : getChildren()) {
-			if (getWidth() <= getHeight()) {
-				double side = getWidth();
-				n.resize(side, side);
-				n.relocate(0, getHeight() / 2 - side / 2);
-			} else {
-				double side = getHeight();
-				n.resize(side, side);
-				n.relocate(getWidth() / 2 - side / 2, 0);
-			}
+		double side;
+		if (getWidth() <= getHeight()) {
+			side = getWidth();
+			board.relocate(0, getHeight() / 2 - side / 2);
+		} else {
+			side = getHeight();
+			board.relocate(getWidth() / 2 - side / 2, 0);
 		}
+		board.resize(side, side);
+		board.prefWidthProperty().set(side);
+		board.prefHeightProperty().set(side);
 	}
 	
 	public BoardDisplay getBoard() { return board; }

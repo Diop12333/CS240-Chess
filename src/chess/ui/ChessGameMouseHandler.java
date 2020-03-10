@@ -25,7 +25,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	public ChessGameMouseHandler(ChessGame chessGame) {
 		this.chessGame = chessGame;
 		boardDisplay = chessGame.getBoardDisplay();
-		logic = chessGame.getLogic();
+		logic = chessGame.getBoard().getLogic();
 		
 		for (Square[] row : boardDisplay.getSquares()) {
 			for (Square sq : row) {
@@ -49,6 +49,8 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	}
 	
 	public void handle(MouseEvent e) {
+		if (chessGame.waitingForPromotion()) return;
+		
 		Square clickedSquare = (Square) e.getSource();
 		Piece clickedSquarePiece = clickedSquare.getPiece();
 		

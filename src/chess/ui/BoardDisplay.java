@@ -3,7 +3,6 @@ package chess.ui;
 import chess.logic.Board;
 import chess.logic.Coordinate;
 import chess.logic.XY;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 // Whenever board pieces change, BoardDisplay changes too

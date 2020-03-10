@@ -2,34 +2,32 @@ package chess.logic;
 
 import chess.ui.BoardDisplay;
 import chess.ui.ChessGameMouseHandler;
+import chess.ui.PromotionDisplay;
+import chess.ui.Square;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 public class ChessGame {
-	private Board board;
-	private BoardDisplay boardDisplay;
-	private LegalMoveLogic logic;
+	private Board board = new Board();
+	private BoardDisplay boardDisplay = new BoardDisplay(board);
 	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
 	private ObjectProperty<ChessGameState> gameState =
-		new SimpleObjectProperty<>(ChessGameState.NORMAL);
+		new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
 	
 	private boolean waitingForPromotion = false;
 	private Pawn promotionPawn;
+	private PromotionDisplay promotionDisplay;
 
 	public ChessGame() {
-		isWhiteTurn.set(true);
-		setUp();
-		logic = new LegalMoveLogic(board);
+		setUpBoard();
 		new ChessGameMouseHandler(this);
 		
 		detectGameState();
 	}
 	
-	private void setUp() {
-		board = new Board();
-		
+	private void setUpBoard() {
 		for (int i = 0; i <= 7; i++) {
 			board.addNewPiece(i, 1, new Pawn(false));
 			board.addNewPiece(i, 6, new Pawn(true));
@@ -52,8 +50,17 @@ public class ChessGame {
 		board.addNewPiece(5, 7, new Bishop(true));
 		board.addNewPiece(6, 7, new Knight(true));
 		board.addNewPiece(7, 7, new Rook(true));
-		
-		boardDisplay = new BoardDisplay(board);
+	}
+	
+	public void reset() {
+		if (waitingForPromotion) {
+			boardDisplay.getSquare(promotionPawn.getCoord()).getChildren().remove(promotionDisplay);
+			waitingForPromotion = false;
+		}
+		board.reset();
+		setUpBoard();
+		isWhiteTurn.set(true);
+		gameState.set(ChessGameState.NORMAL);
 	}
 	
 	public void move(Piece piece, Coordinate coord) {
@@ -66,7 +73,18 @@ public class ChessGame {
 		}
 		
 		piece.move(coord);
-		isWhiteTurn.set(!isWhiteTurn.get());
+		
+		int pieceY = piece.getCoord().getY();
+		if (
+			piece instanceof Pawn && (
+				piece.isWhite() && pieceY == 0 ||
+				!piece.isWhite() && pieceY == board.getDimensions().getY() - 1
+			)
+		) {
+			waitForPromotion((Pawn) piece);
+		} else {
+			isWhiteTurn.set(!isWhiteTurn.get());
+		}
 		
 		detectGameState();
 	}
@@ -75,6 +93,8 @@ public class ChessGame {
 		King currKing = board.getKing(isWhiteTurn());
 		King nonCurrKing = board.getKing(!isWhiteTurn());
 		boardDisplay.getSquare(nonCurrKing.getCoord()).resetColor();
+		
+		LegalMoveLogic logic = board.getLogic();
 		
 		if (logic.kingInCheck(isWhiteTurn())) {
 			boardDisplay.getSquare(currKing.getCoord()).showThreatened();
@@ -93,20 +113,42 @@ public class ChessGame {
 		}
 	}
 	
-	public void waitForPromotion(Pawn pawn) {
-		waitingForPromotion = true;
-		promotionPawn = pawn;
-	}
-	public void promotePawn(PromotionPiece promPiece) {
-		// TODO
+	private void waitForPromotion(Pawn pawn) {
+		if (waitingForPromotion) {
+			System.out.println("ERROR: waitForPromotion called while waiting for promotion");
+			return;
+		}
 		
-		promotionPawn = null;
+		promotionPawn = pawn;
+		Square pawnSq = boardDisplay.getSquare(pawn.getCoord());
+		pawnSq.setPiece(null);
+		
+		promotionDisplay = new PromotionDisplay(this, pawn.isWhite());
+		promotionDisplay.prefWidthProperty().bind(pawnSq.prefWidthProperty());
+		promotionDisplay.prefHeightProperty().bind(pawnSq.prefHeightProperty());
+		pawnSq.getChildren().add(promotionDisplay);
+		
+		waitingForPromotion = true;
+	}
+	public void promote(PromotionPiece promPiece) {
+		if (!waitingForPromotion) {
+			System.out.println("ERROR: promotePawn called while not waiting for promotion");
+			return;
+		}
+		
+		Coordinate pawnCoord = promotionPawn.getCoord();
+		Square promotionSq = boardDisplay.getSquare(pawnCoord);
+		promotionSq.getChildren().remove(promotionDisplay);
+		
+		board.addNewPiece(pawnCoord, promPiece.toRegularPiece(promotionPawn.isWhite()));
+		
+		isWhiteTurn.set(!isWhiteTurn.get());
+		
 		waitingForPromotion = false;
 	}
 	
 	public Board getBoard() { return board; }
 	public BoardDisplay getBoardDisplay() { return boardDisplay; }
-	public LegalMoveLogic getLogic() { return logic; }
 	public boolean isWhiteTurn() { return isWhiteTurn.get(); }
 	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }

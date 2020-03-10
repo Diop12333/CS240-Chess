@@ -15,8 +15,4 @@ public class Coordinate extends XY {
 	public Coordinate shifted(int dx, int dy) {
 		return new Coordinate(getX() + dx, getY() + dy);
 	}
-	
-	public boolean equals(Coordinate otherCoord) {
-		return getX() == otherCoord.getX() && getY() == otherCoord.getY();
-	}
 }
