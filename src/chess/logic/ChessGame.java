@@ -16,6 +16,8 @@ public class ChessGame {
 	private ObjectProperty<ChessGameState> gameState =
 		new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
 	
+	private Square threatenedSquare;
+	
 	private boolean waitingForPromotion = false;
 	private Pawn promotionPawn;
 	private PromotionDisplay promotionDisplay;
@@ -52,7 +54,14 @@ public class ChessGame {
 		board.addNewPiece(7, 7, new Rook(true));
 	}
 	
+	public void resetThreatenedSquare() {
+		if (threatenedSquare != null) {
+			threatenedSquare.resetColor();
+		}
+	}
 	public void reset() {
+		resetThreatenedSquare();
+		
 		if (waitingForPromotion) {
 			boardDisplay.getSquare(promotionPawn.getCoord()).getChildren().remove(promotionDisplay);
 			waitingForPromotion = false;
@@ -90,6 +99,8 @@ public class ChessGame {
 	}
 	
 	private void detectGameState() {
+		resetThreatenedSquare();
+		
 		King currKing = board.getKing(isWhiteTurn());
 		King nonCurrKing = board.getKing(!isWhiteTurn());
 		boardDisplay.getSquare(nonCurrKing.getCoord()).resetColor();
@@ -97,7 +108,8 @@ public class ChessGame {
 		LegalMoveLogic logic = board.getLogic();
 		
 		if (logic.kingInCheck(isWhiteTurn())) {
-			boardDisplay.getSquare(currKing.getCoord()).showThreatened();
+			threatenedSquare = boardDisplay.getSquare(currKing.getCoord());
+			threatenedSquare.showThreatened();
 			
 			if (logic.canMakeAMove(isWhiteTurn())) {
 				gameState.set(ChessGameState.CHECK);
@@ -119,6 +131,8 @@ public class ChessGame {
 			return;
 		}
 		
+		waitingForPromotion = true;
+		
 		promotionPawn = pawn;
 		Square pawnSq = boardDisplay.getSquare(pawn.getCoord());
 		pawnSq.setPiece(null);
@@ -127,8 +141,6 @@ public class ChessGame {
 		promotionDisplay.prefWidthProperty().bind(pawnSq.prefWidthProperty());
 		promotionDisplay.prefHeightProperty().bind(pawnSq.prefHeightProperty());
 		pawnSq.getChildren().add(promotionDisplay);
-		
-		waitingForPromotion = true;
 	}
 	public void promote(PromotionPiece promPiece) {
 		if (!waitingForPromotion) {

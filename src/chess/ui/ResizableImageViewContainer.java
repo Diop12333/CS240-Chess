@@ -16,10 +16,8 @@ public class ResizableImageViewContainer extends StackPane {
 	}
 	public ResizableImageViewContainer(Image image) {
 		this();
-		setImage(image);
-	}
-	
-	public void setImage(Image image) {
 		imageView.setImage(image);
 	}
+	
+	public ImageView getImageView() { return imageView; }
 }

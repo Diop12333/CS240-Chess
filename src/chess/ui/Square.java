@@ -27,15 +27,17 @@ public class Square extends ResizableImageViewContainer {
 		
 		moveCircle.setFill(HIGHLIGHT_COLOR);
 		moveCircle.radiusProperty().bind(widthProperty().divide(10));
+		
+		getImageView().setSmooth(true);
 	}
 	
 	public void setPiece(Piece piece) {
 		this.piece = piece;
 		
 		if (piece != null) {
-			setImage(piece.makeImg());
+			getImageView().setImage(piece.makeImg());
 		} else {
-			setImage(null);
+			getImageView().setImage(null);
 		}
 	}
 	
