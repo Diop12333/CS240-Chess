@@ -92,12 +92,12 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		} else if (storedSquare != null) {
 			Piece storedPiece = storedSquare.getPiece();
 			if (moveSquares.contains(clickedSquare)) {
-				chessGame.move(storedPiece, clickedSquare.getCoord());
+				chessGame.makeMove(storedPiece, clickedSquare.getCoord());
 				reset();
 			} else if (specialMoveSquares.containsKey(clickedSquare)) {
 				SpecialMoveImplementation implementation = specialMoveSquares.get(clickedSquare);
 				
-				chessGame.move(storedPiece, clickedSquare.getCoord(), implementation);
+				chessGame.makeMove(storedPiece, clickedSquare.getCoord(), implementation);
 				
 				reset();
 			}

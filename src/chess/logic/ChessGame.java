@@ -75,8 +75,8 @@ public class ChessGame {
 		gameState.set(ChessGameState.NORMAL);
 	}
 	
-	public void move(Piece piece, Coordinate coord) { move(piece, coord, null); }
-	public void move(Piece piece, Coordinate coord, SpecialMoveImplementation impl) {
+	public void makeMove(Piece piece, Coordinate coord) { makeMove(piece, coord, null); }
+	public void makeMove(Piece piece, Coordinate coord, SpecialMoveImplementation impl) {
 		board.makeMove(piece, coord, impl);
 		
 		int pieceY = piece.getCoord().getY();
