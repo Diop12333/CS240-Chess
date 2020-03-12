@@ -15,18 +15,18 @@ public class Knight extends Piece
 	}
 	
 	@Override
-	public Set<Move> potentialNonCaptureMoves()
+	public Set<RegularMove> potentialMiscMoves()
 	{
-		Set<Move> moves = new HashSet<>();
+		Set<RegularMove> moves = new HashSet<>();
 		
-		moves.add(Move.KNIGHT_UP_LEFT);
-		moves.add(Move.KNIGHT_UP_RIGHT);
-		moves.add(Move.KNIGHT_LEFT_UP);
-		moves.add(Move.KNIGHT_RIGHT_UP);
-		moves.add(Move.KNIGHT_LEFT_DOWN);
-		moves.add(Move.KNIGHT_RIGHT_DOWN);
-		moves.add(Move.KNIGHT_DOWN_LEFT);
-		moves.add(Move.KNIGHT_DOWN_RIGHT);
+		moves.add(RegularMove.KNIGHT_UP_LEFT);
+		moves.add(RegularMove.KNIGHT_UP_RIGHT);
+		moves.add(RegularMove.KNIGHT_LEFT_UP);
+		moves.add(RegularMove.KNIGHT_RIGHT_UP);
+		moves.add(RegularMove.KNIGHT_LEFT_DOWN);
+		moves.add(RegularMove.KNIGHT_RIGHT_DOWN);
+		moves.add(RegularMove.KNIGHT_DOWN_LEFT);
+		moves.add(RegularMove.KNIGHT_DOWN_RIGHT);
 		
 		return moves;
 	}

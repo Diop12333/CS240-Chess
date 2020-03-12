@@ -29,8 +29,9 @@ public abstract class Piece {
 	// Meant to potentially have special behavior
 	public void move(Coordinate newCoord) { setCoord(newCoord); }
 	
-	public abstract Set<Move> potentialNonCaptureMoves();
-	public Set<Move> potentialCaptureMoves() { return potentialNonCaptureMoves(); }
+	public Set<RegularMove> potentialMiscMoves() { return new HashSet<>(); };
+	public Set<RegularMove> potentialNonCaptureMoves() { return potentialMiscMoves(); }
+	public Set<RegularMove> potentialCaptureMoves() { return potentialMiscMoves(); }
 	public Set<SpecialMove> potentialSpecialMoves() { return new HashSet<>(); }
 	
 	protected final String getImgFolder() { return "img/"; }

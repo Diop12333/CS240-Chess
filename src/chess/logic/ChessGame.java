@@ -1,5 +1,6 @@
 package chess.logic;
 
+import chess.specialmove.SpecialMoveImplementation;
 import chess.ui.BoardDisplay;
 import chess.ui.ChessGameMouseHandler;
 import chess.ui.PromotionDisplay;
@@ -12,6 +13,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class ChessGame {
 	private Board board = new Board();
 	private BoardDisplay boardDisplay = new BoardDisplay(board);
+	private ChessGameMouseHandler mouseHandler = new ChessGameMouseHandler(this);
 	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
 	private ObjectProperty<ChessGameState> gameState =
 		new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
@@ -21,11 +23,11 @@ public class ChessGame {
 	private boolean waitingForPromotion = false;
 	private Pawn promotionPawn;
 	private PromotionDisplay promotionDisplay;
+	
+	private boolean waitingForAIMove = false;
 
 	public ChessGame() {
 		setUpBoard();
-		new ChessGameMouseHandler(this);
-		
 		detectGameState();
 	}
 	
@@ -61,6 +63,7 @@ public class ChessGame {
 	}
 	public void reset() {
 		resetThreatenedSquare();
+		mouseHandler.reset();
 		
 		if (waitingForPromotion) {
 			boardDisplay.getSquare(promotionPawn.getCoord()).getChildren().remove(promotionDisplay);
@@ -72,16 +75,9 @@ public class ChessGame {
 		gameState.set(ChessGameState.NORMAL);
 	}
 	
-	public void move(Piece piece, Coordinate coord) {
-		// Make sure en passant can only occur turn after two-square move
-		for (Piece p : board.getPieces()) {
-			if (p instanceof Pawn) {
-				Pawn pawn = (Pawn) p;
-				pawn.setEnPassantable(false);
-			}
-		}
-		
-		piece.move(coord);
+	public void move(Piece piece, Coordinate coord) { move(piece, coord, null); }
+	public void move(Piece piece, Coordinate coord, SpecialMoveImplementation impl) {
+		board.makeMove(piece, coord, impl);
 		
 		int pieceY = piece.getCoord().getY();
 		if (

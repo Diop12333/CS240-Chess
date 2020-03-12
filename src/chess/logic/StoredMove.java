@@ -3,19 +3,19 @@ package chess.logic;
 public class StoredMove
 {
 	private Piece piece;
-	private Coordinate prevLocation;
-	private Coordinate newLocation;
+	private Coordinate prevCoord;
+	private Coordinate newCoord;
 	
-	public StoredMove(Piece piece, Coordinate prevLocation, Coordinate newLocation)
+	public StoredMove(Piece piece, Coordinate newCoord)
 	{
 		this.piece = piece;
-		this.prevLocation = prevLocation;
-		this.newLocation = newLocation;
+		prevCoord = piece.getCoord();
+		this.newCoord = newCoord;
 	}
 	
 	public Piece getPiece() { return piece; }
-	public Coordinate getPrevLocation() { return prevLocation; }
-	public Coordinate getNewLocation() { return newLocation; }
+	public Coordinate getPrevCoord() { return prevCoord; }
+	public Coordinate getNewCoord() { return newCoord; }
 	
 	public String toString() { return "TODO"; } // insert fancy chess notation here
 }

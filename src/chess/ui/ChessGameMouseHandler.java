@@ -34,7 +34,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		}
 	}
 	
-	private void reset() {
+	public void reset() {
 		if (storedSquare != null) {
 			storedSquare.resetColor();
 			storedSquare = null;
@@ -61,7 +61,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		) {
 			if (clickedSquare == storedSquare) reset();
 			else {
-				Set<Coordinate> moveCoords = logic.legalMoveCoords(clickedSquarePiece);
+				Set<Coordinate> moveCoords = logic.legalRegularMoveCoords(clickedSquarePiece);
 				Map<Coordinate, SpecialMoveImplementation> specialMoveCoords =
 					logic.legalSpecialMoveCoords(clickedSquarePiece);
 				
@@ -97,9 +97,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 			} else if (specialMoveSquares.containsKey(clickedSquare)) {
 				SpecialMoveImplementation implementation = specialMoveSquares.get(clickedSquare);
 				
-				implementation.doPreMoveEffect(storedPiece, chessGame.getBoard());
-				chessGame.move(storedPiece, clickedSquare.getCoord());
-				implementation.doPostMoveEffect(storedPiece, chessGame.getBoard());
+				chessGame.move(storedPiece, clickedSquare.getCoord(), implementation);
 				
 				reset();
 			}

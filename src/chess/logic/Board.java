@@ -3,6 +3,7 @@ package chess.logic;
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.specialmove.SpecialMoveImplementation;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -119,6 +120,25 @@ public class Board {
 			for (int x = 0; x < dimensions.getX(); x++) {
 				pieces[y][x].set(null);
 			}
+		}
+	}
+	
+	public void makeMove(Piece piece, Coordinate coord) { makeMove(piece, coord, null); }
+	public void makeMove(Piece piece, Coordinate coord, SpecialMoveImplementation impl) {
+		// Make sure en passant can only occur turn after two-square move
+		for (Piece p : getPieces()) {
+			if (p instanceof Pawn) {
+				Pawn pawn = (Pawn) p;
+				pawn.setEnPassantable(false);
+			}
+		}
+		
+		if (impl != null) {
+			impl.doPreMoveEffect(piece, this);
+			piece.move(coord);
+			impl.doPostMoveEffect(piece, this);
+		} else {
+			piece.move(coord);
 		}
 	}
 	

@@ -30,7 +30,7 @@ public class Castle implements SpecialMoveImplementation {
 	}
 	
 	@Override
-	public boolean canDoMove(Piece piece, LegalMoveLogic logic) {
+	public boolean checkExtraConditions(Piece piece, LegalMoveLogic logic) {
 		King king = (King) piece;
 		
 		Rook castleRook = getCastleRook(king, logic);
@@ -47,7 +47,7 @@ public class Castle implements SpecialMoveImplementation {
 			castleRook != null &&
 			!castleRook.hasMoved() &&
 			logic.getPieceRelative(king, shift1) == null &&
-			LegalMoveLogic.containsCoord(logic.legalMoveCoords(king), shifted1) &&
+			LegalMoveLogic.containsCoord(logic.legalRegularMoveCoords(king), shifted1) &&
 			logic.getPieceRelative(king, shift2) == null &&
 			(direction > 0 || logic.getPieceRelative(king, shift3) == null);
 	}

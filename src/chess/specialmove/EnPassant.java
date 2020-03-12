@@ -22,7 +22,7 @@ public class EnPassant implements SpecialMoveImplementation {
 	}
 	
 	@Override
-	public boolean canDoMove(Piece piece, LegalMoveLogic logic) {
+	public boolean checkExtraConditions(Piece piece, LegalMoveLogic logic) {
 		Pawn capturePawn = getCapturePawn(piece, logic);
 		
 		return

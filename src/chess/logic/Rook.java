@@ -15,14 +15,14 @@ public class Rook extends HasMovedPiece
 	}
 	
 	@Override
-	public Set<Move> potentialNonCaptureMoves()
+	public Set<RegularMove> potentialMiscMoves()
 	{
-		Set<Move> moves = new HashSet<>();
+		Set<RegularMove> moves = new HashSet<>();
 		
-		moves.add(Move.UP);
-		moves.add(Move.LEFT);
-		moves.add(Move.RIGHT);
-		moves.add(Move.DOWN);
+		moves.add(RegularMove.UP);
+		moves.add(RegularMove.LEFT);
+		moves.add(RegularMove.RIGHT);
+		moves.add(RegularMove.DOWN);
 		
 		return moves; 
 	} 
