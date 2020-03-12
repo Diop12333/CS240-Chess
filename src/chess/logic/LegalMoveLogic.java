@@ -1,6 +1,5 @@
 package chess.logic;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -86,21 +85,38 @@ public class LegalMoveLogic {
 		return threatenedCoords;
 	}
 	
-	public static boolean containsCoord(Collection<Coordinate> c, Coordinate coord) {
-		for (Coordinate collCoord : c) {
-			if (collCoord.equals(coord)) return true;
-		}
-		return false;
-	}
-	
 	public boolean kingInCheck(boolean kingIsWhite) {
 		King king;
 		if (kingIsWhite) king = board.getWhiteKing();
 		else king = board.getBlackKing();
 		
-		return containsCoord(allThreatenedCoords(kingIsWhite), king.getCoord());
+		return allThreatenedCoords(kingIsWhite).contains(king.getCoord());
 	}
 	
+	public Board generateBoardState(Piece piece, Coordinate coord) {
+		return generateBoardState(piece, coord, null);
+	}
+	public Board generateBoardState(
+		Piece piece, Coordinate coord, SpecialMoveImplementation impl
+	) {
+		Board boardCopy = new Board(board);
+		Piece pieceCopy = boardCopy.getPiece(piece.getCoord());
+		
+		boardCopy.makeMove(pieceCopy, coord, impl);
+		
+		return boardCopy;
+	}
+	public Map<Coordinate, SpecialMoveImplementation> legalMoveCoords(Piece piece) {
+		Map<Coordinate, SpecialMoveImplementation> legalCoords = new HashMap<>();
+		
+		for (Coordinate coord : legalRegularMoveCoords(piece)) {
+			legalCoords.put(coord, null);
+		}
+		
+		legalCoords.putAll(legalSpecialMoveCoords(piece));
+		
+		return legalCoords;
+	}
 	public Set<Coordinate> legalRegularMoveCoords(Piece piece) {
 		Set<Coordinate> legalCoords = new HashSet<>();
 		
@@ -111,10 +127,9 @@ public class LegalMoveLogic {
 			Set<Coordinate> moveCoords = generateCoordsFromRegularMove(piece, move, false);
 			
 			for (Coordinate moveCoord : moveCoords) {
-				Board boardCopy = new Board(board);
-				boardCopy.getPiece(piece.getCoord()).move(moveCoord);
+				Board newBoard = generateBoardState(piece, moveCoord);
 				
-				if (!boardCopy.getLogic().kingInCheck(piece.isWhite())) {
+				if (!newBoard.getLogic().kingInCheck(piece.isWhite())) {
 					legalCoords.add(moveCoord);
 				}
 			}
@@ -130,16 +145,11 @@ public class LegalMoveLogic {
 			SpecialMoveImplementation implementation = move.getImplementation();
 			
 			if (implementation.checkExtraConditions(piece, board.getLogic())) {
-				Board boardCopy = new Board(board);
-				Piece pieceCopy = boardCopy.getPiece(piece.getCoord());
+				Coordinate moveCoord = pieceCoordAfterShift(piece, move.getShift());
 				
-				Coordinate moveCoord = pieceCoordAfterShift(pieceCopy, move.getShift());
+				Board newBoard = generateBoardState(piece, moveCoord, implementation);
 				
-				implementation.doPreMoveEffect(pieceCopy, boardCopy);
-				pieceCopy.move(moveCoord);
-				implementation.doPostMoveEffect(pieceCopy, boardCopy);
-				
-				if (!boardCopy.getLogic().kingInCheck(piece.isWhite())) {
+				if (!newBoard.getLogic().kingInCheck(piece.isWhite())) {
 					legalCoords.put(moveCoord, implementation);
 				}
 			}

@@ -23,8 +23,6 @@ public class ChessGame {
 	private boolean waitingForPromotion = false;
 	private Pawn promotionPawn;
 	private PromotionDisplay promotionDisplay;
-	
-	private boolean waitingForAIMove = false;
 
 	public ChessGame() {
 		setUpBoard();
@@ -58,7 +56,7 @@ public class ChessGame {
 	
 	public void resetThreatenedSquare() {
 		if (threatenedSquare != null) {
-			threatenedSquare.resetColor();
+			threatenedSquare.setThreatened(false);
 		}
 	}
 	public void reset() {
@@ -99,13 +97,13 @@ public class ChessGame {
 		
 		King currKing = board.getKing(isWhiteTurn());
 		King nonCurrKing = board.getKing(!isWhiteTurn());
-		boardDisplay.getSquare(nonCurrKing.getCoord()).resetColor();
+		boardDisplay.getSquare(nonCurrKing.getCoord()).setThreatened(false);
 		
 		LegalMoveLogic logic = board.getLogic();
 		
 		if (logic.kingInCheck(isWhiteTurn())) {
 			threatenedSquare = boardDisplay.getSquare(currKing.getCoord());
-			threatenedSquare.showThreatened();
+			threatenedSquare.setThreatened(true);
 			
 			if (logic.canMakeAMove(isWhiteTurn())) {
 				gameState.set(ChessGameState.CHECK);
@@ -123,8 +121,9 @@ public class ChessGame {
 	
 	private void waitForPromotion(Pawn pawn) {
 		if (waitingForPromotion) {
-			System.out.println("ERROR: waitForPromotion called while waiting for promotion");
-			return;
+			throw new RuntimeException(
+				"ERROR: waitForPromotion called while waiting for promotion"
+			);
 		}
 		
 		waitingForPromotion = true;
@@ -140,8 +139,7 @@ public class ChessGame {
 	}
 	public void promote(PromotionPiece promPiece) {
 		if (!waitingForPromotion) {
-			System.out.println("ERROR: promotePawn called while not waiting for promotion");
-			return;
+			throw new RuntimeException("promotePawn called while not waiting for promotion");
 		}
 		
 		Coordinate pawnCoord = promotionPawn.getCoord();

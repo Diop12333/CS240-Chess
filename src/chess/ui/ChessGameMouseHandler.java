@@ -36,7 +36,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	
 	public void reset() {
 		if (storedSquare != null) {
-			storedSquare.resetColor();
+			storedSquare.setHighlighted(false);
 			storedSquare = null;
 		}
 		
@@ -69,7 +69,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 				if (!moveCoords.isEmpty() || !specialMoveCoords.isEmpty()) {
 					reset();
 					storedSquare = clickedSquare;
-					storedSquare.highlight();
+					storedSquare.setHighlighted(true);
 					
 					for (Coordinate coord : moveCoords) {
 						Square moveSquare = boardDisplay.getSquare(coord);

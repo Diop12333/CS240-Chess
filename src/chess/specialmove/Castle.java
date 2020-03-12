@@ -47,7 +47,7 @@ public class Castle implements SpecialMoveImplementation {
 			castleRook != null &&
 			!castleRook.hasMoved() &&
 			logic.getPieceRelative(king, shift1) == null &&
-			LegalMoveLogic.containsCoord(logic.legalRegularMoveCoords(king), shifted1) &&
+			logic.legalRegularMoveCoords(king).contains(shifted1) &&
 			logic.getPieceRelative(king, shift2) == null &&
 			(direction > 0 || logic.getPieceRelative(king, shift3) == null);
 	}
