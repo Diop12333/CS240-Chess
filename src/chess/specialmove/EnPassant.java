@@ -3,9 +3,9 @@ package chess.specialmove;
 import chess.logic.Board;
 import chess.logic.LegalMoveLogic;
 import chess.logic.Coordinate;
-import chess.logic.Pawn;
-import chess.logic.Piece;
 import chess.logic.XY;
+import chess.piece.Pawn;
+import chess.piece.Piece;
 
 // I feel like this code is ugly but I don't know how to make it nicer
 public class EnPassant implements SpecialMoveImplementation {

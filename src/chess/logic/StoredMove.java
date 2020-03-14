@@ -1,5 +1,7 @@
 package chess.logic;
 
+import chess.piece.Piece;
+
 public class StoredMove
 {
 	private Piece piece;

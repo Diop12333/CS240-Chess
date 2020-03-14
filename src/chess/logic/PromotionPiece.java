@@ -1,5 +1,11 @@
 package chess.logic;
 
+import chess.piece.Bishop;
+import chess.piece.Knight;
+import chess.piece.Piece;
+import chess.piece.Queen;
+import chess.piece.Rook;
+
 public enum PromotionPiece {
 	QUEEN,
 	KNIGHT,

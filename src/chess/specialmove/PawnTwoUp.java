@@ -2,9 +2,9 @@ package chess.specialmove;
 
 import chess.logic.Board;
 import chess.logic.LegalMoveLogic;
-import chess.logic.Pawn;
-import chess.logic.Piece;
 import chess.logic.XY;
+import chess.piece.Pawn;
+import chess.piece.Piece;
 
 public class PawnTwoUp implements SpecialMoveImplementation {
 	@Override

@@ -1,7 +1,9 @@
-package chess.logic;
+package chess.piece;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import chess.logic.RegularMove;
 
 public class Knight extends Piece 
 {	

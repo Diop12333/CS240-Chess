@@ -2,7 +2,7 @@ package chess.specialmove;
 
 import chess.logic.Board;
 import chess.logic.LegalMoveLogic;
-import chess.logic.Piece;
+import chess.piece.Piece;
 
 public interface SpecialMoveImplementation {
 	boolean checkExtraConditions(Piece piece, LegalMoveLogic logic);

@@ -2,11 +2,11 @@ package chess.specialmove;
 
 import chess.logic.Board;
 import chess.logic.Coordinate;
-import chess.logic.King;
 import chess.logic.LegalMoveLogic;
-import chess.logic.Piece;
-import chess.logic.Rook;
 import chess.logic.XY;
+import chess.piece.King;
+import chess.piece.Piece;
+import chess.piece.Rook;
 
 public class Castle implements SpecialMoveImplementation {
 	private int direction;

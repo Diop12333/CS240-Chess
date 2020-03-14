@@ -1,8 +1,9 @@
-package chess.logic;
+package chess.piece;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.logic.RegularMove;
 import chess.specialmove.SpecialMove;
 
 public class King extends HasMovedPiece

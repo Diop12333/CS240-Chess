@@ -1,8 +1,8 @@
 package chess.ui;
 
 import chess.logic.ChessGame;
-import chess.logic.Piece;
 import chess.logic.PromotionPiece;
+import chess.piece.Piece;
 
 public class PromotionDisplay extends DynamicEqualGridPane {
 	public PromotionDisplay(ChessGame chessGame, boolean isWhite) {
@@ -20,7 +20,7 @@ public class PromotionDisplay extends DynamicEqualGridPane {
 				Piece regularPiece = promPiece.toRegularPiece(isWhite);
 				ResizableImageViewContainer imgContainer =
 					new ResizableImageViewContainer(regularPiece.makeImg());
-				imgContainer.setOnMouseClicked((e) -> chessGame.promote(promPiece));
+				imgContainer.setOnMouseClicked(e -> chessGame.promote(promPiece));
 				
 				add(imgContainer, x, y);
 			}

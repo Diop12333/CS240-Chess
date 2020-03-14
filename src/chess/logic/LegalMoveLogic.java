@@ -5,13 +5,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import chess.piece.King;
+import chess.piece.Piece;
 import chess.specialmove.SpecialMove;
 import chess.specialmove.SpecialMoveImplementation;
 
 public class LegalMoveLogic {
+	private BoardInterface boardInterface;
 	private Board board;
 	public LegalMoveLogic(Board board) {
 		this.board = board;
+		this.boardInterface = board.getInterface();
 	}
 	
 	public static Coordinate coordAfterShift(
@@ -102,7 +106,7 @@ public class LegalMoveLogic {
 		Board boardCopy = new Board(board);
 		Piece pieceCopy = boardCopy.getPiece(piece.getCoord());
 		
-		boardCopy.makeMove(pieceCopy, coord, impl);
+		boardCopy.getInterface().makeMove(pieceCopy, coord, impl);
 		
 		return boardCopy;
 	}

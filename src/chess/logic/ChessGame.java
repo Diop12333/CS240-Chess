@@ -1,5 +1,15 @@
 package chess.logic;
 
+import java.util.Map;
+
+import chess.ai.AI;
+import chess.piece.Bishop;
+import chess.piece.King;
+import chess.piece.Knight;
+import chess.piece.Pawn;
+import chess.piece.Piece;
+import chess.piece.Queen;
+import chess.piece.Rook;
 import chess.specialmove.SpecialMoveImplementation;
 import chess.ui.BoardDisplay;
 import chess.ui.ChessGameMouseHandler;
@@ -16,13 +26,16 @@ public class ChessGame {
 	private ChessGameMouseHandler mouseHandler = new ChessGameMouseHandler(this);
 	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
 	private ObjectProperty<ChessGameState> gameState =
-		new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
+		new SimpleObjectProperty<>(ChessGameState.NORMAL);
 	
 	private Square threatenedSquare;
 	
-	private boolean waitingForPromotion = false;
-	private Pawn promotionPawn;
 	private PromotionDisplay promotionDisplay;
+	
+	private AI whiteAI;
+	private AI blackAI;
+	private boolean waitingForAI = false;
+	
 
 	public ChessGame() {
 		setUpBoard();
@@ -63,9 +76,9 @@ public class ChessGame {
 		resetThreatenedSquare();
 		mouseHandler.reset();
 		
-		if (waitingForPromotion) {
-			boardDisplay.getSquare(promotionPawn.getCoord()).getChildren().remove(promotionDisplay);
-			waitingForPromotion = false;
+		if (waitingForPromotion()) {
+			Square promotionDisplaySq = (Square) promotionDisplay.getParent();
+			promotionDisplaySq.getChildren().remove(promotionDisplay);
 		}
 		board.reset();
 		setUpBoard();
@@ -73,21 +86,21 @@ public class ChessGame {
 		gameState.set(ChessGameState.NORMAL);
 	}
 	
-	public void makeMove(Piece piece, Coordinate coord) { makeMove(piece, coord, null); }
-	public void makeMove(Piece piece, Coordinate coord, SpecialMoveImplementation impl) {
-		board.makeMove(piece, coord, impl);
+	public void makeMove(Piece piece, Coordinate coord) {
+		Map<Coordinate, SpecialMoveImplementation> moveCoords =
+			board.getLogic().legalMoveCoords(piece);
 		
-		int pieceY = piece.getCoord().getY();
-		if (
-			piece instanceof Pawn && (
-				piece.isWhite() && pieceY == 0 ||
-				!piece.isWhite() && pieceY == board.getDimensions().getY() - 1
-			)
-		) {
-			waitForPromotion((Pawn) piece);
+		SpecialMoveImplementation impl;
+		if (moveCoords.containsKey(coord)) {
+			impl = moveCoords.get(coord);
 		} else {
-			isWhiteTurn.set(!isWhiteTurn.get());
+			throw new ChessGameException("Illegal move");
 		}
+		
+		board.getInterface().makeMove(piece, coord, impl);
+		
+		if (waitingForPromotion()) promotionSetup();
+		else isWhiteTurn.set(!isWhiteTurn());
 		
 		detectGameState();
 	}
@@ -110,25 +123,25 @@ public class ChessGame {
 			} else {
 				gameState.set(ChessGameState.CHECKMATE);
 			}
+		} else if (logic.canMakeAMove(isWhiteTurn())){
+			gameState.set(ChessGameState.NORMAL);
 		} else {
-			if (logic.canMakeAMove(isWhiteTurn())) {
-				gameState.set(ChessGameState.NORMAL);
-			} else {
-				gameState.set(ChessGameState.STALEMATE);
-			}
+			gameState.set(ChessGameState.STALEMATE);
 		}
 	}
 	
-	private void waitForPromotion(Pawn pawn) {
-		if (waitingForPromotion) {
-			throw new RuntimeException(
-				"ERROR: waitForPromotion called while waiting for promotion"
-			);
-		}
+	public void promote(PromotionPiece promPiece) {
+		board.getInterface().promote(promPiece);
 		
-		waitingForPromotion = true;
+		Square promotionDisplaySq = (Square) promotionDisplay.getParent();
+		promotionDisplaySq.getChildren().remove(promotionDisplay);
 		
-		promotionPawn = pawn;
+		isWhiteTurn.set(!isWhiteTurn());
+	}
+	private void promotionSetup() {
+		System.out.println("promotionSetup called");
+		
+		Pawn pawn = board.getInterface().getPromotionPawn();
 		Square pawnSq = boardDisplay.getSquare(pawn.getCoord());
 		pawnSq.setPiece(null);
 		
@@ -137,21 +150,6 @@ public class ChessGame {
 		promotionDisplay.prefHeightProperty().bind(pawnSq.prefHeightProperty());
 		pawnSq.getChildren().add(promotionDisplay);
 	}
-	public void promote(PromotionPiece promPiece) {
-		if (!waitingForPromotion) {
-			throw new RuntimeException("promotePawn called while not waiting for promotion");
-		}
-		
-		Coordinate pawnCoord = promotionPawn.getCoord();
-		Square promotionSq = boardDisplay.getSquare(pawnCoord);
-		promotionSq.getChildren().remove(promotionDisplay);
-		
-		board.addNewPiece(pawnCoord, promPiece.toRegularPiece(promotionPawn.isWhite()));
-		
-		isWhiteTurn.set(!isWhiteTurn.get());
-		
-		waitingForPromotion = false;
-	}
 	
 	public Board getBoard() { return board; }
 	public BoardDisplay getBoardDisplay() { return boardDisplay; }
@@ -159,5 +157,6 @@ public class ChessGame {
 	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }
 	
-	public boolean waitingForPromotion() { return waitingForPromotion; }
+	public boolean waitingForPromotion() { return board.getInterface().waitingForPromotion(); }
+	public boolean waitingForAI() { return waitingForAI; }
 }
