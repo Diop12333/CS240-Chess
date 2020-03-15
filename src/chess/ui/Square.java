@@ -1,7 +1,7 @@
 package chess.ui;
 
 import chess.logic.Coordinate;
-import chess.logic.Piece;
+import chess.piece.Piece;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -12,8 +12,11 @@ import javafx.scene.shape.Circle;
 public class Square extends ResizableImageViewContainer {
 	private Coordinate coord;
 	private Color defaultColor;
-	private static Color HIGHLIGHT_COLOR = Color.GREEN;
-	private static Color THREATENED_COLOR = Color.RED;
+	private static final Color HIGHLIGHT_COLOR = Color.GREEN;
+	private static final Color THREATENED_COLOR = Color.RED;
+	
+	private boolean isHighlighted = false;
+	private boolean isThreatened = false;
 	
 	private Piece piece;
 	
@@ -54,19 +57,22 @@ public class Square extends ResizableImageViewContainer {
 		getChildren().remove(moveCircle);
 	}
 	
-	public void highlight() {
-		setColor(HIGHLIGHT_COLOR);
-	}
-	// TODO: prevent threatened color from disappearing when highlighted and unhighlighted
-	public void showThreatened() {
-		setColor(THREATENED_COLOR);
+	public void setThreatened(boolean isThreatened) {
+		this.isThreatened = isThreatened;
+		updateColor();
 	}
 	
-	public void resetColor() {
-		setColor(defaultColor);
+	public void setHighlighted(boolean isHighlighted) {
+		this.isHighlighted = isHighlighted;
+		updateColor();
+	}
+	
+	public void updateColor() {
+		if (isThreatened) setColor(THREATENED_COLOR);
+		else if (isHighlighted) setColor(HIGHLIGHT_COLOR);
+		else setColor(defaultColor);
 	}
 	
 	public Coordinate getCoord() { return coord; }
 	public Piece getPiece() { return piece; }
-	public BoardDisplay getBoard() { return (BoardDisplay) getParent(); }
 }

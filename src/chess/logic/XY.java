@@ -16,7 +16,17 @@ public class XY {
 		return "(" + x + ", " + y + ")";
 	}
 	
-	public boolean equals(XY xy) {
-		return getX() == xy.getX() && getY() == xy.getY();
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof XY)) return false;
+		
+		XY xy = (XY) obj;
+		return x == xy.getX() && y == xy.getY();
+	}
+	
+	// Not a great hashing algorithm, but it does its job
+	@Override
+	public int hashCode() {
+		return Integer.parseInt(Integer.toString(x) + Integer.toString(y));
 	}
 }

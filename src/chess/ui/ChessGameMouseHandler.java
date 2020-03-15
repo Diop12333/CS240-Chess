@@ -3,15 +3,14 @@ package chess.ui;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import chess.logic.ChessGame;
 import chess.logic.LegalMoveLogic;
+import chess.piece.Piece;
 import chess.logic.Coordinate;
-import chess.logic.Piece;
 import chess.specialmove.SpecialMoveImplementation;
 
 public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
@@ -20,7 +19,6 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	private LegalMoveLogic logic;
 	private Square storedSquare;
 	private Set<Square> moveSquares = new HashSet<>();
-	private Map<Square, SpecialMoveImplementation> specialMoveSquares = new HashMap<>();
 	
 	public ChessGameMouseHandler(ChessGame chessGame) {
 		this.chessGame = chessGame;
@@ -34,18 +32,14 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		}
 	}
 	
-	private void reset() {
+	public void reset() {
 		if (storedSquare != null) {
-			storedSquare.resetColor();
+			storedSquare.setHighlighted(false);
 			storedSquare = null;
 		}
 		
-		Set<Square> sqUnion = new HashSet<>();
-		sqUnion.addAll(moveSquares);
-		sqUnion.addAll(specialMoveSquares.keySet());
-		for (Square sq : sqUnion) sq.removeCircle();
+		for (Square sq : moveSquares) sq.removeCircle();
 		moveSquares.clear();
-		specialMoveSquares.clear();
 	}
 	
 	public void handle(MouseEvent e) {
@@ -61,30 +55,19 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		) {
 			if (clickedSquare == storedSquare) reset();
 			else {
-				Set<Coordinate> moveCoords = logic.legalMoveCoords(clickedSquarePiece);
-				Map<Coordinate, SpecialMoveImplementation> specialMoveCoords =
-					logic.legalSpecialMoveCoords(clickedSquarePiece);
+				Map<Coordinate, SpecialMoveImplementation> moveCoords =
+					logic.legalMoveCoords(clickedSquarePiece);
 				
 				// If piece can move
-				if (!moveCoords.isEmpty() || !specialMoveCoords.isEmpty()) {
+				if (!moveCoords.isEmpty()) {
 					reset();
 					storedSquare = clickedSquare;
-					storedSquare.highlight();
+					storedSquare.setHighlighted(true);
 					
-					for (Coordinate coord : moveCoords) {
+					for (Coordinate coord : moveCoords.keySet()) {
 						Square moveSquare = boardDisplay.getSquare(coord);
 						moveSquares.add(moveSquare);
 						moveSquare.addCircle();
-					}
-					
-					for (
-						Map.Entry<Coordinate, SpecialMoveImplementation> entry :
-						specialMoveCoords.entrySet()
-					) {
-						Coordinate coord = entry.getKey();
-						Square specialMoveSquare = boardDisplay.getSquare(coord);
-						specialMoveSquares.put(specialMoveSquare, entry.getValue());
-						specialMoveSquare.addCircle();
 					}
 				}
 			}
@@ -92,15 +75,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 		} else if (storedSquare != null) {
 			Piece storedPiece = storedSquare.getPiece();
 			if (moveSquares.contains(clickedSquare)) {
-				chessGame.move(storedPiece, clickedSquare.getCoord());
-				reset();
-			} else if (specialMoveSquares.containsKey(clickedSquare)) {
-				SpecialMoveImplementation implementation = specialMoveSquares.get(clickedSquare);
-				
-				implementation.doPreMoveEffect(storedPiece, chessGame.getBoard());
-				chessGame.move(storedPiece, clickedSquare.getCoord());
-				implementation.doPostMoveEffect(storedPiece, chessGame.getBoard());
-				
+				chessGame.makeMove(storedPiece, clickedSquare.getCoord());
 				reset();
 			}
 		}

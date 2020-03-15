@@ -1,7 +1,9 @@
-package chess.logic;
+package chess.piece;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import chess.logic.RegularMove;
 
 public class Queen extends Piece
 {	
@@ -15,18 +17,18 @@ public class Queen extends Piece
 	}
 	
 	@Override
-	public Set<Move> potentialNonCaptureMoves()
+	public Set<RegularMove> potentialMiscMoves()
 	{
-		Set<Move> moves = new HashSet<>();
+		Set<RegularMove> moves = new HashSet<>();
 		
-		moves.add(Move.LEFT_UP);
-		moves.add(Move.UP);
-		moves.add(Move.RIGHT_UP);
-		moves.add(Move.LEFT);
-		moves.add(Move.RIGHT);
-		moves.add(Move.LEFT_DOWN);
-		moves.add(Move.DOWN);
-		moves.add(Move.RIGHT_DOWN);
+		moves.add(RegularMove.LEFT_UP);
+		moves.add(RegularMove.UP);
+		moves.add(RegularMove.RIGHT_UP);
+		moves.add(RegularMove.LEFT);
+		moves.add(RegularMove.RIGHT);
+		moves.add(RegularMove.LEFT_DOWN);
+		moves.add(RegularMove.DOWN);
+		moves.add(RegularMove.RIGHT_DOWN);
 		
 		return moves; 
 	} 

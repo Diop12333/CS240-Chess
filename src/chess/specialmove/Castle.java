@@ -2,11 +2,11 @@ package chess.specialmove;
 
 import chess.logic.Board;
 import chess.logic.Coordinate;
-import chess.logic.King;
 import chess.logic.LegalMoveLogic;
-import chess.logic.Piece;
-import chess.logic.Rook;
 import chess.logic.XY;
+import chess.piece.King;
+import chess.piece.Piece;
+import chess.piece.Rook;
 
 public class Castle implements SpecialMoveImplementation {
 	private int direction;
@@ -30,7 +30,7 @@ public class Castle implements SpecialMoveImplementation {
 	}
 	
 	@Override
-	public boolean canDoMove(Piece piece, LegalMoveLogic logic) {
+	public boolean checkExtraConditions(Piece piece, LegalMoveLogic logic) {
 		King king = (King) piece;
 		
 		Rook castleRook = getCastleRook(king, logic);
@@ -47,7 +47,7 @@ public class Castle implements SpecialMoveImplementation {
 			castleRook != null &&
 			!castleRook.hasMoved() &&
 			logic.getPieceRelative(king, shift1) == null &&
-			LegalMoveLogic.containsCoord(logic.legalMoveCoords(king), shifted1) &&
+			logic.legalRegularMoveCoords(king).contains(shifted1) &&
 			logic.getPieceRelative(king, shift2) == null &&
 			(direction > 0 || logic.getPieceRelative(king, shift3) == null);
 	}

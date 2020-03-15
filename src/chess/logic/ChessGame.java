@@ -1,5 +1,16 @@
 package chess.logic;
 
+import java.util.Map;
+
+import chess.ai.AI;
+import chess.piece.Bishop;
+import chess.piece.King;
+import chess.piece.Knight;
+import chess.piece.Pawn;
+import chess.piece.Piece;
+import chess.piece.Queen;
+import chess.piece.Rook;
+import chess.specialmove.SpecialMoveImplementation;
 import chess.ui.BoardDisplay;
 import chess.ui.ChessGameMouseHandler;
 import chess.ui.PromotionDisplay;
@@ -12,20 +23,22 @@ import javafx.beans.property.SimpleObjectProperty;
 public class ChessGame {
 	private Board board = new Board();
 	private BoardDisplay boardDisplay = new BoardDisplay(board);
+	private ChessGameMouseHandler mouseHandler = new ChessGameMouseHandler(this);
 	private BooleanProperty isWhiteTurn = new SimpleBooleanProperty(true);
 	private ObjectProperty<ChessGameState> gameState =
-		new SimpleObjectProperty<ChessGameState>(ChessGameState.NORMAL);
+		new SimpleObjectProperty<>(ChessGameState.NORMAL);
 	
 	private Square threatenedSquare;
 	
-	private boolean waitingForPromotion = false;
-	private Pawn promotionPawn;
 	private PromotionDisplay promotionDisplay;
+	
+	private AI whiteAI;
+	private AI blackAI;
+	private boolean waitingForAI = false;
+	
 
 	public ChessGame() {
 		setUpBoard();
-		new ChessGameMouseHandler(this);
-		
 		detectGameState();
 	}
 	
@@ -56,15 +69,16 @@ public class ChessGame {
 	
 	public void resetThreatenedSquare() {
 		if (threatenedSquare != null) {
-			threatenedSquare.resetColor();
+			threatenedSquare.setThreatened(false);
 		}
 	}
 	public void reset() {
 		resetThreatenedSquare();
+		mouseHandler.reset();
 		
-		if (waitingForPromotion) {
-			boardDisplay.getSquare(promotionPawn.getCoord()).getChildren().remove(promotionDisplay);
-			waitingForPromotion = false;
+		if (waitingForPromotion()) {
+			Square promotionDisplaySq = (Square) promotionDisplay.getParent();
+			promotionDisplaySq.getChildren().remove(promotionDisplay);
 		}
 		board.reset();
 		setUpBoard();
@@ -72,28 +86,21 @@ public class ChessGame {
 		gameState.set(ChessGameState.NORMAL);
 	}
 	
-	public void move(Piece piece, Coordinate coord) {
-		// Make sure en passant can only occur turn after two-square move
-		for (Piece p : board.getPieces()) {
-			if (p instanceof Pawn) {
-				Pawn pawn = (Pawn) p;
-				pawn.setEnPassantable(false);
-			}
-		}
+	public void makeMove(Piece piece, Coordinate coord) {
+		Map<Coordinate, SpecialMoveImplementation> moveCoords =
+			board.getLogic().legalMoveCoords(piece);
 		
-		piece.move(coord);
-		
-		int pieceY = piece.getCoord().getY();
-		if (
-			piece instanceof Pawn && (
-				piece.isWhite() && pieceY == 0 ||
-				!piece.isWhite() && pieceY == board.getDimensions().getY() - 1
-			)
-		) {
-			waitForPromotion((Pawn) piece);
+		SpecialMoveImplementation impl;
+		if (moveCoords.containsKey(coord)) {
+			impl = moveCoords.get(coord);
 		} else {
-			isWhiteTurn.set(!isWhiteTurn.get());
+			throw new ChessGameException("Illegal move");
 		}
+		
+		board.getInterface().makeMove(piece, coord, impl);
+		
+		if (waitingForPromotion()) promotionSetup();
+		else isWhiteTurn.set(!isWhiteTurn());
 		
 		detectGameState();
 	}
@@ -103,37 +110,38 @@ public class ChessGame {
 		
 		King currKing = board.getKing(isWhiteTurn());
 		King nonCurrKing = board.getKing(!isWhiteTurn());
-		boardDisplay.getSquare(nonCurrKing.getCoord()).resetColor();
+		boardDisplay.getSquare(nonCurrKing.getCoord()).setThreatened(false);
 		
 		LegalMoveLogic logic = board.getLogic();
 		
 		if (logic.kingInCheck(isWhiteTurn())) {
 			threatenedSquare = boardDisplay.getSquare(currKing.getCoord());
-			threatenedSquare.showThreatened();
+			threatenedSquare.setThreatened(true);
 			
 			if (logic.canMakeAMove(isWhiteTurn())) {
 				gameState.set(ChessGameState.CHECK);
 			} else {
 				gameState.set(ChessGameState.CHECKMATE);
 			}
+		} else if (logic.canMakeAMove(isWhiteTurn())){
+			gameState.set(ChessGameState.NORMAL);
 		} else {
-			if (logic.canMakeAMove(isWhiteTurn())) {
-				gameState.set(ChessGameState.NORMAL);
-			} else {
-				gameState.set(ChessGameState.STALEMATE);
-			}
+			gameState.set(ChessGameState.STALEMATE);
 		}
 	}
 	
-	private void waitForPromotion(Pawn pawn) {
-		if (waitingForPromotion) {
-			System.out.println("ERROR: waitForPromotion called while waiting for promotion");
-			return;
-		}
+	public void promote(PromotionPiece promPiece) {
+		board.getInterface().promote(promPiece);
 		
-		waitingForPromotion = true;
+		Square promotionDisplaySq = (Square) promotionDisplay.getParent();
+		promotionDisplaySq.getChildren().remove(promotionDisplay);
 		
-		promotionPawn = pawn;
+		isWhiteTurn.set(!isWhiteTurn());
+	}
+	private void promotionSetup() {
+		System.out.println("promotionSetup called");
+		
+		Pawn pawn = board.getInterface().getPromotionPawn();
 		Square pawnSq = boardDisplay.getSquare(pawn.getCoord());
 		pawnSq.setPiece(null);
 		
@@ -142,22 +150,6 @@ public class ChessGame {
 		promotionDisplay.prefHeightProperty().bind(pawnSq.prefHeightProperty());
 		pawnSq.getChildren().add(promotionDisplay);
 	}
-	public void promote(PromotionPiece promPiece) {
-		if (!waitingForPromotion) {
-			System.out.println("ERROR: promotePawn called while not waiting for promotion");
-			return;
-		}
-		
-		Coordinate pawnCoord = promotionPawn.getCoord();
-		Square promotionSq = boardDisplay.getSquare(pawnCoord);
-		promotionSq.getChildren().remove(promotionDisplay);
-		
-		board.addNewPiece(pawnCoord, promPiece.toRegularPiece(promotionPawn.isWhite()));
-		
-		isWhiteTurn.set(!isWhiteTurn.get());
-		
-		waitingForPromotion = false;
-	}
 	
 	public Board getBoard() { return board; }
 	public BoardDisplay getBoardDisplay() { return boardDisplay; }
@@ -165,5 +157,6 @@ public class ChessGame {
 	public BooleanProperty isWhiteTurnProperty() { return isWhiteTurn; }
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }
 	
-	public boolean waitingForPromotion() { return waitingForPromotion; }
+	public boolean waitingForPromotion() { return board.getInterface().waitingForPromotion(); }
+	public boolean waitingForAI() { return waitingForAI; }
 }

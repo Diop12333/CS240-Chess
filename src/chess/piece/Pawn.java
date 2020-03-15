@@ -1,8 +1,9 @@
-package chess.logic;
+package chess.piece;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.logic.RegularMove;
 import chess.specialmove.SpecialMove;
 
 public class Pawn extends HasMovedPiece
@@ -20,22 +21,22 @@ public class Pawn extends HasMovedPiece
 	}
 	
 	@Override
-	public Set<Move> potentialNonCaptureMoves()
+	public Set<RegularMove> potentialNonCaptureMoves()
 	{
-		Set<Move> moves = new HashSet<>();
+		Set<RegularMove> moves = new HashSet<>();
 		
-		moves.add(Move.UP);
+		moves.add(RegularMove.UP);
 		
 		return moves;
 	}
 	
 	@Override
-	public Set<Move> potentialCaptureMoves()
+	public Set<RegularMove> potentialCaptureMoves()
 	{
-		Set<Move> moves = new HashSet<>();
+		Set<RegularMove> moves = new HashSet<>();
 		
-		moves.add(Move.LEFT_UP);
-		moves.add(Move.RIGHT_UP);
+		moves.add(RegularMove.LEFT_UP);
+		moves.add(RegularMove.RIGHT_UP);
 		
 		return moves;
 	}

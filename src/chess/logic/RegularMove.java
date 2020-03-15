@@ -1,6 +1,6 @@
 package chess.logic;
 
-public enum Move {
+public enum RegularMove {
 	LEFT_UP (-1, -1),
 	UP (0, -1),
 	RIGHT_UP (1, -1),
@@ -21,8 +21,8 @@ public enum Move {
 	KNIGHT_DOWN_RIGHT (1, 2);
 	
 	private XY shift;
-	Move(int moveX, int moveY) { this(new XY(moveX, moveY)); }
-	Move(XY shift) { this.shift = shift; }
+	RegularMove(int moveX, int moveY) { this(new XY(moveX, moveY)); }
+	RegularMove(XY shift) { this.shift = shift; }
 	
 	public XY getShift() { return shift; }
 }

@@ -1,16 +1,21 @@
-package chess.logic;
+package chess.piece;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.logic.ChessGameException;
+import chess.logic.Coordinate;
+import chess.logic.RegularMove;
 import chess.specialmove.SpecialMove;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 public abstract class Piece {
+	private static final String IMG_FOLDER = "img/";
+	
 	private boolean isWhite;
 	private ObjectProperty<Coordinate> coord = new SimpleObjectProperty<>();
 	
@@ -29,11 +34,12 @@ public abstract class Piece {
 	// Meant to potentially have special behavior
 	public void move(Coordinate newCoord) { setCoord(newCoord); }
 	
-	public abstract Set<Move> potentialNonCaptureMoves();
-	public Set<Move> potentialCaptureMoves() { return potentialNonCaptureMoves(); }
+	public Set<RegularMove> potentialMiscMoves() { return new HashSet<>(); }
+	public Set<RegularMove> potentialNonCaptureMoves() { return potentialMiscMoves(); }
+	public Set<RegularMove> potentialCaptureMoves() { return potentialMiscMoves(); }
 	public Set<SpecialMove> potentialSpecialMoves() { return new HashSet<>(); }
 	
-	protected final String getImgFolder() { return "img/"; }
+	protected final String getImgFolder() { return IMG_FOLDER; }
 	protected abstract String getWhiteImgFileName();
 	protected abstract String getBlackImgFileName();
 	public final String getImgFilePath() {
@@ -49,7 +55,7 @@ public abstract class Piece {
 			// Is this clunky? Maybe
 			// But I don't think there's any reason to use a checked exception
 			// A FileNotFoundException here would be an error in the program, not user data
-			throw new RuntimeException(e.getMessage());
+			throw new ChessGameException(e.getMessage());
 		}
 	}
 	

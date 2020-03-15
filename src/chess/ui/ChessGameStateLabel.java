@@ -14,7 +14,7 @@ public class ChessGameStateLabel extends Label {
 		chessGame.isWhiteTurnProperty().addListener(
 			(__, ___, ____) -> setText(chessGame.gameStateProperty().get())
 		);
-		chessGame.gameStateProperty().addListener((prop, oldVal, newVal) -> setText(newVal));
+		chessGame.gameStateProperty().addListener((__, ___, newVal) -> setText(newVal));
 	}
 	
 	private static String boolToText(boolean isWhite) {

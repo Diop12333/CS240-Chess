@@ -1,4 +1,6 @@
-package chess.logic;
+package chess.piece;
+
+import chess.logic.Coordinate;
 
 public abstract class HasMovedPiece extends Piece {
 	private boolean hasMoved = false;
@@ -11,6 +13,7 @@ public abstract class HasMovedPiece extends Piece {
 		hasMoved = piece.hasMoved();
 	}
 	
+	@Override
 	public void move(Coordinate newCoord) {
 		super.move(newCoord);
 		hasMoved = true;

@@ -11,6 +11,7 @@ public class BoardDisplayContainer extends Region {
 	
 	// Maintains 1:1 aspect ratio, keeps board centered
 	// TODO: allow non-1:1 aspect ratios (important for custom boards)
+	@Override
 	protected void layoutChildren() {
 		double side;
 		if (getWidth() <= getHeight()) {

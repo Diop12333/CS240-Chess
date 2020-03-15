@@ -3,6 +3,8 @@ package chess.logic;
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.piece.King;
+import chess.piece.Piece;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -14,7 +16,8 @@ public class Board {
 	private King whiteKing;
 	private King blackKing;
 	
-	private LegalMoveLogic logic;
+	private LegalMoveLogic logic = new LegalMoveLogic(this);
+	private BoardInterface boardInterface = new BoardInterface(this);
 	
 	public Board() { this(new XY(8, 8)); }
 	
@@ -22,17 +25,13 @@ public class Board {
 	public Board(XY dimensions) {
 		this.dimensions = dimensions;
 		
-		pieces =
-			(ObjectProperty<Piece>[][])
-			new SimpleObjectProperty[dimensions.getY()][dimensions.getX()];
+		pieces = new SimpleObjectProperty[dimensions.getY()][dimensions.getX()];
 		
 		for (int y = 0; y < dimensions.getY(); y++) {
 			for (int x = 0; x < dimensions.getX(); x++) {
-				pieces[y][x] = new SimpleObjectProperty<Piece>();
+				pieces[y][x] = new SimpleObjectProperty<>();
 			}
 		}
-		
-		logic = new LegalMoveLogic(this);
 	}
 	public Board(Board board) {
 		this(board.getDimensions());
@@ -120,6 +119,7 @@ public class Board {
 				pieces[y][x].set(null);
 			}
 		}
+		boardInterface.reset();
 	}
 	
 	public Coordinate getCoord(Piece piece) {
@@ -142,22 +142,22 @@ public class Board {
 	}
 	public ObjectProperty<Piece> getPieceProperty(int x, int y) {
 		if (withinDimensions(x, y)) return pieces[y][x];
-		else return new SimpleObjectProperty<Piece>();
+		else return new SimpleObjectProperty<>();
 	}
 	
 	public Set<Piece> getPieces() {
-		Set<Piece> pieces = new HashSet<>();
+		Set<Piece> pieceSet = new HashSet<>();
 		
 		for (int y = 0; y < dimensions.getY(); y++) {
 			for (int x = 0; x < dimensions.getX(); x++) {
 				Piece piece = getPiece(new Coordinate(x, y));
 				if (piece != null) {
-					pieces.add(piece);
+					pieceSet.add(piece);
 				}
 			}
 		}
 		
-		return pieces;
+		return pieceSet;
 	}
 	
 	public Set<Piece> getColorPieces(boolean white) {
@@ -171,4 +171,5 @@ public class Board {
 	public Set<Piece> getCapturedPieces() { return capturedPieces; }
 	
 	public LegalMoveLogic getLogic() { return logic; }
+	public BoardInterface getInterface() { return boardInterface; }
 }
