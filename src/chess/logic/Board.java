@@ -160,14 +160,6 @@ public class Board {
 		return pieceSet;
 	}
 	
-	public Set<Piece> getColorPieces(boolean white) {
-		Set<Piece> colorPieces = new HashSet<>();
-		for (Piece piece : getPieces()) {
-			if (piece.isWhite() == white) colorPieces.add(piece);
-		}
-		return colorPieces;
-	}
-	
 	public Set<Piece> getCapturedPieces() { return capturedPieces; }
 	
 	public LegalMoveLogic getLogic() { return logic; }

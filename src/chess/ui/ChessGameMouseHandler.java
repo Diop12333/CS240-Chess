@@ -43,7 +43,7 @@ public class ChessGameMouseHandler implements EventHandler<MouseEvent> {
 	}
 	
 	public void handle(MouseEvent e) {
-		if (chessGame.waitingForPromotion()) return;
+		if (chessGame.waiting()) return;
 		
 		Square clickedSquare = (Square) e.getSource();
 		Piece clickedSquarePiece = clickedSquare.getPiece();

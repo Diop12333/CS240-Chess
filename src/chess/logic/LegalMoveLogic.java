@@ -11,11 +11,9 @@ import chess.specialmove.SpecialMove;
 import chess.specialmove.SpecialMoveImplementation;
 
 public class LegalMoveLogic {
-	private BoardInterface boardInterface;
 	private Board board;
 	public LegalMoveLogic(Board board) {
 		this.board = board;
-		this.boardInterface = board.getInterface();
 	}
 	
 	public static Coordinate coordAfterShift(
@@ -73,6 +71,14 @@ public class LegalMoveLogic {
 		return moveCoords;
 	}
 	
+	public Set<Piece> colorPieces(boolean white) {
+		Set<Piece> colorPieces = new HashSet<>();
+		for (Piece piece : board.getPieces()) {
+			if (piece.isWhite() == white) colorPieces.add(piece);
+		}
+		return colorPieces;
+	}
+	
 	public Set<Coordinate> threatenedCoords(Piece piece) {
 		Set<Coordinate> threatenedCoords = new HashSet<>();
 		for (RegularMove move : piece.potentialCaptureMoves()) {
@@ -83,7 +89,7 @@ public class LegalMoveLogic {
 	
 	public Set<Coordinate> allThreatenedCoords(boolean white) {
 		Set<Coordinate> threatenedCoords = new HashSet<>();
-		for (Piece boardPiece : board.getColorPieces(!white)) {
+		for (Piece boardPiece : colorPieces(!white)) {
 			threatenedCoords.addAll(threatenedCoords(boardPiece));
 		}
 		return threatenedCoords;
@@ -97,12 +103,10 @@ public class LegalMoveLogic {
 		return allThreatenedCoords(kingIsWhite).contains(king.getCoord());
 	}
 	
-	public Board generateBoardState(Piece piece, Coordinate coord) {
-		return generateBoardState(piece, coord, null);
+	public Board boardStateAfterMove(Piece piece, Coordinate coord) {
+		return boardStateAfterMove(piece, coord, null);
 	}
-	public Board generateBoardState(
-		Piece piece, Coordinate coord, SpecialMoveImplementation impl
-	) {
+	public Board boardStateAfterMove(Piece piece, Coordinate coord, SpecialMoveImplementation impl) {
 		Board boardCopy = new Board(board);
 		Piece pieceCopy = boardCopy.getPiece(piece.getCoord());
 		
@@ -131,7 +135,7 @@ public class LegalMoveLogic {
 			Set<Coordinate> moveCoords = generateCoordsFromRegularMove(piece, move, false);
 			
 			for (Coordinate moveCoord : moveCoords) {
-				Board newBoard = generateBoardState(piece, moveCoord);
+				Board newBoard = boardStateAfterMove(piece, moveCoord);
 				
 				if (!newBoard.getLogic().kingInCheck(piece.isWhite())) {
 					legalCoords.add(moveCoord);
@@ -151,7 +155,7 @@ public class LegalMoveLogic {
 			if (implementation.checkExtraConditions(piece, board.getLogic())) {
 				Coordinate moveCoord = pieceCoordAfterShift(piece, move.getShift());
 				
-				Board newBoard = generateBoardState(piece, moveCoord, implementation);
+				Board newBoard = boardStateAfterMove(piece, moveCoord, implementation);
 				
 				if (!newBoard.getLogic().kingInCheck(piece.isWhite())) {
 					legalCoords.put(moveCoord, implementation);
@@ -162,14 +166,21 @@ public class LegalMoveLogic {
 		return legalCoords;
 	}
 	
-	public boolean canMakeAMove(boolean white) {
-		for (Piece piece : board.getColorPieces(white)) {
-			if (
-				!legalRegularMoveCoords(piece).isEmpty() ||
-				!legalSpecialMoveCoords(piece).isEmpty()
-			) {
-				return true;
+	public Set<StoredMove> legalMoves(boolean color) {
+		Set<StoredMove> moves = new HashSet<>();
+		
+		for (Piece piece : colorPieces(color)) {
+			for (Coordinate coord : legalMoveCoords(piece).keySet()) {
+				moves.add(new StoredMove(piece, coord));
 			}
+		}
+		
+		return moves;
+	}
+	
+	public boolean canMakeAMove(boolean white) {
+		for (Piece piece : colorPieces(white)) {
+			if (!legalMoveCoords(piece).isEmpty()) return true;
 		}
 		return false;
 	}

@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	// TODO: implement menu actions
 	@Override
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Chess Game");

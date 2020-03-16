@@ -32,10 +32,10 @@ public class ChessGame {
 	
 	private PromotionDisplay promotionDisplay;
 	
+	private boolean waitingForGameState = true;
+	
 	private AI whiteAI;
 	private AI blackAI;
-	private boolean waitingForAI = false;
-	
 
 	public ChessGame() {
 		setUpBoard();
@@ -87,25 +87,27 @@ public class ChessGame {
 	}
 	
 	public void makeMove(Piece piece, Coordinate coord) {
-		Map<Coordinate, SpecialMoveImplementation> moveCoords =
-			board.getLogic().legalMoveCoords(piece);
+		board.getInterface().makeMove(piece, coord);
 		
-		SpecialMoveImplementation impl;
-		if (moveCoords.containsKey(coord)) {
-			impl = moveCoords.get(coord);
-		} else {
-			throw new ChessGameException("Illegal move");
+		if (waitingForPromotion()) {
+			detectGameState(); promotionSetup();
 		}
-		
-		board.getInterface().makeMove(piece, coord, impl);
-		
-		if (waitingForPromotion()) promotionSetup();
-		else isWhiteTurn.set(!isWhiteTurn());
-		
-		detectGameState();
+		else {
+			switchTurnDetectGameState();
+		}
 	}
 	
+	private void switchTurn() {
+		isWhiteTurn.set(!isWhiteTurn());
+	}
+	private void switchTurnDetectGameState() {
+		waitingForGameState = true;
+		switchTurn();
+		detectGameState();
+	}
 	private void detectGameState() {
+		waitingForGameState = true;
+		
 		resetThreatenedSquare();
 		
 		King currKing = board.getKing(isWhiteTurn());
@@ -128,6 +130,19 @@ public class ChessGame {
 		} else {
 			gameState.set(ChessGameState.STALEMATE);
 		}
+		
+		AI ai;
+		if (isWhiteTurn() && whiteAI != null) ai = whiteAI;
+		else if (!isWhiteTurn() && blackAI != null) ai = blackAI;
+		else ai = null;
+		
+		if (ai != null) {
+			StoredMove aiMove = ai.getMove(board);
+			if (aiMove != null) board.getInterface().makeMove(ai.getMove(board));
+		}
+		
+		waitingForGameState = false;
+		switchTurn();
 	}
 	
 	public void promote(PromotionPiece promPiece) {
@@ -136,11 +151,9 @@ public class ChessGame {
 		Square promotionDisplaySq = (Square) promotionDisplay.getParent();
 		promotionDisplaySq.getChildren().remove(promotionDisplay);
 		
-		isWhiteTurn.set(!isWhiteTurn());
+		switchTurnDetectGameState();
 	}
 	private void promotionSetup() {
-		System.out.println("promotionSetup called");
-		
 		Pawn pawn = board.getInterface().getPromotionPawn();
 		Square pawnSq = boardDisplay.getSquare(pawn.getCoord());
 		pawnSq.setPiece(null);
@@ -158,5 +171,6 @@ public class ChessGame {
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }
 	
 	public boolean waitingForPromotion() { return board.getInterface().waitingForPromotion(); }
-	public boolean waitingForAI() { return waitingForAI; }
+	public boolean waitingForGameState() { return waitingForGameState; }
+	public boolean waiting() { return waitingForPromotion() || waitingForGameState(); }
 }

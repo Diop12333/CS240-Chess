@@ -19,5 +19,5 @@ public class StoredMove
 	public Coordinate getPrevCoord() { return prevCoord; }
 	public Coordinate getNewCoord() { return newCoord; }
 	
-	public String toString() { return "TODO"; } // insert fancy chess notation here
+	public String toString() { return "TODO"; } // TODO: insert fancy chess notation here
 }
