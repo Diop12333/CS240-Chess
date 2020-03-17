@@ -20,7 +20,10 @@ public class SetAIMenu extends Menu {
 		for (Map.Entry<String, AI> entry : aiMap.entrySet()) {
 			RadioMenuItem newItem = new RadioMenuItem(entry.getKey());
 			newItem.setToggleGroup(toggleGroup);
-			newItem.setOnAction(e -> chessGame.setAI(isWhite, entry.getValue()));
+			newItem.setOnAction(e -> {
+				chessGame.setAI(isWhite, entry.getValue());
+				chessGame.reset();
+			});
 			
 			if (chessGame.getAI(isWhite) == entry.getValue()) {
 				newItem.setSelected(true);
