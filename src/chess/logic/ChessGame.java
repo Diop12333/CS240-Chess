@@ -72,21 +72,19 @@ public class ChessGame {
 		}
 	}
 	public void reset() {
-		Platform.runLater(() -> {
-			resetThreatenedSquare();
-			mouseHandler.reset();
-			
-			if (waitingForPromotion()) {
-				Square promotionDisplaySq = (Square) promotionDisplay.getParent();
-				promotionDisplaySq.getChildren().remove(promotionDisplay);
-			}
-			board.reset();
-			setUpBoard();
-			isWhiteTurn.set(true);
-			gameState.set(ChessGameState.NORMAL);
-			
-			detectGameState();
-		});
+		resetThreatenedSquare();
+		mouseHandler.reset();
+		
+		if (waitingForPromotion()) {
+			Square promotionDisplaySq = (Square) promotionDisplay.getParent();
+			promotionDisplaySq.getChildren().remove(promotionDisplay);
+		}
+		board.reset();
+		setUpBoard();
+		isWhiteTurn.set(true);
+		gameState.set(ChessGameState.NORMAL);
+		
+		detectGameState();
 	}
 	
 	public void makeMove(Piece piece, Coordinate coord) {
