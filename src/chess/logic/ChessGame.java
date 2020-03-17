@@ -1,7 +1,5 @@
 package chess.logic;
 
-import java.util.Map;
-
 import chess.ai.AI;
 import chess.piece.Bishop;
 import chess.piece.King;
@@ -10,11 +8,11 @@ import chess.piece.Pawn;
 import chess.piece.Piece;
 import chess.piece.Queen;
 import chess.piece.Rook;
-import chess.specialmove.SpecialMoveImplementation;
 import chess.ui.BoardDisplay;
 import chess.ui.ChessGameMouseHandler;
 import chess.ui.PromotionDisplay;
 import chess.ui.Square;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -34,6 +32,7 @@ public class ChessGame {
 	
 	private boolean waitingForGameState = true;
 	
+	// Set to null for human player
 	private AI whiteAI;
 	private AI blackAI;
 
@@ -84,23 +83,25 @@ public class ChessGame {
 		setUpBoard();
 		isWhiteTurn.set(true);
 		gameState.set(ChessGameState.NORMAL);
+		
+		detectGameState();
 	}
 	
 	public void makeMove(Piece piece, Coordinate coord) {
-		board.getInterface().makeMove(piece, coord);
+		board.getInterface().getImplAndMakeMove(piece, coord);
 		
 		if (waitingForPromotion()) {
 			detectGameState(); promotionSetup();
 		}
 		else {
-			switchTurnDetectGameState();
+			switchTurnAndDetectGameState();
 		}
 	}
 	
 	private void switchTurn() {
 		isWhiteTurn.set(!isWhiteTurn());
 	}
-	private void switchTurnDetectGameState() {
+	private void switchTurnAndDetectGameState() {
 		waitingForGameState = true;
 		switchTurn();
 		detectGameState();
@@ -137,12 +138,17 @@ public class ChessGame {
 		else ai = null;
 		
 		if (ai != null) {
-			StoredMove aiMove = ai.getMove(board);
-			if (aiMove != null) board.getInterface().makeMove(ai.getMove(board));
+			Platform.runLater(() -> {
+				StoredMove aiMove = ai.getMove(board, isWhiteTurn());
+				if (aiMove != null) board.getInterface().makeStoredMove(aiMove);
+				
+				switchTurnAndDetectGameState();
+				
+				waitingForGameState = false;
+			});
+		} else {
+			waitingForGameState = false;
 		}
-		
-		waitingForGameState = false;
-		switchTurn();
 	}
 	
 	public void promote(PromotionPiece promPiece) {
@@ -151,7 +157,7 @@ public class ChessGame {
 		Square promotionDisplaySq = (Square) promotionDisplay.getParent();
 		promotionDisplaySq.getChildren().remove(promotionDisplay);
 		
-		switchTurnDetectGameState();
+		switchTurnAndDetectGameState();
 	}
 	private void promotionSetup() {
 		Pawn pawn = board.getInterface().getPromotionPawn();
@@ -173,4 +179,15 @@ public class ChessGame {
 	public boolean waitingForPromotion() { return board.getInterface().waitingForPromotion(); }
 	public boolean waitingForGameState() { return waitingForGameState; }
 	public boolean waiting() { return waitingForPromotion() || waitingForGameState(); }
+	
+	public AI getAI(boolean isWhite) {
+		if (isWhite) return whiteAI;
+		else return blackAI;
+	}
+	public void setWhiteAI(AI ai) { whiteAI = ai; }
+	public void setBlackAI(AI ai) { blackAI = ai; }
+	public void setAI(boolean isWhite, AI ai) {
+		if (isWhite) setWhiteAI(ai);
+		else setBlackAI(ai);
+	}
 }

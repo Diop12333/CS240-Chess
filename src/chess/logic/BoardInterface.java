@@ -1,7 +1,5 @@
 package chess.logic;
 
-import java.util.Map;
-
 import chess.piece.Pawn;
 import chess.piece.Piece;
 import chess.specialmove.SpecialMoveImplementation;
@@ -15,19 +13,14 @@ public class BoardInterface {
 		this.board = board;
 	}
 	
-	public void makeMove(StoredMove storedMove) {
-		makeMove(storedMove.getPiece(), storedMove.getNewCoord());
-	}
-	public void makeMove(Piece piece, Coordinate coord) {
-		Map<Coordinate, SpecialMoveImplementation> moveCoords =
-			board.getLogic().legalMoveCoords(piece);
-		SpecialMoveImplementation impl;
-		if (moveCoords.containsKey(coord)) {
-			impl = moveCoords.get(coord);
-		} else {
-			throw new ChessGameException("Illegal move");
+	public void makeStoredMove(StoredMove storedMove) {
+		getImplAndMakeMove(storedMove.getPiece(), storedMove.getNewCoord());
+		if (waitingForPromotion && storedMove.getPromPiece() != null) {
+			promote(storedMove.getPromPiece());
 		}
-		makeMove(piece, coord, impl);
+	}
+	public void getImplAndMakeMove(Piece piece, Coordinate coord) {
+		makeMove(piece, coord, board.getLogic().getImplFromMove(piece, coord));
 	}
 	public void makeMove(Piece piece, Coordinate coord, SpecialMoveImplementation impl) {
 		// Make sure en passant can only occur turn after two-square move
@@ -63,7 +56,10 @@ public class BoardInterface {
 			throw new ChessGameException("promote called while not waiting for promotion");
 		}
 		
-		board.addNewPiece(promotionPawn.getCoord(), promPiece.toRegularPiece(promotionPawn.isWhite()));
+		board.addNewPiece(
+			promotionPawn.getCoord(),
+			promPiece.toRegularPiece(promotionPawn.isWhite())
+		);
 		waitingForPromotion = false;
 	}
 	

@@ -4,5 +4,5 @@ import chess.logic.Board;
 import chess.logic.StoredMove;
 
 public interface AI {
-	StoredMove getMove(Board board);
+	StoredMove getMove(Board board, boolean color);
 }

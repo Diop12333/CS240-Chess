@@ -1,33 +1,44 @@
 package chess.ui;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import chess.ai.AI;
+import chess.ai.RandomAI;
 import chess.logic.ChessGame;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 public class ChessGameMenuBar extends MenuBar {
-	private ChessGame chessGame;
 	public ChessGameMenuBar(ChessGame chessGame) {
-		this.chessGame = chessGame;
-		EventHandler<ActionEvent> action = ActionSelection();
 		// Create menus
-		Menu fileMenu = new Menu ("File");
+		Menu fileMenu = new Menu("File");
+		
+		Map<String, AI> aiMap = new LinkedHashMap<>();
+		aiMap.put("Random", new RandomAI());
+		
+		SetAIMenu whiteAIMenu = new SetAIMenu(
+			"White AI", chessGame, aiMap, true
+		);
+		SetAIMenu blackAIMenu = new SetAIMenu(
+			"Black AI", chessGame, aiMap, false
+		);
+		
 		Menu historyMenu = new Menu("History");
 		Menu scoresMenu = new Menu("Scores");
 		Menu modeMenu = new Menu("Game Mode");
 		
 		// Create MenuItems
 		MenuItem newGameItem = new MenuItem("Start a New Game");
-		newGameItem.setOnAction(action);
+		newGameItem.setOnAction(e -> chessGame.reset());
 		MenuItem saveGameItem = new MenuItem("Save Current Game");
-		saveGameItem.setOnAction(action);
+		saveGameItem.setOnAction(e -> System.out.println("save"));
 		MenuItem loadGameItem = new MenuItem("Load Previous Game");
-		loadGameItem.setOnAction(action);
+		loadGameItem.setOnAction(e -> System.out.println("load"));
 		MenuItem exitGameItem = new MenuItem("Exit Chess Game");
-		exitGameItem.setOnAction(action);
+		exitGameItem.setOnAction(e -> Platform.exit());
 		
 		MenuItem redoItem = new MenuItem("Redo a move");
 		MenuItem undoItem = new MenuItem("Undo a move");
@@ -41,29 +52,13 @@ public class ChessGameMenuBar extends MenuBar {
 		
 		
 		// Add menuItems to the Menus
-		fileMenu.getItems().addAll(newGameItem, saveGameItem,loadGameItem,exitGameItem);
+		// fileMenu.getItems().addAll(newGameItem, saveGameItem,loadGameItem,exitGameItem);
+		fileMenu.getItems().add(newGameItem);
 		historyMenu.getItems().addAll(redoItem,undoItem);
 		scoresMenu.getItems().addAll(highItem,lowItem);
 		modeMenu.getItems().addAll(classicItem,blitzItem,lightingItem);
 		
 		// Add Menus to the MenuBar
-		getMenus().addAll(fileMenu, historyMenu, scoresMenu, modeMenu);
+		getMenus().addAll(fileMenu, whiteAIMenu, blackAIMenu);
 	}
-    private EventHandler<ActionEvent> ActionSelection() {
-        return new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-            	MenuItem mItem = (MenuItem) event.getSource();
-                String side = mItem.getText();
-                if (side.equals("Start a New Game")) {
-                	chessGame.reset();
-                }else if (side.equals("Save Current Game")) {
-                    System.out.println("save");
-                }else if (side.equals("Load Previous Game")) {
-                	System.out.println("load");
-                }else if (side.equals("Exit Chess Game")) {
-                	Platform.exit();
-                }
-            }
-        };
-    }
 }
