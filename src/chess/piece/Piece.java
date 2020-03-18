@@ -59,13 +59,13 @@ public abstract class Piece {
 		}
 	}
 	
-	// Only applies to regular moves
-	public abstract boolean canRepeatMoves();
+	public abstract boolean canRepeatRegularMoves();
+	
+	public abstract int pointValue();
+	
 	public boolean isWhite() { return isWhite; }
 	public Coordinate getCoord() { return coord.get(); }
 	public ObjectProperty<Coordinate> coordProperty() { return coord; }
-	
-	public abstract String notation(); // return letter(s) for chess notation
 	
 	public abstract Piece copy();
 }

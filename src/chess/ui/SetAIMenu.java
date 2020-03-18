@@ -1,5 +1,6 @@
 package chess.ui;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import chess.ai.AI;
@@ -14,10 +15,12 @@ public class SetAIMenu extends Menu {
 	) {
 		super(title);
 		
-		aiMap.put("Human", null);
+		Map<String, AI> newMap = new LinkedHashMap<>();
+		newMap.put("Human", null);
+		newMap.putAll(aiMap);
 		
 		ToggleGroup toggleGroup = new ToggleGroup();
-		for (Map.Entry<String, AI> entry : aiMap.entrySet()) {
+		for (Map.Entry<String, AI> entry : newMap.entrySet()) {
 			RadioMenuItem newItem = new RadioMenuItem(entry.getKey());
 			newItem.setToggleGroup(toggleGroup);
 			newItem.setOnAction(e -> {

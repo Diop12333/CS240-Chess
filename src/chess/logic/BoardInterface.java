@@ -16,7 +16,8 @@ public class BoardInterface {
 	public void makeStoredMove(StoredMove storedMove) {
 		getImplAndMakeMove(storedMove.getPiece(), storedMove.getNewCoord());
 		if (waitingForPromotion && storedMove.getPromPiece() != null) {
-			promote(storedMove.getPromPiece());
+			if (storedMove.getPromPiece() != null) promote(storedMove.getPromPiece());
+			else throw new ChessGameException("Unable to promote");
 		}
 	}
 	public void getImplAndMakeMove(Piece piece, Coordinate coord) {

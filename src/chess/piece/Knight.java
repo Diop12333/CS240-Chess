@@ -34,13 +34,14 @@ public class Knight extends Piece
 	}
 	
 	@Override
-	public boolean canRepeatMoves() { return false; }
+	public boolean canRepeatRegularMoves() { return false; }
+	@Override
+	public int pointValue() { return 3; }
+	
 	@Override
 	public String getWhiteImgFileName() { return "white_knight.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_knight.png"; }
-	@Override
-	public String notation() { return "N"; }
 	@Override
 	public Knight copy() { return new Knight(this); }
 }

@@ -45,13 +45,14 @@ public class King extends HasMovedPiece
 	}
 	
 	@Override
-	public boolean canRepeatMoves() { return false; }
+	public boolean canRepeatRegularMoves() { return false; }
+	@Override
+	public int pointValue() { return 0; }
+	
 	@Override
 	public String getWhiteImgFileName() { return "white_king.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_king.png"; }
-	@Override
-	public String notation() { return "K"; }
 	
 	@Override
 	public King copy() { return new King(this); }

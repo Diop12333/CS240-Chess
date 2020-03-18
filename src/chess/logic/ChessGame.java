@@ -1,5 +1,7 @@
 package chess.logic;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import chess.ai.AI;
 import chess.piece.Bishop;
 import chess.piece.King;
@@ -30,7 +32,7 @@ public class ChessGame {
 	
 	private PromotionDisplay promotionDisplay;
 	
-	private boolean waitingForGameState = true;
+	private ReentrantLock taskLock = new ReentrantLock();
 	
 	// Set to null for human player
 	private AI whiteAI;
@@ -72,6 +74,8 @@ public class ChessGame {
 		}
 	}
 	public void reset() {
+		taskLock.lock();
+		
 		resetThreatenedSquare();
 		mouseHandler.reset();
 		
@@ -85,6 +89,8 @@ public class ChessGame {
 		gameState.set(ChessGameState.NORMAL);
 		
 		detectGameState();
+		
+		taskLock.unlock();
 	}
 	
 	public void makeMove(Piece piece, Coordinate coord) {
@@ -102,12 +108,13 @@ public class ChessGame {
 		isWhiteTurn.set(!isWhiteTurn());
 	}
 	private void switchTurnAndDetectGameState() {
-		waitingForGameState = true;
+		taskLock.lock();
 		switchTurn();
 		detectGameState();
+		taskLock.unlock();
 	}
 	private void detectGameState() {
-		waitingForGameState = true;
+		taskLock.lock();
 		
 		resetThreatenedSquare();
 		
@@ -132,23 +139,21 @@ public class ChessGame {
 			gameState.set(ChessGameState.STALEMATE);
 		}
 		
-		AI ai;
-		if (isWhiteTurn() && whiteAI != null) ai = whiteAI;
-		else if (!isWhiteTurn() && blackAI != null) ai = blackAI;
-		else ai = null;
-		
-		if (ai != null) {
-			Platform.runLater(() -> {
+		Platform.runLater(() -> {
+			AI ai = getAI(isWhiteTurn());
+			
+			if (ai != null) {
 				StoredMove aiMove = ai.getMove(board, isWhiteTurn());
-				if (aiMove != null) board.getInterface().makeStoredMove(aiMove);
+				if (aiMove != null) {
+					board.getInterface().makeStoredMove(aiMove);
+					switchTurnAndDetectGameState();
+				}
 				
-				switchTurnAndDetectGameState();
-				
-				waitingForGameState = false;
-			});
-		} else {
-			waitingForGameState = false;
-		}
+				taskLock.unlock();
+			} else {
+				taskLock.unlock();
+			}
+		});
 	}
 	
 	public void promote(PromotionPiece promPiece) {
@@ -177,8 +182,8 @@ public class ChessGame {
 	public ObjectProperty<ChessGameState> gameStateProperty() { return gameState; }
 	
 	public boolean waitingForPromotion() { return board.getInterface().waitingForPromotion(); }
-	public boolean waitingForGameState() { return waitingForGameState; }
-	public boolean waiting() { return waitingForPromotion() || waitingForGameState(); }
+	public boolean waitingForGameTask() { return taskLock.isLocked(); }
+	public boolean waiting() { return waitingForPromotion() || waitingForGameTask(); }
 	
 	public AI getAI(boolean isWhite) {
 		if (isWhite) return whiteAI;

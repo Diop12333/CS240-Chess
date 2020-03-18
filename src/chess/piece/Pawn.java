@@ -3,6 +3,7 @@ package chess.piece;
 import java.util.HashSet;
 import java.util.Set;
 
+import chess.logic.Coordinate;
 import chess.logic.RegularMove;
 import chess.specialmove.SpecialMove;
 
@@ -60,13 +61,14 @@ public class Pawn extends HasMovedPiece
 	}
 	
 	@Override
-	public boolean canRepeatMoves() { return false; }
+	public boolean canRepeatRegularMoves() { return false; }
+	@Override
+	public int pointValue() { return 1; }
+	
 	@Override
 	public String getWhiteImgFileName() { return "white_pawn.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_pawn.png"; }
-	@Override
-	public String notation() { return ""; }
 
 	@Override
 	public Pawn copy() { return new Pawn(this); }

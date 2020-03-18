@@ -36,7 +36,9 @@ public class LegalMoveLogic {
 	}
 	
 	// Neutral: ignore whether or not move is capture or non-capture
-	private Set<Coordinate> generateCoordsFromRegularMove(Piece piece, RegularMove move, boolean neutral) {
+	private Set<Coordinate> generateCoordsFromRegularMove(
+		Piece piece, RegularMove move, boolean neutral
+	) {
 		Set<Coordinate> moveCoords = new HashSet<>();
 		
 		Coordinate newCoord = piece.getCoord();
@@ -63,15 +65,15 @@ public class LegalMoveLogic {
 				// Breaks regardless - can never move past piece
 				break;
 			}
-		} while (piece.canRepeatMoves());
+		} while (piece.canRepeatRegularMoves());
 		
 		return moveCoords;
 	}
 	
-	public Set<Piece> colorPieces(boolean white) {
+	public Set<Piece> colorPieces(boolean isWhite) {
 		Set<Piece> colorPieces = new HashSet<>();
 		for (Piece piece : board.getPieces()) {
-			if (piece.isWhite() == white) colorPieces.add(piece);
+			if (piece.isWhite() == isWhite) colorPieces.add(piece);
 		}
 		return colorPieces;
 	}
@@ -100,6 +102,30 @@ public class LegalMoveLogic {
 		return allThreatenedCoords(kingIsWhite).contains(king.getCoord());
 	}
 	
+	public SpecialMoveImplementation getImplFromMove(StoredMove move) {
+		return getImplFromMove(move.getPiece(), move.getNewCoord());
+	}
+	public SpecialMoveImplementation getImplFromMove(Piece piece, Coordinate coord) {
+		Map<Coordinate, SpecialMoveImplementation> moveCoords = legalMoveCoords(piece);
+		SpecialMoveImplementation impl;
+		if (moveCoords.containsKey(coord)) {
+			impl = moveCoords.get(coord);
+		} else {
+			throw new ChessGameException("Illegal move");
+		}
+		return impl;
+	}
+	
+	private Board boardStateAfterMove(StoredMove move) {
+		Board boardCopy = new Board(board);
+		
+		Piece pieceCopy = boardCopy.getPiece(move.getPiece().getCoord());
+		
+		StoredMove moveCopy = new StoredMove(pieceCopy, move.getNewCoord());
+		
+		boardCopy.getInterface().makeStoredMove(moveCopy);
+		return boardCopy;
+	}
 	private Board boardStateAfterMove(Piece piece, Coordinate coord) {
 		return boardStateAfterMove(piece, coord, null);
 	}
@@ -165,10 +191,10 @@ public class LegalMoveLogic {
 		return legalCoords;
 	}
 	
-	public Set<StoredMove> legalMoves(boolean color) {
+	public Set<StoredMove> legalMoves(boolean isWhite) {
 		Set<StoredMove> moves = new HashSet<>();
 		
-		for (Piece piece : colorPieces(color)) {
+		for (Piece piece : colorPieces(isWhite)) {
 			for (Coordinate coord : legalMoveCoords(piece).keySet()) {
 				Board boardCopy = boardStateAfterMove(piece, coord, getImplFromMove(piece, coord));
 				
@@ -185,21 +211,38 @@ public class LegalMoveLogic {
 		return moves;
 	}
 	
-	public SpecialMoveImplementation getImplFromMove(Piece piece, Coordinate coord) {
-		Map<Coordinate, SpecialMoveImplementation> moveCoords = legalMoveCoords(piece);
-		SpecialMoveImplementation impl;
-		if (moveCoords.containsKey(coord)) {
-			impl = moveCoords.get(coord);
-		} else {
-			throw new ChessGameException("Illegal move");
+	public Map<StoredMove, Board> legalBoardStates(boolean isWhite) {
+		Map<StoredMove, Board> boards = new HashMap<>();
+		for (StoredMove move : legalMoves(isWhite)) {
+			boards.put(move, boardStateAfterMove(move));
 		}
-		return impl;
+		return boards;
 	}
 	
-	public boolean canMakeAMove(boolean white) {
-		for (Piece piece : colorPieces(white)) {
+	public boolean canMakeAMove(boolean isWhite) {
+		for (Piece piece : colorPieces(isWhite)) {
 			if (!legalMoveCoords(piece).isEmpty()) return true;
 		}
 		return false;
+	}
+	
+	public boolean isCheckmated(boolean isWhite) {
+		return !canMakeAMove(isWhite) && kingInCheck(isWhite);
+	}
+	public boolean isStalemated(boolean isWhite) {
+		return !canMakeAMove(isWhite) && !kingInCheck(isWhite);
+	}
+	
+	public int totalPoints(boolean isWhite) {
+		int points = 0;
+		
+		for (Piece piece : colorPieces(isWhite)) {
+			points += piece.pointValue();
+		}
+		
+		return points;
+	}
+	public int value(boolean isWhite) {
+		return totalPoints(isWhite) - totalPoints(!isWhite);
 	}
 }

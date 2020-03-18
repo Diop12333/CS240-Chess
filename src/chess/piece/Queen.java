@@ -34,13 +34,14 @@ public class Queen extends Piece
 	} 
 	
 	@Override
-	public boolean canRepeatMoves() { return true; }
+	public boolean canRepeatRegularMoves() { return true; }
+	@Override
+	public int pointValue() { return 9; }
+	
 	@Override
 	public String getWhiteImgFileName() { return "white_queen.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_queen.png"; }
-	@Override
-	public String notation() { return "Q"; }
 	@Override
 	public Queen copy() { return new Queen(this); }
 }

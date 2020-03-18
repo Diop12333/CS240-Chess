@@ -30,13 +30,14 @@ public class Bishop extends Piece
 	} 
 	
 	@Override
-	public boolean canRepeatMoves() { return true; }
+	public boolean canRepeatRegularMoves() { return true; }
+	@Override
+	public int pointValue() { return 3; }
+	
 	@Override
 	public String getWhiteImgFileName() { return "white_bishop.png"; }
 	@Override
 	public String getBlackImgFileName() { return "black_bishop.png"; }
-	@Override
-	public String notation() { return "B"; }
 	
 	@Override
 	public Bishop copy() { return new Bishop(this); }
