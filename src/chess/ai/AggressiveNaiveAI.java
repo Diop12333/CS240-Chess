@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import chess.logic.Board;
+import chess.logic.PromotionPiece;
 import chess.logic.StoredMove;
 import chess.logic.Utility;
 
@@ -23,6 +24,12 @@ public class AggressiveNaiveAI implements AI {
 			board.getLogic().legalBoardStates(isWhite).entrySet()
 		) {
 			StoredMove move = entry.getKey();
+			
+			// This shouldn't need to be written, but promotion is broken right now
+			if (move.getPromPiece() != null && move.getPromPiece() != PromotionPiece.QUEEN) {
+				continue;
+			}
+			
 			Board boardState = entry.getValue();
 			
 			if (boardState.getLogic().isCheckmated(!isWhite)) return move;

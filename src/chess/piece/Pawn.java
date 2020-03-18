@@ -3,7 +3,6 @@ package chess.piece;
 import java.util.HashSet;
 import java.util.Set;
 
-import chess.logic.Coordinate;
 import chess.logic.RegularMove;
 import chess.specialmove.SpecialMove;
 
