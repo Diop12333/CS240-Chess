@@ -20,22 +20,21 @@ public class ChessGameMenuBar extends MenuBar {
 		aiMap.put("Random", new RandomAI());
 		aiMap.put("Aggressive + Naive", new AggressiveNaiveAI());
 		
-		SetAIMenu whiteOppMenu = new SetAIMenu(
-			"White Opponent", chessGame, aiMap, true
+		SetAIMenu whitePlayerMenu = new SetAIMenu(
+			"White Player", chessGame, aiMap, true
 		);
-		SetAIMenu blackOppMenu = new SetAIMenu(
-			"Black Opponent", chessGame, aiMap, false
+		SetAIMenu blackPlayerMenu = new SetAIMenu(
+			"Black Player", chessGame, aiMap, false
 		);
 		
 		// Create MenuItems
 		MenuItem newGameItem = new MenuItem("Start a New Game");
 		newGameItem.setOnAction(e -> chessGame.reset());
 		
-		
 		// Add menuItems to the Menus
 		gameMenu.getItems().add(newGameItem);
 		
 		// Add Menus to the MenuBar
-		getMenus().addAll(gameMenu, whiteOppMenu, blackOppMenu);
+		getMenus().addAll(gameMenu, whitePlayerMenu, blackPlayerMenu);
 	}
 }
